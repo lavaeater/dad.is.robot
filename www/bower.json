@@ -1,0 +1,27 @@
+{
+  "name": "dad.is.robot",
+  "authors": [
+    "Tommie Nygren <tommie.nygren@gmail.com>"
+  ],
+  "description": "HTML5 game built with Phaser",
+  "main": "index.html",
+  "moduleType": [],
+  "keywords": [
+    "HTML5",
+    "javascript",
+    "phaser"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "phaser": "^2.4.6"
+  }
+}
