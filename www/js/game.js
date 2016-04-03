@@ -1,4 +1,6 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
+var charEditor;
+var cursors;
+var game = new Phaser.Game(500, 500, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
 function preload() {
     //  You can fill the preloader with as many assets as your game requires
@@ -7,8 +9,8 @@ function preload() {
     //  string by which we'll identify the image later in our code.
 
     //  The second parameter is the URL of the image (relative)
-    game.load.image('charedit2', 'assets/img/char_edit_prototype002.png');
-    game.load.image('charedit1', 'assets/img/char_edit_prototype001.png');
+    //game.load.image('charedit2', 'assets/img/char_edit_prototype002.png');
+    game.load.image('charedit1', 'assets/img/char_edit_prototype003.png');
 
     //create an array of asset names for faces, for instance.
     game.load.image('eyes01', 'assets/img/eyes01.png');
@@ -23,43 +25,75 @@ function preload() {
 function create() {
     //  This creates a simple sprite that is using our loaded image and
     //  displays it on-screen
-    var charEditSprite = game.add.sprite(0, 0, 'charedit2');
+    var charEditSprite = game.add.sprite(0, 0, 'charedit1');
     var eyes = [game.add.sprite(0,0, 'eyes01'), game.add.sprite(0,0, 'eyes02')];
 
-    var charEditor = new charEdit(charEditSprite, eyes);
+
+    //all sprites in one array for easy scaling etc.
+    var allSprites = [charEditSprite, eyes[0], eyes[1]];
+
+    _.forEach(allSprites, function(sprite)  {
+      sprite.scale.setTo(0.25,0.25);
+    });
+
+    _.forEach(eyes, function(eye) {
+      eye.visible = false;
+    });
+
+    cursors = game.input.keyboard.createCursorKeys();
+
+
+
+    charEditor = new charEdit(charEditSprite, eyes);
+}
+
+function update() {
 
 }
 
 var charEdit = function(charEditSprite, eyes) {
   var self = this;
+  self.offsetX = 100;
+  self.offsetY = 0;
   self.charEditSprite = charEditSprite;
   self.eyes = eyes;
+
+  //Event handlers for keys
+
+/*
+Create array of arrays for different parts, this array is
+controlled by up-down keys to change if fix face etc...
+
+Also, figure out how to save the character for later!
+*/
 
   self.selectedEyeIndex = 0;
   self.selectedEyeSprite = eyes[self.selectedEyeIndex];
 
   self.indexUp = function(indexVar, arrayForIndex) {
-    indexVar++;
-    if(indexVar > arrayForIndex.length - 1 )
+    self[indexVar]++;
+    if(self[indexVar] > arrayForIndex.length - 1 )
     {
-      indexVar = 0;
+      self[indexVar] = 0;
     }
   };
 
   self.indexDown = function(indexVar, arrayForIndex) {
-    indexVar--;
-    if(indexVar < 0)
+    self[indexVar]--;
+    if(self[indexVar] < 0)
     {
-      indexVar = arrayForIndex.length - 1;
+      self[indexVar] = arrayForIndex.length - 1;
     }
   };
 
   self.eyeLeftClick = function() {
-    self.indexDown(self.selectedEyeIndex, self.eyes);
+    self.indexDown('selectedEyeIndex', self.eyes);
+    self.updateSelectedEyeSprite();
   };
 
   self.eyeRightClick = function() {
-    self.indexUp(self.selectedEyeIndex, self.eyes);
+    self.indexUp('selectedEyeIndex', self.eyes);
+    self.updateSelectedEyeSprite();
   };
 
   self.updateSelectedEyeSprite = function() {
@@ -70,13 +104,13 @@ var charEdit = function(charEditSprite, eyes) {
   };
 
 
+  cursors.left.onDown.add(self.eyeLeftClick, self);
+  cursors.right.onDown.add(self.eyeRightClick, self);
 
-
-  /*
-  Vi försöker med något slags generisk för ansiktsbilderna... vi har assets för faces
-  */
+  self.updateSelectedEyeSprite();
 
   return {
-
+    eyeLeftClick: self.eyeLeftClick,
+    eyeRightClick: self.eyeRightClick
   };
 };
