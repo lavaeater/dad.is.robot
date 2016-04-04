@@ -16,6 +16,13 @@ function preload() {
     game.load.image('eyes01', 'assets/img/eyes01.png');
     game.load.image('eyes02', 'assets/img/eyes02.png');
 
+    game.load.image('goggles01', 'assets/img/goggles01.png');
+    game.load.image('goggles02', 'assets/img/goggles02.png');
+    game.load.image('goggles03', 'assets/img/goggles03.png');
+
+    game.load.image('upper01', 'assets/img/upper01.png');
+    game.load.image('upper02', 'assets/img/upper02.png');
+
     /*
       How do we keep track of the necessary offsets? They could be stored as some data OR all sprites pertaing to head, for instance,
       could be the exact same size.
@@ -27,10 +34,10 @@ function create() {
     //  displays it on-screen
     var charEditSprite = game.add.sprite(0, 0, 'charedit1');
     var eyes = [game.add.sprite(0,0, 'eyes01'), game.add.sprite(0,0, 'eyes02')];
-
-
+    var goggles = [game.add.sprite(0,0, 'goggles01'), game.add.sprite(0,0, 'goggles02'), game.add.sprite(0,0, 'goggles03')];
+    var tops = [game.add.sprite(0,0, 'upper01'), game.add.sprite(0,0, 'upper02')];
     //all sprites in one array for easy scaling etc.
-    var allSprites = [charEditSprite, eyes[0], eyes[1]];
+    var allSprites = [charEditSprite, eyes[0], eyes[1], goggles[0], goggles[1], goggles[2], tops[0], tops[1]];
 
     _.forEach(allSprites, function(sprite)  {
       sprite.scale.setTo(0.25,0.25);
@@ -40,25 +47,31 @@ function create() {
       eye.visible = false;
     });
 
+    _.forEach(goggles, function(goggle) {
+      goggle.visible = false;
+    });
+
+    _.forEach(tops, function(top) {
+      top.visible = false;
+    });
+
     cursors = game.input.keyboard.createCursorKeys();
 
-
-
-    charEditor = new charEdit(charEditSprite, eyes);
+    charEditor = new charEdit(charEditSprite, eyes, goggles, tops);
 }
 
 function update() {
 
 }
 
-var charEdit = function(charEditSprite, eyes) {
+var charEdit = function(charEditSprite, eyes, goggles, tops) {
   var self = this;
   self.offsetX = 100;
   self.offsetY = 0;
   self.charEditSprite = charEditSprite;
-  self.eyes = eyes;
-
-  //Event handlers for keys
+  self.parts = [eyes, goggles, tops];
+  self.selectedIndexes = [0,2,0];
+  self.partIndex = 0;
 
 /*
 Create array of arrays for different parts, this array is
@@ -67,50 +80,62 @@ controlled by up-down keys to change if fix face etc...
 Also, figure out how to save the character for later!
 */
 
-  self.selectedEyeIndex = 0;
-  self.selectedEyeSprite = eyes[self.selectedEyeIndex];
+self.hidePartAt = function(partIndex, selectedIndex) {
+  self.parts[partIndex][selectedIndex].visible = false;
+};
 
-  self.indexUp = function(indexVar, arrayForIndex) {
-    self[indexVar]++;
-    if(self[indexVar] > arrayForIndex.length - 1 )
-    {
-      self[indexVar] = 0;
+self.showPartAt = function(partIndex, selectedIndex) {
+  self.parts[partIndex][selectedIndex].visible = true;
+};
+
+  self.upClick = function() {
+    self.partIndex++;
+    if(self.partIndex > self.parts.length - 1) {
+      self.partIndex = 0;
     }
   };
 
-  self.indexDown = function(indexVar, arrayForIndex) {
-    self[indexVar]--;
-    if(self[indexVar] < 0)
-    {
-      self[indexVar] = arrayForIndex.length - 1;
+  self.downClick = function() {
+    self.partIndex--;
+    if(self.partIndex < 0) {
+      self.partIndex = self.parts.length - 1;
     }
   };
 
-  self.eyeLeftClick = function() {
-    self.indexDown('selectedEyeIndex', self.eyes);
-    self.updateSelectedEyeSprite();
+  //Event handlers for keys
+  self.leftClick = function() {
+    //Hide current item
+    self.hidePartAt(self.partIndex, self.selectedIndexes[self.partIndex]);
+    //change selectedIndex at partIndex
+    self.selectedIndexes[self.partIndex]--;
+    if(self.selectedIndexes[self.partIndex] < 0) {
+      self.selectedIndexes[self.partIndex] = self.parts[self.partIndex].length - 1;
+    }
+    //show current item
+    self.showPartAt(self.partIndex, self.selectedIndexes[self.partIndex]);
   };
 
-  self.eyeRightClick = function() {
-    self.indexUp('selectedEyeIndex', self.eyes);
-    self.updateSelectedEyeSprite();
+  self.rightClick = function() {
+    //Hide current item
+    self.hidePartAt(self.partIndex, self.selectedIndexes[self.partIndex]);
+    //change selectedIndex at partIndex
+    self.selectedIndexes[self.partIndex]++;
+    if(self.selectedIndexes[self.partIndex] > self.parts[self.partIndex].length - 1) {
+      self.selectedIndexes[self.partIndex] = 0;
+    }
+    //show current item
+    self.showPartAt(self.partIndex, self.selectedIndexes[self.partIndex]);
+
   };
 
-  self.updateSelectedEyeSprite = function() {
-    //Todo: rewrite as a "generic" function to update any sprite in this editor
-    self.selectedEyeSprite.visible = false;
-    self.selectedEyeSprite = self.eyes[self.selectedEyeIndex];
-    self.selectedEyeSprite.visible = true;
-  };
+  cursors.left.onDown.add(self.leftClick, self);
+  cursors.right.onDown.add(self.rightClick, self);
 
+  cursors.up.onDown.add(self.upClick, self);
+  cursors.down.onDown.add(self.downClick, self);
 
-  cursors.left.onDown.add(self.eyeLeftClick, self);
-  cursors.right.onDown.add(self.eyeRightClick, self);
-
-  self.updateSelectedEyeSprite();
+  self.showPartAt(0,0);
 
   return {
-    eyeLeftClick: self.eyeLeftClick,
-    eyeRightClick: self.eyeRightClick
   };
 };
