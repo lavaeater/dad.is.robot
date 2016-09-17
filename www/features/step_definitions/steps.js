@@ -1,36 +1,21 @@
 var assert = require('cucumber-assert');
-var Player = require('../../js/player');
 
 module.exports = function () {
-    var player = new Player(0, 0, 0, 0.5, 0, {});;
-
-    this.World = function() {
-        this.player = player;
-    };
 
     this.Given(/^a player that is standing still$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        console.log("this.player: ");
-        console.log(this.player);
-        console.log("this: ");
-        console.log(this);
-        console.log("this.player.speed: ");
-        console.log(this.player.speed);
         assert.equal(this.player.speed, 0, callback);
     });
 
-    this.Given(/^acceleration is (\d+)\.(\d+)$/, function (arg1, arg2, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback(null, 'pending');
+    this.Given(/^acceleration is (\d+)$/, function (arg1, callback) {
+        assert.equal(this.player.acceleration, arg1, callback)
     });
 
     this.When(/^I hit accelerate$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback(null, 'pending');
+        this.player.accelerate();
+        callback();
     });
 
-    this.Then(/^the players speed should increase by (\d+)\.(\d+)$/, function (arg1, arg2, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback(null, 'pending');
+    this.Then(/^the players speed should be (\d+)$/, function (arg1, callback) {
+        assert.equal(this.player.speed, arg1, callback())
     });
 }

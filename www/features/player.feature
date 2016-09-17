@@ -5,6 +5,6 @@ Feature: Moving around
 
     Scenario: Accelerating the player
          Given a player that is standing still
-            And acceleration is 0.5
+            And acceleration is 1
          When I hit accelerate
-         Then the players speed should increase by 0.5
+         Then the players speed should be 2

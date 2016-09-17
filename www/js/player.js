@@ -1,4 +1,4 @@
-module.exports = function (x, y, speed, acceleration, direction, sprite) {
+function Player (x, y, speed, acceleration, direction, sprite) {
     var self = this;
 
     self.x = x;
@@ -12,3 +12,5 @@ module.exports = function (x, y, speed, acceleration, direction, sprite) {
         self.speed += self.acceleration;
     };
 };
+
+module.exports = Player;
