@@ -4,8 +4,7 @@
   "description": "An HTML5 Game about finding and building a robot dad.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/cucumberjs",
-    "start": "./js/dad.js"
+    "test": "./node_modules/.bin/cucumberjs"
   },
   "author": "",
   "license": "ISC",
