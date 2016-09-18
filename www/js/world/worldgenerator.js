@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-var tileTypes = ['grass', 'water','desert', 'mountain', 'forest'];
+var tileTypes = ['grass', 'water', 'desert', 'mountain', 'forest'];
 var tileRelations = [
     { grass: [] },
     { water: [] },
@@ -9,13 +9,9 @@ var tileRelations = [
     { forest: [] }
 ];
 
-function TileRelation(tileType)
-
-
-var tileGenerator = function(above, below, left, right, x, y) {
-    //Takes into account the tiles around this tile to return a new type of tile at some position
+function KeyToString(x,y) {
+    return x.toString() + ':' + y.toString();
 };
-
 
 function World(size, tileSize) {
     var width = size;
@@ -23,9 +19,9 @@ function World(size, tileSize) {
     var tileSize = tileSize;
 
     var tiles = {};
-    var getTileAt = function(x, y) {
-        var key = x.toString() + ":" + y.toString();
-        if(_.has(tiles, key)) {
+    var getTileAt = function (x, y) {
+        var key = KeyToString(x, y);
+        if (_.has(tiles, key)) {
             return tiles[key];
         }
     };
@@ -37,12 +33,120 @@ function World(size, tileSize) {
     };
 };
 
-function Tile(x, y, type) {
-    var key = x.toString() + ":" + y.toString();
+function randomIntFromInterval(min,max)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+
+var grassGenerator = function(x,y) {
+    var type = '';
+    var randomSeed = randomIntFromInterval(1, 10);
+
+    if(randomSeed <= 5) {
+        type = 'g';
+    } else if(5 < randomSeed && randomSeed <=7) {
+        type = 'f';
+    } else if(7 < randomSeed && randomSeed <=9) {
+        type = 'w';
+    } else if(9 < randomSeed && randomSeed <= 10) {
+        type = 'm';
+    }
+    return new SubTile(x, y, type);
+};
+
+var forestGenerator = function(x,y) {
+    var type = '';
+    var randomSeed = randomIntFromInterval(1, 10);
+
+    if(randomSeed <= 5) {
+        type = 'f';
+    } else if(5 < randomSeed && randomSeed <=7) {
+        type = 'm';
+    } else if(7 < randomSeed && randomSeed <=9) {
+        type = 'w';
+    } else if(9 < randomSeed && randomSeed <= 10) {
+        type = 'g';
+    }
+    return new SubTile(x, y, type);
+};
+
+var mountainGenerator = function(x,y) {
+    var type = '';
+    var randomSeed = randomIntFromInterval(1, 10);
+
+    if(randomSeed <= 6) {
+        type = 'm';
+    } else if(6 < randomSeed && randomSeed <=8) {
+        type = 'f';
+    } else if(8 < randomSeed && randomSeed <=9) {
+        type = 'w';
+    } else if(9 < randomSeed && randomSeed <= 10) {
+        type = 'd';
+    }
+    return new SubTile(x, y, type);
+};
+
+var desertGenerator = function(x,y) {
+    var type = '';
+    var randomSeed = randomIntFromInterval(1, 10);
+
+    if(randomSeed <= 7) {
+        type = 'd';
+    } else if(7 < randomSeed && randomSeed <=9) {
+        type = 'm';
+    } else if(9 < randomSeed && randomSeed <= 10) {
+        type = 'w';
+    }
+    return new SubTile(x, y, type);
+};
+
+function Tile(x, y, type, subTileGenerator) {
+    var self = this;
+    var key = KeyToString(x,y);
     var x = x;
     var y = y;
     var type = type;
+    var size = 10;
+    var subTiles = {};
+    self.subTileGenerator = subTileGenerator;
 
+    var generateSubTiles = function () {
+        for (i = 0; i < size; i++) {
+            for (j = 0; j < size; j++) {
+                var tile = self.subTileGenerator(j,i);
+                subTiles[tile.key] = tile;
+            }
+        }
+    };
+
+    var renderSubTiles = function () {
+        for (i = 0; i < size; i++) {
+            var row = '';
+            for (j = 0; j < size; j++) {
+                var key = KeyToString(j,i);
+                row += subTiles[key].type;
+            }
+            console.log(row);
+        }
+    };
+
+    return {
+        key: key,
+        x: x,
+        y: y,
+        type: type,
+        subTiles: subTiles,
+        renderSubTiles: renderSubTiles
+    };
+};
+
+function SubTile(x, y, type) {
+    var self = this;
+    var key = KeyToString(x,y);
+    var type = type;
+    var x = x;
+    var y = y;
     return {
         key: key,
         x: x,
