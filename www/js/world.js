@@ -11,10 +11,10 @@ function ViewModel() {
     };    
 
     self.buttonClicked = function(key) {
-        if(key == "w") {
+        if(key == "s") {
             self.movePlayer(0, 1);
         }
-        if(key == "s") {
+        if(key == "w") {
             self.movePlayer(0, -1);
         }
         if(key == "a") {
@@ -25,13 +25,28 @@ function ViewModel() {
         }
     };
 
-    self.player2World = function(coord) {
-        if(coord < 0) {
-            return Math.ceil(coord / 10);
-        }
-        if(coord >= 0) {
-            return Math.floor(coord / 10);
-        }
+    self.player2Tile = function(coord) {
+        return Math.floor(coord / 10);
+    };
+
+    self.currentTileX = ko.computed(function() {
+        return self.player2Tile(self.playerX());
+    });
+
+    self.currentTileY = ko.computed(function() {
+        return self.player2Tile(self.playerY());
+    });
+
+    self.player2ViewPortX = ko.computed(function() {
+        return self.playerX() - (self.currentTileX() * 10);
+    });
+    
+    self.player2ViewPortY = ko.computed(function() {
+        return self.playerY() - (self.currentTileY() * 10);
+    });
+
+    self.isPlayerHere = function(x, y) {
+        return self.player2ViewPortX() == x() && self.player2ViewPortY() == y();
     };
 
     self.playerPos = ko.computed(function() {
@@ -39,7 +54,7 @@ function ViewModel() {
     });
 
     self.currentTile = ko.computed(function() {
-        return self.world.getTileAt(self.player2World(self.playerX()), self.player2World(self.playerY()));
+        return self.world.getTileAt(self.currentTileX(), self.currentTileY());
     });
 
     self.mapRows = ko.computed(function() {
@@ -76,6 +91,11 @@ function ViewModel() {
         currentTile: self.currentTile,
         mapRows: self.mapRows,
         currentTileColor: self.currentTileColor,
-        keyup: self.keyup
+        keyup: self.keyup,
+        currentTileX: self.currentTileX,
+        currentTileY: self.currentTileY,
+        player2ViewPortX: self.player2ViewPortX,
+        player2ViewPortY: self.player2ViewPortY,
+        isPlayerHere: self.isPlayerHere
     };
 };

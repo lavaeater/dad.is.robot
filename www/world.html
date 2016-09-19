@@ -17,9 +17,14 @@
         Här kommer vi skriva lite content:<br/>
         <input type="text" data-bind="value: playerPos()"></input><br />
         <input type="text" data-bind="value: currentTile().type"></input><br />
+        X:<span data-bind="text: currentTileX"></span>,Y:<span data-bind="text: currentTileY"></span><br />
+        ViewPortX:<span data-bind="text: player2ViewPortX"></span>, ViewPortY:<span data-bind="text: player2ViewPortY"></span> 
         <table data-bind="foreach: mapRows()">
             <tr data-bind="foreach: $data">
-                <td data-bind="style: {backgroundColor: $root.currentTileColor($data)}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+                <td data-bind="style: {backgroundColor: $root.currentTileColor($data)}">
+                    <span data-bind="if: $root.isPlayerHere($index, $parentContext.$index)">Y</span>
+                    <span data-bind="ifnot: $root.isPlayerHere($index, $parentContext.$index)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </td>
             </tr>
         </table>
     </div>
