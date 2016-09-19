@@ -15,8 +15,7 @@
 <body data-bind="event: { keyup: keyup }">
     <div>
         Här kommer vi skriva lite content:<br/>
-
-        <input type="text" data-bind="value: currentTileKey()"></input><br />
+        <input type="text" data-bind="value: playerPos()"></input><br />
         <input type="text" data-bind="value: currentTile().type"></input><br />
         <table data-bind="foreach: mapRows()">
             <tr data-bind="foreach: $data">

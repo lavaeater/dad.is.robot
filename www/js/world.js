@@ -34,12 +34,12 @@ function ViewModel() {
         }
     };
 
-    self.currentTileKey = ko.computed(function() {
+    self.playerPos = ko.computed(function() {
         return KeyToString(self.playerX(), self.playerY());
     });
 
     self.currentTile = ko.computed(function() {
-        return self.world.getTileAt(self.playerX(), self.playerY());
+        return self.world.getTileAt(self.player2World(self.playerX()), self.player2World(self.playerY()));
     });
 
     self.mapRows = ko.computed(function() {
@@ -72,7 +72,7 @@ function ViewModel() {
 
     return {
         buttonClicked: self.buttonClicked,
-        currentTileKey: self.currentTileKey,
+        playerPos: self.playerPos,
         currentTile: self.currentTile,
         mapRows: self.mapRows,
         currentTileColor: self.currentTileColor,
