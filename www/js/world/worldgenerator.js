@@ -1,15 +1,9 @@
-var _ = require('lodash');
-var tileGenerators = require('./Generators');
-var KeyToString = require('./KeyToString');
-
-var tileTypes = ['g', 'w', 'd', 'm', 'f'];
-
-function randomIntFromInterval(min, max) {
+function RandomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
 function basicTileGenerator(x, y) {
-    var randomSeed = randomIntFromInterval(1, 10);
+    var randomSeed = RandomIntFromInterval(1, 10);
     var type = '';
     if (randomSeed <= 4) {
         type = 'g';
@@ -23,11 +17,7 @@ function basicTileGenerator(x, y) {
         type = 'd';
     }
 
-    console.log("new basic tile " + type);
-    console.log("subgenerator");
-    console.log(tileGenerators[type]);
-
-    return new Tile(x, y, type, tileGenerators[type]);
+    return new Tile(x, y, type, Generators[type]);
 };
 
 function Tile(x, y, type, subTileGenerator) {
@@ -95,5 +85,3 @@ function World(size, tileSize) {
         getTileAt: getTileAt
     };
 };
-
-module.exports = World;

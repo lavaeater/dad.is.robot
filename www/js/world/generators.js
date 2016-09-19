@@ -1,6 +1,4 @@
-var KeyToString = require('./KeyToString');
-
-function randomIntFromInterval(min, max) {
+function RandomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
@@ -20,7 +18,7 @@ function SubTile(x, y, type) {
 
 var grassGenerator = function (x, y) {
     var type = '';
-    var randomSeed = randomIntFromInterval(1, 10);
+    var randomSeed = RandomIntFromInterval(1, 10);
 
     if (randomSeed <= 5) {
         type = 'g';
@@ -36,7 +34,7 @@ var grassGenerator = function (x, y) {
 
 var forestGenerator = function (x, y) {
     var type = '';
-    var randomSeed = randomIntFromInterval(1, 10);
+    var randomSeed = RandomIntFromInterval(1, 10);
 
     if (randomSeed <= 5) {
         type = 'f';
@@ -52,7 +50,7 @@ var forestGenerator = function (x, y) {
 
 var mountainGenerator = function (x, y) {
     var type = '';
-    var randomSeed = randomIntFromInterval(1, 10);
+    var randomSeed = RandomIntFromInterval(1, 10);
 
     if (randomSeed <= 6) {
         type = 'm';
@@ -68,7 +66,7 @@ var mountainGenerator = function (x, y) {
 
 var waterGenerator = function (x, y) {
     var type = '';
-    var randomSeed = randomIntFromInterval(1, 10);
+    var randomSeed = RandomIntFromInterval(1, 10);
 
     if (randomSeed <= 8) {
         type = 'w';
@@ -82,7 +80,7 @@ var waterGenerator = function (x, y) {
 
 var desertGenerator = function (x, y) {
     var type = '';
-    var randomSeed = randomIntFromInterval(1, 10);
+    var randomSeed = RandomIntFromInterval(1, 10);
 
     if (randomSeed <= 7) {
         type = 'd';
@@ -94,12 +92,10 @@ var desertGenerator = function (x, y) {
     return new SubTile(x, y, type);
 };
 
-function Generators() {
-    this.g = grassGenerator;
-    this.w = waterGenerator;
-    this.d = desertGenerator;
-    this.f = forestGenerator;
-    this.m = mountainGenerator;
-}
-
-module.exports = new Generators();
+var Generators = {
+    g: grassGenerator,
+    w: waterGenerator,
+    d: desertGenerator,
+    f: forestGenerator,
+    m: mountainGenerator
+};
