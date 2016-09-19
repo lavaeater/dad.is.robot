@@ -1,15 +1,33 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>Dad.Is.Robot</title>
-        <script src="bower_components/phaser/build/phaser.js"></script>
-        <script src="bower_components/lodash/dist/lodash.js"></script>
-        <script src="js/world/keyToString.js"></script>
-        <script src="js/world/generators.js"></script>
-        <script src="js/world/worldgenerator.js"></script>
-        <script src="js/world.js"></script>
-    </head>
-    <body>
-    </body>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Dad.Is.Robot</title>
+    <script src="bower_components/knockout/dist/knockout.debug.js"></script>
+    <script src="bower_components/lodash/dist/lodash.js"></script>
+    <script src="js/world/keyToString.js"></script>
+    <script src="js/world/generators.js"></script>
+    <script src="js/world/worldgenerator.js"></script>
+    <script src="js/world.js"></script>
+</head>
+
+<body data-bind="event: { keyup: keyup }">
+    <div>
+        Här kommer vi skriva lite content:<br/>
+
+        <input type="text" data-bind="value: currentTileKey()"></input><br />
+        <input type="text" data-bind="value: currentTile().type"></input><br />
+        <table data-bind="foreach: mapRows()">
+            <tr data-bind="foreach: $data">
+                <td data-bind="style: {backgroundColor: $root.currentTileColor($data)}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+        var vm = new ViewModel();
+        ko.applyBindings(vm);
+    </script>
+</body>
+
 </html>

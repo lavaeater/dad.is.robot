@@ -29,6 +29,9 @@ function Tile(x, y, type, subTileGenerator) {
     var size = 10;
     var subTiles = {};
     self.subTileGenerator = subTileGenerator;
+    var subTilesGenerated = false;
+    var map = [];
+    var mapRendered = false;
 
     var generateSubTiles = function () {
         for (i = 0; i < size; i++) {
@@ -37,17 +40,26 @@ function Tile(x, y, type, subTileGenerator) {
                 subTiles[tile.key] = tile;
             }
         }
+        subTilesGenerated = true;
     };
 
-    var renderSubTiles = function () {
-        for (i = 0; i < size; i++) {
-            var row = '';
-            for (j = 0; j < size; j++) {
-                var key = KeyToString(j, i);
-                row += subTiles[key].type;
-            }
-            console.log(row);
+    var getMap = function () {
+        if (!subTilesGenerated) {
+            generateSubTiles();
         }
+
+        if (!mapRendered) {
+            for (i = 0; i < size; i++) {
+                var row = [];
+                for (j = 0; j < size; j++) {
+                    var key = KeyToString(j, i);
+                    row.push(subTiles[key].type);
+                };
+                map.push(row);
+            };
+            mapRendered = true;
+        }
+        return map;
     };
 
     return {
@@ -56,7 +68,7 @@ function Tile(x, y, type, subTileGenerator) {
         y: y,
         type: type,
         subTiles: subTiles,
-        renderSubTiles: renderSubTiles,
+        getMap: getMap,
         generateSubTiles: generateSubTiles
     };
 };
