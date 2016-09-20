@@ -20,7 +20,7 @@
         <input type="text" data-bind="value: currentTile().type"></input><br />
         X:<span data-bind="text: currentTileX"></span>,Y:<span data-bind="text: currentTileY"></span><br />
         ViewPortX:<span data-bind="text: player2ViewPortX"></span>, ViewPortY:<span data-bind="text: player2ViewPortY"></span> 
-        <table data-bind="foreach: mapRows()">
+        <table data-bind="foreach: mapRows()" cellspacing="0">
             <tr data-bind="foreach: $data">
                 <td data-bind="style: {backgroundColor: $root.currentTileColor($data)}">
                     <span data-bind="if: $root.isPlayerHere($index, $parentContext.$index)">Y</span>
