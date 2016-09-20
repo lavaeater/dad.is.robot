@@ -85,6 +85,11 @@ function ViewModel() {
         }
     };
 
+    self.eventInfo = ko.computed(function() {
+        //generate events etc, using eventengine / questengine. Yay! For now, return notimpl
+        return "notimpl";
+    });
+
     return {
         buttonClicked: self.buttonClicked,
         playerPos: self.playerPos,
@@ -96,6 +101,7 @@ function ViewModel() {
         currentTileY: self.currentTileY,
         player2ViewPortX: self.player2ViewPortX,
         player2ViewPortY: self.player2ViewPortY,
-        isPlayerHere: self.isPlayerHere
+        isPlayerHere: self.isPlayerHere,
+        eventInfo: self.eventInfo
     };
 };
