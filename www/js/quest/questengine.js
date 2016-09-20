@@ -1,14 +1,22 @@
 function StoryStep(title) {
     var self = this;
-    return {};
+    return {
+
+    };
 };
 
 function QuestEngine() {
     var self = this;
-    return {};
+    return {
+
+    };
 };
 
-function EncounterEngine() {
+function EncounterEngine(world) {
     var self = this;
-    return {};
+    var encounters = {}; //Add generated encounters here, if of the permanent kind
+  
+    return {
+
+    };
 };

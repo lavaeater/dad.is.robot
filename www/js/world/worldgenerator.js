@@ -33,10 +33,11 @@ function Tile(x, y, type, subTileGenerator) {
     var map = [];
     var mapRendered = false;
 
+    //Every subtile needs an actual coordinate!
     var generateSubTiles = function () {
         for (i = 0; i < size; i++) {
             for (j = 0; j < size; j++) {
-                var tile = self.subTileGenerator(j, i);
+                var tile = self.subTileGenerator.generate(j, i);
                 subTiles[tile.key] = tile;
             }
         }

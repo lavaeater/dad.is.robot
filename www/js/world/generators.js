@@ -16,6 +16,51 @@ function SubTile(x, y, type) {
     };
 };
 
+function SubTileGenerator(godds, fodds, dodds, wodds, modds, sodds) {
+    var self = this;
+    self.min = 1;
+    self.grassOdds = godds;
+    self.forestOdds = godds+fodds;
+    self.desertOdds = godds+fodds+dodds;
+    self.waterOdds = godds+fodds+dodds+wodds;
+    self.mountainOdds = godds+fodds+dodds+wodds+modds;
+    self.siteOdds = godds+fodds+dodds+wodds+modds+sodds;
+    self.max = self.siteOdds;
+    
+    self.random = function() {
+        return Math.floor(Math.random() * (self.max - self.min + 1) + self.min);
+    };
+
+    var generate = function(x, y) {
+        var seed = self.random();
+        var type = 'g';
+        //Order is important, below. less than will evaluate to the lowest odds (0-50% fer instance)
+        if(seed <= self.siteOdds) {
+            type = 's';
+        }
+        if(seed <= self.mountainOdds) {
+            type = 'm';
+        }
+        if(seed <= self.waterOdds) {
+            type = 'w';
+        }
+        if(seed <= self.desertOdds) {
+            type = 'd';
+        }
+        if(seed <= self.forestOdds) {
+            type = 'f';
+        }
+        if(seed <= self.grassOdds) {
+            type = 'g';
+        }
+        return new SubTile(x, y, type);
+    };
+
+    return {
+        generate: generate
+    };
+};
+
 var grassGenerator = function (x, y) {
     var type = '';
     var randomSeed = RandomIntFromInterval(1, 10);
@@ -93,9 +138,9 @@ var desertGenerator = function (x, y) {
 };
 
 var Generators = {
-    g: grassGenerator,
-    w: waterGenerator,
-    d: desertGenerator,
-    f: forestGenerator,
-    m: mountainGenerator
+    g: new SubTileGenerator(70, 10, 5, 10, 10,3),
+    w: new SubTileGenerator(10,3,1,80,10,3),
+    d: new SubTileGenerator(5,5,80,1,15,5),
+    f: new SubTileGenerator(15,80,1,5,10,5),
+    m: new SubTileGenerator(10,10,10,5,80,5)
 };
