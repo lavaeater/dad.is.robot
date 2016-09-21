@@ -22,7 +22,7 @@ function basicTileGenerator(x, y) {
 
 function Tile(x, y, type, subTileGenerator) {
     var self = this;
-    var key = KeyToString(x, y);
+    self.key = KeyToString(x, y);
     self.x = x;
     self.y = y;
     var type = type;
@@ -75,7 +75,7 @@ function Tile(x, y, type, subTileGenerator) {
     };
 
     return {
-        key: key,
+        key: self.key,
         x: self.x,
         y: self.y,
         type: type,

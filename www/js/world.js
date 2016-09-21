@@ -85,11 +85,6 @@ function ViewModel() {
         }
     };
 
-    self.eventInfo = ko.computed(function () {
-        //generate events etc, using eventengine / questengine. Yay! For now, return notimpl
-        return "notimpl";
-    });
-
     self.subTiles = {};
 
     self.getTileUnderPlayer = ko.computed(function () {
@@ -99,6 +94,13 @@ function ViewModel() {
             self.subTiles[key] = self.currentTile().subTiles[key];
         }
         return self.subTiles[key];
+    });
+
+    self.encounterGenerator = new EncounterEngine();
+
+    self.eventInfo = ko.computed(function () {
+        //generate events etc, using eventengine / questengine. Yay! For now, return notimpl
+        return ko.toJSON(self.encounterGenerator.getEncounter(self.getTileUnderPlayer()));
     });
 
     return {
