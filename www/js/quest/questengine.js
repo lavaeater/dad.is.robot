@@ -37,18 +37,12 @@ function QuestEngine() {
 
     var generate = function (tile) {
         var numberOfSteps = Random(5, 1);
-        var returnStep;
-        var previousStep;
+        var returnStep = new Encounter(tile.key, tile.x, tile.y, 'quest', generateTitle());
+        var previousStep = returnStep;
         for (i = 0; i < numberOfSteps; i++) {
-            if (i === 0) {
-                //Create first step
-                returnStep = stepGenerator(tile.x, tile.y);
-                previousStep = returnStep;
-            } else {
-                //Set next step, then set previousStep to nextSTep so we can set NextSTep on it
-                previousStep.nextStep = stepGenerator(previousStep.x, previousStep.y);
-                previousStep = previousStep.nextStep;
-            }
+            //Set next step, then set previousStep to nextSTep so we can set NextSTep on it
+            previousStep.nextStep = stepGenerator(previousStep.x, previousStep.y);
+            previousStep = previousStep.nextStep;
         }
         return returnStep;
     };
