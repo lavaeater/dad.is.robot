@@ -1,4 +1,4 @@
-function ViewModel() {
+function WorldViewModel() {
     var self = this;
     self.worldSize = 10;
     self.world = new World(self.worldSize, 100);
