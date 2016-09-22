@@ -48,7 +48,7 @@ function QuestEngine() {
         var randomX = Random(50,1);
         var randomY = Random(50,1);
         var key = KeyToString(randomX, randomY);
-        return new StoryStep(index, 'Go to ' + key, key, randomX, randomY, false);
+        return new Encounter(key, 'storystep', 'Go to ' + key);
     };
 
     var generate = function (key) {
