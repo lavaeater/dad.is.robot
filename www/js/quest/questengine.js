@@ -1,33 +1,17 @@
 function Random(max, min) {
     return Math.floor(Math.random() * (max - min + 1) + min);
-};
+}
 
-function StoryStep(index, title, stepKey, x, y, stepFinished) {
-    var self = this;
-    self.index = index;
-    self.title = title;
-    self.stepKey = stepKey;
-    self.stepFinished = stepFinished;
-    self.x = x;
-    self.y = y;
-    return {
-        index: self.index,
-        title: self.title,
-        stepKey: self.stepKey,
-        stepFinished: self.stepFinished,
-        x: self.x,
-        y: self.y
-    };
-};
-
-function Encounter(key, type, title, storySteps) {
+function Encounter(key, x, y, type, title) {
     return {
         key: key,
+        x: x,
+        y: y,
         type: type,
         title: title,
-        storySteps: storySteps
-    }
-};
+        nextStep: null
+    };
+}
 
 function QuestEngine() {
     var self = this;
@@ -44,21 +28,29 @@ function QuestEngine() {
         }
     };
 
-    var stepGenerator = function(index) {
-        var randomX = Random(50,1);
-        var randomY = Random(50,1);
+    var stepGenerator = function(x,y) {
+        var randomX = x + Random(10,-10);
+        var randomY = y + Random(10,-10);
         var key = KeyToString(randomX, randomY);
-        return new Encounter(key, 'storystep', 'Go to ' + key);
+        return new Encounter(key, randomX, randomY, 'quest', 'Go to ' + key);
     };
 
-    var generate = function (key) {
+    var generate = function (tile) {
         var numberOfSteps = Random(5,1);
-        var steps = [];
+        var returnStep;
+        var previousStep;
         for(i = 0; i < numberOfSteps; i++) {
-            
-            steps.push(stepGenerator(i))
+            if(i === 0) {
+                //Create first step
+                returnStep = stepGenerator(tile.x, tile.y);
+                previousStep = returnStep;
+            } else {
+                //Set next step, then set previousStep to nextSTep so we can set NextSTep on it
+                previousStep.nextStep = stepGenerator(previousStep.x, previousStep.y);
+                previousStep = previousStep.nextStep;
+            }
         }
-        return new Encounter(key, 'quest', generateTitle(), steps);
+        return returnStep;
     };
 
     return {
@@ -72,22 +64,28 @@ function EncounterGenerator() {
 
     var questEngine = new QuestEngine();
 
-    var generateEncounter = function (key) {
+    var generateEncounter = function (tile) {
         var seed = Random(100, 1);
         if (seed <= 100) {
-            return questEngine.generate(key);
+            return questEngine.generate(tile);
         }
         if (seed <= 85) {
-            return new Encounter(key, 'empty', 'Nothing happening here');
+            return new Encounter(tile.key, tile.x, tile.y, 'empty', 'Nothing happening here');
         }
         if (seed <= 100) {
-            return new Encounter(key, 'ruin', 'There is a ruin down there. Investigate?');
+            return new Encounter(tile.key, tile.x, tile.y, 'ruin', 'There is a ruin down there. Investigate?');
         }
     };
     return {
         generate: generateEncounter
     };
-};
+}
+
+function FixStepsRecursive(encounter, collection) {
+    if(encounter !== null && !_.has(collection, encounter.key)) {
+        collection[encounter.key] = encounter;
+    }
+}
 
 function EncounterEngine() {
     var self = this;
@@ -97,18 +95,20 @@ function EncounterEngine() {
 
     self.getEncounter = function (tile) {
         //Extend the object with encounter? Nah, save 'em here, for now
+        //We have coords from tile, use 'em
         if (!_.has(encounters, tile.key)) {
-            var encounter = encounterGenerator.generate(tile.key);
+            var encounter = encounterGenerator.generate(tile);
             if(encounter.type === 'quest') {
+                FixStepsRecursive(encounter.nextStep, encounters);
                 //Add child steps to the encounters!
             }
             encounters[tile.key] = encounter;
         }
         //Evaluate possibility of adding encounter if encounter was empty
         return encounters[tile.key];
-    }
+    };
 
     return {
         getEncounter: self.getEncounter
     };
-};
+}
