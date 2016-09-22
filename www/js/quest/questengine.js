@@ -75,7 +75,12 @@ function EncounterGenerator() {
 
 function FixStepsRecursive(encounter, collection) {
     if (encounter !== null && !_.has(collection, encounter.key)) {
-        collection[encounter.key] = encounter;
+        var encs = [];
+        encs.push(encounter);
+        collection[encounter.key] = encs;
+        FixStepsRecursive(encounter.nextStep, collection);
+    } else if(encounter !== null && _.has(collection, encounter.key)) {
+        collection[encounter.key].push(encounter);
         FixStepsRecursive(encounter.nextStep, collection);
     }
 }
@@ -90,14 +95,16 @@ function EncounterEngine() {
         //Extend the object with encounter? Nah, save 'em here, for now
         //We have coords from tile, use 'em
         if (!_.has(encounters, tile.key)) {
+            var encs = [];
             var encounter = encounterGenerator.generate(tile);
             if (encounter.type === 'quest') {
                 FixStepsRecursive(encounter.nextStep, encounters);
                 //Add child steps to the encounters!
             }
-            encounters[tile.key] = encounter;
+            encs.push(encounter);
+            encounters[tile.key] = encs;
         }
-        //Evaluate possibility of adding encounter if encounter was empty
+        //Evaluate possibility of adding new encounter if encounter was empty
         return encounters[tile.key];
     };
 
