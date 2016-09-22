@@ -22,9 +22,9 @@ function basicTileGenerator(x, y) {
 
 function Tile(x, y, type, subTileGenerator) {
     var self = this;
-    var key = KeyToString(x, y);
-    var x = x;
-    var y = y;
+    self.key = KeyToString(x, y);
+    self.x = x;
+    self.y = y;
     var type = type;
     var size = 10;
     var subTiles = {};
@@ -33,10 +33,20 @@ function Tile(x, y, type, subTileGenerator) {
     var map = [];
     var mapRendered = false;
 
+    var globalXFromLocal = function(x) {
+        return self.x * 10 + x; 
+    }
+    var globalYFromLocal = function(y) {
+        return self.y * 10 + y; 
+    }
+
+    //Every subtile needs an actual coordinate!
     var generateSubTiles = function () {
         for (i = 0; i < size; i++) {
             for (j = 0; j < size; j++) {
-                var tile = self.subTileGenerator(j, i);
+                var subX = globalXFromLocal(j);
+                var subY = globalYFromLocal(i);
+                var tile = self.subTileGenerator.generate(subX, subY);
                 subTiles[tile.key] = tile;
             }
         }
@@ -52,7 +62,9 @@ function Tile(x, y, type, subTileGenerator) {
             for (i = 0; i < size; i++) {
                 var row = [];
                 for (j = 0; j < size; j++) {
-                    var key = KeyToString(j, i);
+                var subX = globalXFromLocal(j);
+                var subY = globalYFromLocal(i);
+                    var key = KeyToString(subX, subY);
                     row.push(subTiles[key].type);
                 };
                 map.push(row);
@@ -63,9 +75,9 @@ function Tile(x, y, type, subTileGenerator) {
     };
 
     return {
-        key: key,
-        x: x,
-        y: y,
+        key: self.key,
+        x: self.x,
+        y: self.y,
         type: type,
         subTiles: subTiles,
         getMap: getMap,

@@ -8,6 +8,7 @@
     <script src="bower_components/lodash/dist/lodash.js"></script>
     <script src="js/world/keyToString.js"></script>
     <script src="js/world/generators.js"></script>
+    <script src="js/quest/questengine.js"></script>
     <script src="js/world/worldgenerator.js"></script>
     <script src="js/world.js"></script>
 </head>
@@ -19,7 +20,7 @@
         <input type="text" data-bind="value: currentTile().type"></input><br />
         X:<span data-bind="text: currentTileX"></span>,Y:<span data-bind="text: currentTileY"></span><br />
         ViewPortX:<span data-bind="text: player2ViewPortX"></span>, ViewPortY:<span data-bind="text: player2ViewPortY"></span> 
-        <table data-bind="foreach: mapRows()">
+        <table data-bind="foreach: mapRows()" cellspacing="0">
             <tr data-bind="foreach: $data">
                 <td data-bind="style: {backgroundColor: $root.currentTileColor($data)}">
                     <span data-bind="if: $root.isPlayerHere($index, $parentContext.$index)">Y</span>
@@ -27,6 +28,14 @@
                 </td>
             </tr>
         </table>
+    </div>
+    <div>
+        <h3>Nuvarande subTile, under spelaren alltså</h3>
+        <span data-bind="text: ko.toJSON(tileUnderPlayer)"></span>
+    </div>
+    <div>
+        <h3>Här kommer vi prutta ut eventinfo / questinfo etc.</h3>
+        <span data-bind="text: eventInfo"></span>
     </div>
     <script type="text/javascript">
         var vm = new ViewModel();
