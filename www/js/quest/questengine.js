@@ -99,6 +99,9 @@ function EncounterEngine() {
         //Extend the object with encounter? Nah, save 'em here, for now
         if (!_.has(encounters, tile.key)) {
             var encounter = encounterGenerator.generate(tile.key);
+            if(encounter.type === 'quest') {
+                //Add child steps to the encounters!
+            }
             encounters[tile.key] = encounter;
         }
         //Evaluate possibility of adding encounter if encounter was empty
