@@ -13,8 +13,78 @@
 <body>
     <div>
         <h2>FIGHT!</h2>
-
-        <span data-bind="text: ko.toJSON(player)"></span>
+        <div>
+            <h3>Antagonists</h3>
+            <div data-bind="foreach: antagonists">
+                <span data-bind="text: name"></span>
+                <table>
+                    <tr>
+                        <td>Strength</td>
+                        <td data-bind="text: strength">
+                       </td> 
+                    </tr>
+                    <tr>
+                        <td>Agility</td>
+                        <td data-bind="text: agility">
+                       </td> 
+                    </tr>
+                    <tr>
+                        <td>Intelligence</td>
+                        <td data-bind="text: intelligence">
+                       </td> 
+                    </tr>
+                    <tr>
+                        <td>Life</td>
+                        <td data-bind="text: life">
+                       </td> 
+                    </tr>
+                </table>
+                <table data-bind="foreach: $data.actions">
+                    <tr>
+                        <td data-bind="text: name"></td>
+                        <td data-bind="text: type"></td>
+                        <td data-bind="text: ko.toJSON(modifiers)"></td>
+                        <td data-bind="text: ko.toJSON(props)"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div>
+            <h3>Protagonist</h3>
+            <div>
+                <span data-bind="text: protagonist.name"></span>
+                <table>
+                    <tr>
+                        <td>Strength</td>
+                        <td data-bind="text: protagonist.strength">
+                       </td> 
+                    </tr>
+                    <tr>
+                        <td>Agility</td>
+                        <td data-bind="text: protagonist.agility">
+                       </td> 
+                    </tr>
+                    <tr>
+                        <td>Intelligence</td>
+                        <td data-bind="text: protagonist.intelligence">
+                       </td> 
+                    </tr>
+                    <tr>
+                        <td>Life</td>
+                        <td data-bind="text: protagonist.life">
+                       </td> 
+                    </tr>
+                </table>
+                <table data-bind="foreach: protagonist.actions">
+                    <tr>
+                        <td data-bind="text: $data.name"></td>
+                        <td data-bind="text: $data.type"></td>
+                        <td data-bind="text: ko.toJSON($data.modifiers)"></td>
+                        <td data-bind="text: ko.toJSON($data.props)"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
     <script type="text/javascript">
         var vm = new CombatViewModel();

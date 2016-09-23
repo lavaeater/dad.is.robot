@@ -3,7 +3,11 @@ function CombatViewModel() {
 
     var player = new Player('Nausicae');
 
+    var antagonists = [];
+    antagonists.push(new Radiyote());
+
     return {
-        player:player       
+        protagonist: player,
+        antagonists: antagonists
     };
 }
