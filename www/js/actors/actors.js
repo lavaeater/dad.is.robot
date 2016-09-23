@@ -43,7 +43,7 @@ function Player(name) {
     actions.push(new Action('Run away', 'exit', { defense: -1 }, { exclusive: true }));
 
     var perks = [];
-    perks.push(new Perk('Defensive stance', {attack: -3, defense: 3}));
+    perks.push(new Perk('Defensive stance', {attack: -2, defense: 1}));
 
     return new Actor(name, attrs, actions, perks);
 }

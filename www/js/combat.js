@@ -6,6 +6,9 @@ function CombatViewModel() {
     var antagonists = [];
     antagonists.push(new Radiyote());
 
+    var readyToPlay = ko.computed(function() 
+    );
+
     return {
         protagonist: player,
         antagonists: antagonists
