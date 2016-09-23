@@ -13,6 +13,8 @@
 <body>
     <div>
         <h2>FIGHT!</h2>
+
+        <span data-bind="text: ko.toJSON(player)"></span>
     </div>
     <script type="text/javascript">
         var vm = new CombatViewModel();
