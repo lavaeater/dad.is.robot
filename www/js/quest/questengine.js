@@ -1,7 +1,3 @@
-function Random(max, min) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
 function Encounter(key, x, y, type, title) {
     return {
         key: key,
@@ -17,7 +13,7 @@ function QuestEngine() {
     var self = this;
 
     var generateTitle = function () {
-        var seed = Random(3, 1);
+        var seed = Random(1, 3);
         switch (seed) {
             case 1:
                 return 'En förbipasserande ser din robot och berättar att hen har hört rykten om ett skrotupplag med delar';
@@ -36,7 +32,7 @@ function QuestEngine() {
     };
 
     var generate = function (tile) {
-        var numberOfSteps = Random(5, 1);
+        var numberOfSteps = Random(1, 5);
         var returnStep = new Encounter(tile.key, tile.x, tile.y, 'quest', generateTitle());
         var previousStep = returnStep;
         for (i = 0; i < numberOfSteps; i++) {
@@ -59,7 +55,7 @@ function EncounterGenerator() {
     var questEngine = new QuestEngine();
 
     var generateEncounter = function (tile) {
-        var seed = Random(100, 1);
+        var seed = Random(1, 100);
         if (seed <= 85) {
             return new Encounter(tile.key, tile.x, tile.y, 'empty', 'Nothing happening here');
         }

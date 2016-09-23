@@ -19,12 +19,8 @@ function SubTileGenerator(godds, fodds, dodds, wodds, modds) {
     self.mountainOdds = godds+fodds+dodds+wodds+modds;
     self.max = self.mountainOdds;
     
-    self.random = function() {
-        return Math.floor(Math.random() * (self.max - self.min + 1) + self.min);
-    };
-
     var generate = function(x, y) {
-        var seed = self.random();
+        var seed = Random(self.min, (self.max);
         var type = 'g';
         //Order is important, below. less than will evaluate to the lowest odds (0-50% fer instance)
         if(seed <= self.mountainOdds) {

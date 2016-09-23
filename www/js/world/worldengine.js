@@ -1,5 +1,5 @@
 function basicTileGenerator(x, y) {
-    var randomSeed = RandomIntFromInterval(1, 10);
+    var randomSeed = Random(1, 10);
     var type = '';
     if (randomSeed <= 4) {
         type = 'g';
