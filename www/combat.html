@@ -6,12 +6,8 @@
     <title>Dad.Is.Robot</title>
     <script src="bower_components/knockout/dist/knockout.debug.js"></script>
     <script src="bower_components/lodash/dist/lodash.js"></script>
-    <script src="js/world/keyToString.js"></script>
-    <script src="js/world/generators.js"></script>
-    <script src="js/quest/questengine.js"></script>
-    <script src="js/world/worldgenerator.js"></script>
     <script src="js/actors/actors.js"></script>
-    <script src="js/world.js"></script>
+    <script src="js/combat.js"></script>
 </head>
 
 <body>
@@ -19,7 +15,7 @@
         <h2>FIGHT!</h2>
     </div>
     <script type="text/javascript">
-        var vm = new ViewModel();
+        var vm = new CombatViewModel();
         ko.applyBindings(vm);
     </script>
 </body>
