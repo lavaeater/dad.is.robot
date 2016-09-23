@@ -1,7 +1,3 @@
-function RandomIntFromInterval(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
 function basicTileGenerator(x, y) {
     var randomSeed = RandomIntFromInterval(1, 10);
     var type = '';
@@ -18,14 +14,13 @@ function basicTileGenerator(x, y) {
     }
 
     return new Tile(x, y, type, Generators[type]);
-};
+}
 
 function Tile(x, y, type, subTileGenerator) {
     var self = this;
     self.key = KeyToString(x, y);
     self.x = x;
     self.y = y;
-    var type = type;
     var size = 10;
     var subTiles = {};
     self.subTileGenerator = subTileGenerator;
@@ -35,10 +30,11 @@ function Tile(x, y, type, subTileGenerator) {
 
     var globalXFromLocal = function(x) {
         return self.x * 10 + x; 
-    }
+    };
+
     var globalYFromLocal = function(y) {
         return self.y * 10 + y; 
-    }
+    };
 
     //Every subtile needs an actual coordinate!
     var generateSubTiles = function () {
@@ -83,12 +79,11 @@ function Tile(x, y, type, subTileGenerator) {
         getMap: getMap,
         generateSubTiles: generateSubTiles
     };
-};
+}
 
 function World(size, tileSize) {
     var width = size;
     var height = size;
-    var tileSize = tileSize;
 
     var tiles = {};
     var getTileAt = function (x, y) {
@@ -108,4 +103,4 @@ function World(size, tileSize) {
         height: height,
         getTileAt: getTileAt
     };
-};
+}

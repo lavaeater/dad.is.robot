@@ -1,20 +1,13 @@
-function RandomIntFromInterval(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
 function SubTile(x, y, type) {
     var self = this;
     var key = KeyToString(x, y);
-    var type = type;
-    var x = x;
-    var y = y;
     return {
         key: key,
         x: x,
         y: y,
         type: type
     };
-};
+}
 
 function SubTileGenerator(godds, fodds, dodds, wodds, modds) {
     var self = this;
@@ -55,7 +48,7 @@ function SubTileGenerator(godds, fodds, dodds, wodds, modds) {
     return {
         generate: generate
     };
-};
+}
 
 var Generators = {
     g: new SubTileGenerator(70, 10, 5, 10, 1),

@@ -118,4 +118,4 @@ function WorldViewModel() {
         eventInfo: self.eventInfo,
         tileUnderPlayer: self.getTileUnderPlayer
     };
-};
+}
