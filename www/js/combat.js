@@ -1,3 +1,7 @@
+function CombatSession() {
+
+}
+
 function CombatViewModel() {
     var self = this;
 
@@ -6,8 +10,13 @@ function CombatViewModel() {
     var antagonists = [];
     antagonists.push(new Radiyote());
 
-    var readyToPlay = ko.computed(function() 
-    );
+    var readyToPlay = ko.computed(function() {
+
+    });
+
+    var playRound = function() {
+
+    };
 
     return {
         protagonist: player,
