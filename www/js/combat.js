@@ -1,10 +1,20 @@
+function CombatRound() {
+
+    return {
+
+    };
+}
+
 function CombatSession(protagonist, antagonists) {
     var currentRound = 0;
+
+
+
     return {
         protagonist: protagonist,
         antagonists: antagonists,
         currentRound: currentRound
-    }
+    };
 }
 
 function CombatViewModel() {
@@ -20,6 +30,10 @@ function CombatViewModel() {
     var readyToPlay = ko.computed(function() {
 
     });
+
+    var selectAction = function(actor, action) {
+
+    };
 
     var playRound = function() {
 
