@@ -24,6 +24,7 @@
   "dependencies": {
     "phaser": "^2.4.6",
     "lodash": "^4.7.0",
-    "knockout": "^3.4.0"
+    "knockout": "^3.4.0",
+    "javascript-state-machine": "^2.3.5"
   }
 }
