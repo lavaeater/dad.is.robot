@@ -17,6 +17,18 @@ pickmoves börjar med protagonisterna och låter dem välja moves.
 
 function CombatViewModel() {
     var self = this;
+    self.onState = function(event, from, to) {
+        console.log(event);
+        console.log(from);
+        console.log(to);
+    };
+    
+    self.onEvent = function(event, from, to) {
+        console.log(event);
+        console.log(from);
+        console.log(to);
+    };
+    
     self.fsm = StateMachine.create({
         initial: 'before',
         events: [
@@ -25,6 +37,9 @@ function CombatViewModel() {
             { name: 'enemypicked', from: 'pickenemy', to: 'resolvecombat' },
             { name: 'combatresolved', from: 'resolvecombat', to: 'pickfriendly' },
             { name: 'stop' }
+        ],
+        callbacks: [
+
         ]
     });
 
