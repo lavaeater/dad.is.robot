@@ -35,11 +35,15 @@ function CombatViewModel() {
             { name: 'start', from: 'before', to: 'pickfriendly' },
             { name: 'friendlypicked', from: 'pickfriendly', to: 'pickenemy' },
             { name: 'enemypicked', from: 'pickenemy', to: 'resolvecombat' },
-            { name: 'combatresolved', from: 'resolvecombat', to: 'pickfriendly' },
-            { name: 'stop' }
+            { name: 'combatresolved', from: 'resolvecombat', to: ['pickfriendly', 'finished'] },
+            { name: 'finish', from: 'resolvecombat' }
         ],
         callbacks: [
-
+            { onstart: },
+            { onstart: },
+            { onstart: },
+            { onstart: },
+            { onstart: },
         ]
     });
 
