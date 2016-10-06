@@ -15,50 +15,24 @@ pickmoves börjar med protagonisterna och låter dem välja moves.
 
 */
 
-
-function CombatRound() {
-
-    return {
-
-    };
-}
-
-function CombatSession(protagonist, antagonists) {
-    var currentRound = 0;
-
-
-
-    return {
-        protagonist: protagonist,
-        antagonists: antagonists,
-        currentRound: currentRound
-    };
-}
-
 function CombatViewModel() {
     var self = this;
-
-    var player = new Player('Nausicae');
-
-    var antagonists = [];
-    antagonists.push(new Radiyote());
-
-    var combatSession = new CombatSession(player, antagonists);
-
-    var readyToPlay = ko.computed(function() {
-
+    self.fsm = StateMachine.create({
+        initial: 'before',
+        events: [
+            { name: 'start', from: 'before', to: 'pickfriendly' },
+            { name: 'friendlypicked', from: 'pickfriendly', to: 'pickenemy' },
+            { name: 'enemypicked', from: 'pickenemy', to: 'resolvecombat' },
+            { name: 'combatresolved', from: 'resolvecombat', to: 'pickfriendly' },
+            { name: 'stop' }
+        ]
     });
 
-    var selectAction = function(actor, action) {
-
-    };
-
-    var playRound = function() {
-
-    };
+    var currentState = ko.computed(function() {
+        return self.fsm.current;
+    });
 
     return {
-        protagonist: combatSession.protagonist,
-        antagonists: combatSession.antagonists
+        currentState: currentState
     };
 }
