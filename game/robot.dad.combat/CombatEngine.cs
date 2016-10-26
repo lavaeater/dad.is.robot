@@ -7,11 +7,11 @@ namespace robot.dad.combat
 {
     public class CombatEngine
     {
-        public List<Combattant> Participants => new List<Combattant>();
+        public List<Combattant> Participants { get; set; } = new List<Combattant>();
         public PassiveStateMachine<States, Events> StateMachine { get; set; }
         public int Round { get; set; }
 
-        public CombatEngine(List<Combattant> participants) :this()
+        public CombatEngine(List<Combattant> participants) : this()
         {
             Participants.AddRange(participants);
         }
@@ -33,6 +33,7 @@ namespace robot.dad.combat
             StateMachine
                 .In(States.ResolveCombat)
                 .ExecuteOnEntry(ResolveCombatRound)
+                .ExecuteOnExit(ResetPicks)
                 .On(Events.CombatRoundResolved)
                 .Goto(States.PlayerPicking);
 
@@ -45,6 +46,11 @@ namespace robot.dad.combat
                 .In(States.CombatOver)
                 .ExecuteOnEntry(CombatOver);
             StateMachine.Initialize(States.BeforeCombat);
+        }
+
+        private void ResetPicks()
+        {
+            Participants.ForEach(p => p.HasPicked = false);
         }
 
         public void StartCombat()
@@ -71,7 +77,14 @@ namespace robot.dad.combat
             Round++;
             Console.WriteLine($"Round {Round}!");
             //This will be a doozy
-            StateMachine.Fire(Events.CombatRoundResolved);            
+            if (Round != 5)
+            {
+                StateMachine.Fire(Events.CombatRoundResolved);
+            }
+            else
+            {
+                StateMachine.Fire(Events.CombatOver);
+            }
         }
 
         public bool AllPlayersHavePicked => Participants.TrueForAll(p => p.HasPicked);
