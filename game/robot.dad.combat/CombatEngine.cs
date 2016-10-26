@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Appccelerate.StateMachine;
 
-namespace dad.@is.robot.combat
+namespace robot.dad.combat
 {
     public class CombatEngine
     {
