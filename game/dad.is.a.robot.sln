@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dad.is.robot.game", "dad.is.robot.game\dad.is.robot.game.csproj", "{D6D7D978-2E6F-40A7-AD5E-0F8D32FBFA9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.game", "dad.is.robot.game\robot.dad.game.csproj", "{D6D7D978-2E6F-40A7-AD5E-0F8D32FBFA9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otter", "otter\Otter.csproj", "{236485C2-A7BA-4DCD-808A-B3A634764402}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dad.is.robot.tests", "..\dad.is.robot.tests\dad.is.robot.tests.csproj", "{4E2D3404-4EE6-407E-9830-7D88EF285116}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.tests", "..\dad.is.robot.tests\robot.dad.tests.csproj", "{4E2D3404-4EE6-407E-9830-7D88EF285116}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dad.is.robot.combat", "dad.is.robot.combat\dad.is.robot.combat.csproj", "{75A46945-48F3-41B7-9B72-1EE07CA0297B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.combat", "dad.is.robot.combat\robot.dad.combat.csproj", "{75A46945-48F3-41B7-9B72-1EE07CA0297B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

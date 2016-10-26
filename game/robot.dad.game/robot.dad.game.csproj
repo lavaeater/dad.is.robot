@@ -7,8 +7,8 @@
     <ProjectGuid>{D6D7D978-2E6F-40A7-AD5E-0F8D32FBFA9D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>dad.is.robot.game</RootNamespace>
-    <AssemblyName>dad.@is.robot.game</AssemblyName>
+    <RootNamespace>robot.dad.game</RootNamespace>
+    <AssemblyName>robot.dad.game</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

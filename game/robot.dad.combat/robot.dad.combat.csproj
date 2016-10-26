@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4E2D3404-4EE6-407E-9830-7D88EF285116}</ProjectGuid>
+    <ProjectGuid>{75A46945-48F3-41B7-9B72-1EE07CA0297B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>dad.is.robot.tests</RootNamespace>
-    <AssemblyName>dad.@is.robot.tests</AssemblyName>
+    <RootNamespace>robot.dad.combat</RootNamespace>
+    <AssemblyName>robot.dad.combat</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,8 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\game\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="Appccelerate.Fundamentals, Version=2.8.0.0, Culture=neutral, PublicKeyToken=917bca444d1f2b4c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Appccelerate.Fundamentals.2.8.0\lib\portable-windows8+net45\Appccelerate.Fundamentals.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appccelerate.StateMachine, Version=2.12.0.0, Culture=neutral, PublicKeyToken=917bca444d1f2b4c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Appccelerate.StateMachine.2.12.0\lib\portable-windows8+net45\Appccelerate.StateMachine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="bbv.Common, Version=7.1.0.0, Culture=neutral, PublicKeyToken=917bca444d1f2b4c, processorArchitecture=MSIL">
+      <HintPath>..\packages\bbv.Common.7.1.1187.412\lib\.Net 4.0\bbv.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="bbv.Common.AsyncModule, Version=7.2.0.0, Culture=neutral, PublicKeyToken=917bca444d1f2b4c, processorArchitecture=MSIL">
+      <HintPath>..\packages\bbv.Common.AsyncModule.7.2.1187.616\lib\.Net 4.0\bbv.Common.AsyncModule.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -44,7 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CombatEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
