@@ -58,14 +58,15 @@ namespace robot.dad.combat
 
         public void StartCombat()
         {
-            Console.WriteLine("Start the fight");
+            Console.WriteLine("Starta fajten - tryck på en knapp");
+            Console.ReadKey();
             StateMachine.Start();
             StateMachine.Fire(Events.Start);
         }
 
         private void CombatOver()
         {
-            Console.WriteLine("Combat over!!");
+            Console.WriteLine("Striden över");
         }
 
         public void PickMove()
@@ -78,7 +79,10 @@ namespace robot.dad.combat
         private Combattant GetRandomTargetNotSelf(Combattant attacker)
         {
 
-            var possibleTargets = Participants.Except(ParticipantsThatDied).Except(ParticipantsThatDied).Where(p => p.Team != attacker.Team).ToList();
+            var possibleTargets = Participants
+                .Except(ParticipantsThatDied)
+                .Except(ParticipantsThatDied)
+                .Where(p => p.Team != attacker.Team).ToList();
             int diceRoll = DiceRoller.RollDice(0, possibleTargets.Count - 1);
             return possibleTargets[diceRoll];
         }
@@ -89,7 +93,7 @@ namespace robot.dad.combat
             var aliveParticipants = ParticipantsThatCanFight.ToList();
 
             Round++;
-            Console.WriteLine($"Round {Round}!");
+            Console.WriteLine($"Runda {Round}!");
 
             //Anyone trying to get away?
             var runningParticipants = aliveParticipants.FindAll(p => p.CurrentMove.MoveType == CombatMoveType.Runaway);
@@ -99,6 +103,7 @@ namespace robot.dad.combat
                 if (runawayRoll + runningParticipant.DefenseModifier > 0)
                 {
                     ParticipantsThatFled.Add(runningParticipant); //No longer in the fight - but can still be attacked this round!
+                    Console.WriteLine($"{runningParticipant.Name} {runningParticipant.CurrentMove.Verbified}");
                 }
             }
 
@@ -120,27 +125,33 @@ namespace robot.dad.combat
                 }
                 if (attackValue > 0)
                 {
-                    Console.Write($"{attackingParticipant.Name} hit {attackingParticipant.CurrentTarget.Name} ");
+                    Console.Write($"{attackingParticipant.Name} {attackingParticipant.CurrentMove.Verbified} {attackingParticipant.CurrentTarget.Name} ");
                     int attackDamage = DiceRoller.RollDice(attackingParticipant.CurrentMove.MinDamage,
                         attackingParticipant.CurrentMove.MaxDamage);
-                    Console.WriteLine($"and did {attackingParticipant.CurrentTarget.ApplyDamage(attackDamage)}");
-                    Console.WriteLine($"{attackingParticipant.CurrentTarget.Name} has {attackingParticipant.CurrentTarget.Health} life left.");
+                    Console.WriteLine($"och gjorde {attackingParticipant.CurrentTarget.ApplyDamage(attackDamage)}");
+                    Console.WriteLine($"{attackingParticipant.CurrentTarget.Name} har {attackingParticipant.CurrentTarget.Health} hälsa kvar");
                 }
                 else
                 {
                     Console.WriteLine($"{attackingParticipant.Name} attacked {attackingParticipant.CurrentTarget.Name} but missed!");
                 }
             }
-            
+
+            Console.WriteLine("Rundan över, tryck för nästa!");
+            Console.ReadKey();
+
             //This will be a doozy
             StateMachine.Fire(CheckIfCombatIsOver() ? Events.CombatOver : Events.CombatRoundResolved);
         }
 
         private bool CheckIfCombatIsOver()
         {
+
             ParticipantsThatDied = Participants.FindAll(p => p.Dead);
-            //Fight is over if fewer than two participants is left in the fight!
-            return ParticipantsThatCanFight.ToList().Count < 2;
+            //Fight is over if all participants on either team is dead!
+            var group = Participants.GroupBy(p => p.Team);
+            var groupingdead = group.Select(grouping => grouping.All(g => g.Dead));
+            return groupingdead.Any(b => b);
         }
 
         public bool AllPlayersHavePicked => Participants.TrueForAll(p => p.HasPicked);
@@ -148,17 +159,17 @@ namespace robot.dad.combat
 
     public static class DiceRoller
     {
-        private static Random _rnd = new Random();
+        private static readonly Random Rnd = new Random();
 
         public static int RollDice(int minVal, int maxVal)
         {
-            return _rnd.Next(minVal, maxVal);
+            return Rnd.Next(minVal, maxVal);
         }
     }
 
     public class Combattant
     {
-        public Combattant(string name, int health, int attackModifier, int defenseModifier, int armor, string team)
+        public Combattant(string name, int health, int attackModifier, int defenseModifier, int armor, string team, List<CombatMove> combatMoves)
         {
             Name = name;
             Health = health;
@@ -166,24 +177,32 @@ namespace robot.dad.combat
             DefenseModifier = defenseModifier;
             Armor = armor;
             Team = team;
+            CombatMoves = combatMoves;
         }
 
         public string Team { get; set; }
+        public List<CombatMove> CombatMoves { get; set; }
 
         public int ApplyDamage(int damage)
         {
             int actualDamage = damage - Armor;
+            actualDamage = actualDamage < 0 ? 0 : actualDamage;
             Health -= actualDamage;
+            if (Health < 1)
+            {
+                Console.WriteLine($"{Name} dog!");
+            }
             return actualDamage;
         }
 
         public CombatMove CurrentMove { get; set; }
         //Choose a target as well!
-        public void PickMove(Combattant target)
+        public virtual void PickMove(Combattant target)
         {
-            int moveIndex = DiceRoller.RollDice(0, CombatMove.CombatMoves.Count - 1);
-            CurrentMove = CombatMove.CombatMoves[moveIndex];
+            int moveIndex = DiceRoller.RollDice(0, CombatMoves.Count - 1);
+            CurrentMove = CombatMoves[moveIndex];
             CurrentTarget = target;
+            Console.WriteLine($"{Name} valde att attackera {CurrentTarget.Name} med {CurrentMove.Name}");
         }
 
         public Combattant CurrentTarget { get; set; }
@@ -207,16 +226,19 @@ namespace robot.dad.combat
 
     public class CombatMove
     {
-        public CombatMove(string name, CombatMoveType moveType, int modifier, int minDamage, int maxDamage)
+        private string v;
+
+        public CombatMove(string name, CombatMoveType moveType, int modifier, int minDamage, int maxDamage, string verbified)
         {
             Name = name;
             MoveType = moveType;
             Modifier = modifier;
             MinDamage = minDamage;
             MaxDamage = maxDamage;
+            Verbified = verbified;
         }
 
-        private CombatMove(string name, CombatMoveType moveType, int modifier)
+        private CombatMove(string name, CombatMoveType moveType, int modifier, string verbified)
         {
             if (moveType == CombatMoveType.Attack)
             {
@@ -225,7 +247,9 @@ namespace robot.dad.combat
             Name = name;
             MoveType = moveType;
             Modifier = modifier;
+            Verbified = verbified;
         }
+
 
         public string Name { get; set; }
         public CombatMoveType MoveType { get; set; }
@@ -234,11 +258,13 @@ namespace robot.dad.combat
         public int MinDamage { get; set; }
         public static List<CombatMove> CombatMoves => new List<CombatMove>()
         {
-            new CombatMove("Punch", CombatMoveType.Attack, 2, 6, 12),
-            new CombatMove("Kick", CombatMoveType.Attack, -1, 10, 16),
-            new CombatMove("Be evasive", CombatMoveType.Defend, 4),
-            new CombatMove("Run away", CombatMoveType.Runaway, -5)
+            new CombatMove("Slag", CombatMoveType.Attack, 2, 6, 12, "slog"),
+            new CombatMove("Spark", CombatMoveType.Attack, -1, 10, 16, "sparkade"),
+            new CombatMove("Undvik", CombatMoveType.Defend, 4, "undvek"),
+            new CombatMove("Fly", CombatMoveType.Runaway, -5, "flydde")
         };
+
+        public string Verbified { get; set; }
     }
 
     public enum CombatMoveType

@@ -16,11 +16,14 @@ namespace robot.dad.tests
         {
             var participants = new List<Combattant>
             {
-                new Combattant("Tommie", 100, 5, 5, 10, "nygren"),
-                new Combattant("Lisa", 100, 5, 5, 10, "nygren"),
-                new Combattant("Freja", 100, 5, 5, 10, "nygren"),
-                new Combattant("Anja", 100, 5, 5, 10, "nygren"),
-                new Combattant("Gargelbarg", 200, 10, -10, 20, "gargelbarg")
+                new Combattant("Tommie", 100, 5, 5, 10, "nygren", CombatMove.CombatMoves),
+                new Combattant("Lisa", 100, 5, 5, 10, "nygren", CombatMove.CombatMoves),
+                new Combattant("Freja", 100, 5, 5, 10, "nygren", CombatMove.CombatMoves),
+                new Combattant("Anja", 100, 5, 5, 10, "nygren", CombatMove.CombatMoves),
+                new Combattant("Gargelbarg", 200, 10, -10, 20, "gargelbarg", new List<CombatMove>()
+                {
+                    new CombatMove("GargelBite", CombatMoveType.Attack, 3, 12, 25, "bit")
+                })
             };
 
             var ce = new CombatEngine(participants);
