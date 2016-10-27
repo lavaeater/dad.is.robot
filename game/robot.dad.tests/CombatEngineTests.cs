@@ -14,16 +14,14 @@ namespace robot.dad.tests
         [Test]
         public void TestCombatEngine()
         {
-            var participants = new List<Combattant>();
-            participants.Add(new Combattant()
+            var participants = new List<Combattant>
             {
-                Npc = false
-            });
-            participants.Add(new Combattant()
-            {
-                Npc = true
-            });
-
+                new Combattant("Tommie", 100, 5, 5, 10, "nygren"),
+                new Combattant("Lisa", 100, 5, 5, 10, "nygren"),
+                new Combattant("Freja", 100, 5, 5, 10, "nygren"),
+                new Combattant("Anja", 100, 5, 5, 10, "nygren"),
+                new Combattant("Gargelbarg", 200, 10, -10, 20, "gargelbarg")
+            };
 
             var ce = new CombatEngine(participants);
             ce.StartCombat();
