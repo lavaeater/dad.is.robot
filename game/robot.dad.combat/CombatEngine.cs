@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Xml.Serialization;
 using Appccelerate.StateMachine;
 
 namespace robot.dad.combat
@@ -23,6 +27,7 @@ namespace robot.dad.combat
             StateMachine = new PassiveStateMachine<States, Events>();
             StateMachine
                 .In(States.BeforeCombat)
+                .ExecuteOnExit(FixParticipants)
                 .On(Events.Start)
                 .Goto(States.PlayerPicking);
 
@@ -37,6 +42,7 @@ namespace robot.dad.combat
                 .In(States.ResolveCombat)
                 .ExecuteOnEntry(ResolveCombatRound)
                 .ExecuteOnExit(ResetPicks)
+                .ExecuteOnExit(FixParticipants)
                 .On(Events.CombatRoundResolved)
                 .Goto(States.PlayerPicking);
 
@@ -71,69 +77,86 @@ namespace robot.dad.combat
 
         public void PickMove()
         {
-            var playerToPickFor = Participants.First(p => !p.HasPicked);
-            playerToPickFor.PickMove(GetRandomTargetNotSelf(playerToPickFor));
+            var playerToPickFor = AliveParticipants.FirstOrDefault(p => !p.HasPicked);
+            playerToPickFor?.PickMove(AliveParticipants);
             StateMachine.Fire(Events.PlayerPicked);
         }
 
-        private Combattant GetRandomTargetNotSelf(Combattant attacker)
+        private void FixParticipants()
         {
-
-            var possibleTargets = Participants
-                .Except(ParticipantsThatDied)
-                .Except(ParticipantsThatDied)
-                .Where(p => p.Team != attacker.Team).ToList();
-            int diceRoll = DiceRoller.RollDice(0, possibleTargets.Count - 1);
-            return possibleTargets[diceRoll];
+            AliveParticipants = ParticipantsThatCanFight.ToList();
         }
 
         public void ResolveCombatRound()
         {
-            //Who is still alive?
-            var aliveParticipants = ParticipantsThatCanFight.ToList();
-
             Round++;
             Console.WriteLine($"Runda {Round}!");
 
             //Anyone trying to get away?
-            var runningParticipants = aliveParticipants.FindAll(p => p.CurrentMove.MoveType == CombatMoveType.Runaway);
+            var runningParticipants = AliveParticipants.FindAll(p => p.CurrentMove.MoveType == CombatMoveType.Runaway);
             foreach (var runningParticipant in runningParticipants)
             {
-                int runawayRoll = DiceRoller.RollDice(0, 10);
-                if (runawayRoll + runningParticipant.DefenseModifier > 0)
+                int targetValue = runningParticipant.DefenseSkill + runningParticipant.CurrentMove.Modifier;
+                int runawayRoll = DiceRoller.RollHundredSided();
+                Console.Write($"{runningParticipant.Name} vill fly och måste slå {targetValue} och slog {runawayRoll}");
+                if (runawayRoll <= targetValue)
                 {
-                    ParticipantsThatFled.Add(runningParticipant); //No longer in the fight - but can still be attacked this round!
-                    Console.WriteLine($"{runningParticipant.Name} {runningParticipant.CurrentMove.Verbified}");
+                    ParticipantsThatFled.Add(runningParticipant);
+                    //No longer in the fight - but can still be attacked this round!
+                    Console.WriteLine($" - och lyckades {runningParticipant.CurrentMove.Verbified}");
+                }
+                else
+                {
+                    Console.WriteLine($" - och lyckades inte");
+                }
+            }
+
+            var specialParticipants = AliveParticipants.FindAll(p => p.CurrentMove.MoveType == CombatMoveType.Special);
+            foreach (var specialParticipant in specialParticipants)
+            {
+                int targetValue = specialParticipant.AttackSkill +
+                    specialParticipant.CurrentMove.Modifier -
+                    specialParticipant.CurrentTarget.DefenseSkill;
+
+                int specialRoll = DiceRoller.RollHundredSided();
+                Console.Write($"{specialParticipant.Name} vill {specialParticipant.CurrentMove.Verbified} {specialParticipant.CurrentTarget.Name} och måste slå {targetValue} och slog {specialRoll}");
+
+                if (specialRoll <= targetValue)
+                {
+                    Console.WriteLine(
+                        $" - och lyckades!");
+                }
+                else
+                {
+                    Console.WriteLine(
+                        $"- och misslyckades");
                 }
             }
 
             //Defensive moves just means that one does not attack, you just get an extra defensive bonus this round
-            var attackingParticipants = aliveParticipants.FindAll(p => p.CurrentMove.MoveType == CombatMoveType.Attack);
+            var attackingParticipants = AliveParticipants.FindAll(p => p.CurrentMove.MoveType == CombatMoveType.Attack);
             foreach (var attackingParticipant in attackingParticipants)
             {
-                int attackRoll = DiceRoller.RollDice(0, 10);
-                int attackValue = attackRoll + attackingParticipant.AttackModifier +
-                                  attackingParticipant.CurrentMove.Modifier;
-                attackValue -= attackingParticipant.CurrentTarget.DefenseModifier;
-                if (attackingParticipant.CurrentTarget.CurrentMove.MoveType == CombatMoveType.Defend)
+                int targetValue = attackingParticipant.AttackSkill +
+                                  attackingParticipant.CurrentMove.Modifier -
+                                  attackingParticipant.CurrentTarget.DefenseSkill;
+                if (attackingParticipant.CurrentTarget.CurrentMove.MoveType == CombatMoveType.Defend || attackingParticipant.CurrentTarget.CurrentMove.MoveType == CombatMoveType.Runaway)
                 {
-                    attackValue -= attackingParticipant.CurrentTarget.CurrentMove.Modifier;
+                    targetValue += attackingParticipant.CurrentTarget.CurrentMove.Modifier;
                 }
-                if (attackingParticipant.CurrentTarget.CurrentMove.MoveType == CombatMoveType.Runaway)
+                int attackRoll = DiceRoller.RollHundredSided();
+                Console.Write($"{attackingParticipant.Name} vill {attackingParticipant.CurrentMove.Verbified} {attackingParticipant.CurrentTarget.Name} och måste slå {targetValue} och slog {attackRoll}");
+
+                if (attackRoll <= targetValue)
                 {
-                    attackValue -= attackingParticipant.CurrentTarget.CurrentMove.Modifier;
-                }
-                if (attackValue > 0)
-                {
-                    Console.Write($"{attackingParticipant.Name} {attackingParticipant.CurrentMove.Verbified} {attackingParticipant.CurrentTarget.Name} ");
                     int attackDamage = DiceRoller.RollDice(attackingParticipant.CurrentMove.MinDamage,
                         attackingParticipant.CurrentMove.MaxDamage);
-                    Console.WriteLine($"och gjorde {attackingParticipant.CurrentTarget.ApplyDamage(attackDamage)}");
+                    Console.WriteLine($" och gjorde {attackingParticipant.CurrentTarget.ApplyDamage(attackDamage)} i skada");
                     Console.WriteLine($"{attackingParticipant.CurrentTarget.Name} har {attackingParticipant.CurrentTarget.Health} hälsa kvar");
                 }
                 else
                 {
-                    Console.WriteLine($"{attackingParticipant.Name} attacked {attackingParticipant.CurrentTarget.Name} but missed!");
+                    Console.WriteLine($" - men missade!");
                 }
             }
 
@@ -143,6 +166,8 @@ namespace robot.dad.combat
             //This will be a doozy
             StateMachine.Fire(CheckIfCombatIsOver() ? Events.CombatOver : Events.CombatRoundResolved);
         }
+
+        public List<Combattant> AliveParticipants { get; set; }
 
         private bool CheckIfCombatIsOver()
         {
@@ -163,25 +188,32 @@ namespace robot.dad.combat
 
         public static int RollDice(int minVal, int maxVal)
         {
-            return Rnd.Next(minVal, maxVal);
+            return Rnd.Next(minVal, maxVal + 1);
+        }
+
+        public static int RollHundredSided()
+        {
+            return RollDice(1, 100);
         }
     }
 
     public class Combattant
     {
-        public Combattant(string name, int health, int attackModifier, int defenseModifier, int armor, string team, List<CombatMove> combatMoves)
+        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, string team, List<CombatMove> combatMoves, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker)
         {
             Name = name;
             Health = health;
-            AttackModifier = attackModifier;
-            DefenseModifier = defenseModifier;
+            AttackSkill = attackSkill;
+            DefenseSkill = defenseSkill;
             Armor = armor;
             Team = team;
             CombatMoves = combatMoves;
+            MovePicker = movePicker;
         }
 
         public string Team { get; set; }
         public List<CombatMove> CombatMoves { get; set; }
+        public Action<Combattant, List<Combattant>, List<CombatMove>> MovePicker { get; private set; }
 
         public int ApplyDamage(int damage)
         {
@@ -197,12 +229,9 @@ namespace robot.dad.combat
 
         public CombatMove CurrentMove { get; set; }
         //Choose a target as well!
-        public virtual void PickMove(Combattant target)
+        public void PickMove(List<Combattant> otherTeam)
         {
-            int moveIndex = DiceRoller.RollDice(0, CombatMoves.Count - 1);
-            CurrentMove = CombatMoves[moveIndex];
-            CurrentTarget = target;
-            Console.WriteLine($"{Name} valde att attackera {CurrentTarget.Name} med {CurrentMove.Name}");
+            MovePicker?.Invoke(this, otherTeam, CombatMoves);
         }
 
         public Combattant CurrentTarget { get; set; }
@@ -216,9 +245,9 @@ namespace robot.dad.combat
 
         public bool HasPicked => CurrentMove != null && CurrentTarget != null;
         public int Health { get; set; }
-        public int DefenseModifier { get; set; }
+        public int DefenseSkill { get; set; }
         public int Armor { get; set; }
-        public int AttackModifier { get; set; }
+        public int AttackSkill { get; set; }
 
         public bool Npc { get; set; }
         public string Name { get; set; }
@@ -226,8 +255,6 @@ namespace robot.dad.combat
 
     public class CombatMove
     {
-        private string v;
-
         public CombatMove(string name, CombatMoveType moveType, int modifier, int minDamage, int maxDamage, string verbified)
         {
             Name = name;
@@ -238,7 +265,7 @@ namespace robot.dad.combat
             Verbified = verbified;
         }
 
-        private CombatMove(string name, CombatMoveType moveType, int modifier, string verbified)
+        public CombatMove(string name, CombatMoveType moveType, int modifier, string verbified)
         {
             if (moveType == CombatMoveType.Attack)
             {
@@ -258,10 +285,10 @@ namespace robot.dad.combat
         public int MinDamage { get; set; }
         public static List<CombatMove> CombatMoves => new List<CombatMove>()
         {
-            new CombatMove("Slag", CombatMoveType.Attack, 2, 6, 12, "slog"),
-            new CombatMove("Spark", CombatMoveType.Attack, -1, 10, 16, "sparkade"),
-            new CombatMove("Undvik", CombatMoveType.Defend, 4, "undvek"),
-            new CombatMove("Fly", CombatMoveType.Runaway, -5, "flydde")
+            new CombatMove("Slag", CombatMoveType.Attack, 10, 6, 12, "slå"),
+            new CombatMove("Spark", CombatMoveType.Attack, -5, 10, 16, "sparka"),
+            new CombatMove("Undvik", CombatMoveType.Defend, 20, "undvika"),
+            new CombatMove("Fly", CombatMoveType.Runaway, -25, "fly")
         };
 
         public string Verbified { get; set; }
@@ -271,7 +298,8 @@ namespace robot.dad.combat
     {
         Attack,
         Defend,
-        Runaway
+        Runaway,
+        Special
     }
 
     public enum States
@@ -288,5 +316,52 @@ namespace robot.dad.combat
         PlayerPicked,
         CombatRoundResolved,
         CombatOver
+    }
+
+    public static class MovePickers
+    {
+        public static void RandomPicker(Combattant picker, List<Combattant> possibleTargets,
+            List<CombatMove> possibleMoves)
+        {
+            var pts = possibleTargets.Where(pt => pt.Team != picker.Team).ToList();
+            picker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
+            picker.CurrentMove = possibleMoves[DiceRoller.RollDice(0, possibleMoves.Count - 1)];
+        }
+
+        public static void ManualPicker(Combattant picker, List<Combattant> possibleTargets, List<CombatMove> possibleMoves)
+        {
+            //1. List targets and make player choose one!
+            var pts = possibleTargets.Where(pt => pt.Team != picker.Team).ToList();
+            int index = 1;
+            Console.WriteLine("Välj vem du vill attackera genom att mata in siffran");
+            foreach (var possibleTarget in pts)
+            {
+                Console.WriteLine($"{index}. {possibleTarget.Name}");
+                index++;
+            }
+            var choice = Console.ReadKey();
+            int targetIndex = 0;
+            if (char.IsDigit(choice.KeyChar))
+            {
+                targetIndex = int.Parse(choice.KeyChar.ToString()) - 1;
+            }
+            picker.CurrentTarget = pts[targetIndex];
+
+            //2. Choose attack
+            index = 1;
+            Console.WriteLine("Välj attack");
+            foreach (var possibleMove in possibleMoves)
+            {
+                Console.WriteLine($"{index}. {possibleMove.Name}");
+                index++;
+            }
+            choice = Console.ReadKey();
+            targetIndex = 0;
+            if (char.IsDigit(choice.KeyChar))
+            {
+                targetIndex = int.Parse(choice.KeyChar.ToString()) - 1;
+            }
+            picker.CurrentMove = possibleMoves[targetIndex];
+        }
     }
 }
