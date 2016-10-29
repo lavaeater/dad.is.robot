@@ -10,19 +10,19 @@ namespace robot.dad.game
         {
             var participants = new List<Combattant>
             {
-                new Combattant("Tommie", 50, 55, 20, 3, "nygren", CombatMove.CombatMoves, MovePickers.ManualPicker),
-                new Combattant("Lisa", 50, 65, 15, 3, "nygren", CombatMove.CombatMoves, MovePickers.RandomPicker),
-                new Combattant("Freja", 50, 75, 20, 3, "nygren", CombatMove.CombatMoves, MovePickers.RandomPicker),
-                new Combattant("Dante", 50, 70, 25, 3, "nygren", CombatMove.CombatMoves, MovePickers.RandomPicker),
-                new Combattant("Snarfor", 30, 90, 10, 5, "nygren", new List<CombatMove>()
+                new Human("Tommie", "nygren", MovePickers.ManualPicker),
+                new Human("Lisa", "nygren", MovePickers.RandomPicker),
+                new Human("Freja", "nygren", MovePickers.RandomPicker),
+                new Human("Anja", "nygren", MovePickers.RandomPicker),
+                new Monster("Snarfor", 30, 90, 10, 5, "nygren", new List<CombatMove>()
                 {
                     new CombatMove("Vattenförmåga", CombatMoveType.Attack, 0, 5, 10, "vattenspruta")
                 }, MovePickers.RandomPicker),
-                new Combattant("Gargelbarg", 200, 60, 0, 5, "gargelbarg", new List<CombatMove>()
+                new Monster("Gargelbarg", 200, 60, 0, 5, "gargelbarg", new List<CombatMove>()
                 {
                     new CombatMove("GargelBett", CombatMoveType.Attack, 15, 12, 25, "gargelbita")
                 }, MovePickers.RandomPicker),
-                new Combattant("Fyrkantsmonster", 100, 80, 30, 10, "gargelbarg", new List<CombatMove>()
+                new Monster("Fyrkantsmonster", 100, 80, 30, 10, "gargelbarg", new List<CombatMove>()
                 {
                     new CombatMove("Hypno", CombatMoveType.Special, -10, "hypnotisera")
                 }, MovePickers.RandomPicker)

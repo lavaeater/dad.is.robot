@@ -57,7 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CombatEngine.cs" />
+    <Compile Include="CombatMove.cs" />
+    <Compile Include="CombatMoveType.cs" />
+    <Compile Include="Combattant.cs" />
+    <Compile Include="DiceRoller.cs" />
+    <Compile Include="Events.cs" />
+    <Compile Include="MovePickers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="States.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
