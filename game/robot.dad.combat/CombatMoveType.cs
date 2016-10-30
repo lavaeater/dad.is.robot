@@ -5,6 +5,7 @@ namespace robot.dad.combat
         Attack,
         Defend,
         Runaway,
-        Special
+        Special,
+        Healing
     }
 }

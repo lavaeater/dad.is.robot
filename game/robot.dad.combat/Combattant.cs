@@ -102,6 +102,10 @@ namespace robot.dad.combat
 
         public bool Npc { get; set; }
         public string Name { get; set; }
+        public override string ToString()
+        {
+            return $"{Name} - Hälsa: {Health} ";
+        }
     }
 
     public enum CombatStatus

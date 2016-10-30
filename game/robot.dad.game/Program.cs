@@ -15,7 +15,7 @@ namespace robot.dad.game
                 new Human("Freja", "nygren", MovePickers.RandomPicker),
                 new Human("Anja", "nygren", MovePickers.RandomPicker, new List<CombatMove>()
                 {
-                    new CombatMove("Läka sår", CombatMoveType.Special, 10, 5, 15, "helar", CombatMoveAppliers.HealingApplier)
+                    new CombatMove("Läka sår", CombatMoveType.Healing, 10, 5, 15, "helar", CombatMoveAppliers.HealingApplier)
                 }),
                 new Monster("Snarfor", 30, 90, 10, 5, "nygren", new List<CombatMove>()
                 {

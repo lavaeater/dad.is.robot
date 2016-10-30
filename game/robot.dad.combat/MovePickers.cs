@@ -9,9 +9,17 @@ namespace robot.dad.combat
         public static void RandomPicker(Combattant picker, List<Combattant> possibleTargets,
             List<CombatMove> possibleMoves)
         {
-            var pts = possibleTargets.Where(pt => pt.Team != picker.Team).ToList();
-            picker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
             picker.CurrentMove = possibleMoves[DiceRoller.RollDice(0, possibleMoves.Count - 1)];
+            if (picker.CurrentMove.MoveType == CombatMoveType.Healing)
+            {
+                var pts = possibleTargets.Where(pt => pt.Team == picker.Team).ToList();
+                picker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
+            }
+            else
+            {
+                var pts = possibleTargets.Where(pt => pt.Team != picker.Team).ToList();
+                picker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
+            }
         }
 
         public static void ManualPicker(Combattant picker, List<Combattant> possibleTargets, List<CombatMove> possibleMoves)
