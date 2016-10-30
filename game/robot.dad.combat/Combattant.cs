@@ -11,7 +11,7 @@ namespace robot.dad.combat
 
         public static List<CombatMove> HumanCombatMoves => new List<CombatMove>()
         {
-            new CombatMove("Slag", CombatMoveType.Attack, 10, 6, 12, "slå"),
+            new CombatMove("Slag", CombatMoveType.Attack, 10, 6, 12, "slå", CombatMoveAppliers.DamageApplier),
             new CombatMove("Spark", CombatMoveType.Attack, -5, 10, 16, "sparka"),
             new CombatMove("Undvik", CombatMoveType.Defend, 20, "undvika"),
             new CombatMove("Fly", CombatMoveType.Runaway, -25, "fly")
@@ -27,7 +27,7 @@ namespace robot.dad.combat
 
     public class Combattant
     {
-        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, string team, List<CombatMove> combatMoves, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker)
+        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, string team, List<CombatMove> combatMoves, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker, Action<CombatMove, Combattant,Combattant> moveApplier)
         {
             Name = name;
             Health = health;
@@ -37,11 +37,14 @@ namespace robot.dad.combat
             Team = team;
             CombatMoves = combatMoves;
             MovePicker = movePicker;
+            ApplyMove = moveApplier;
+            Status = CombatStatus.Active;
         }
 
         public string Team { get; set; }
         public List<CombatMove> CombatMoves { get; set; }
         public Action<Combattant, List<Combattant>, List<CombatMove>> MovePicker { get; private set; }
+        public Action<CombatMove, Combattant, Combattant> ApplyMove { get; set; }
 
         public int ApplyDamage(int damage)
         {
@@ -50,9 +53,22 @@ namespace robot.dad.combat
             Health -= actualDamage;
             if (Health < 1)
             {
+                Die();
                 Console.WriteLine($"{Name} dog!");
             }
             return actualDamage;
+        }
+
+        public CombatStatus Status { get; set; }
+
+        public void Die()
+        {
+            Status = CombatStatus.Dead;
+        }
+
+        public void Runaway()
+        {
+            Status = CombatStatus.Fled;
         }
 
         public CombatMove CurrentMove { get; set; }
@@ -79,5 +95,13 @@ namespace robot.dad.combat
 
         public bool Npc { get; set; }
         public string Name { get; set; }
+    }
+
+    public enum CombatStatus
+    {
+        Active,
+        Fled,
+        Dead,
+        Inactive
     }
 }

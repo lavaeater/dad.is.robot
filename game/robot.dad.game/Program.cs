@@ -10,7 +10,7 @@ namespace robot.dad.game
         {
             var participants = new List<Combattant>
             {
-                new Human("Tommie", "nygren", MovePickers.ManualPicker),
+                new Human("Tommie", "nygren", MovePickers.RandomPicker),
                 new Human("Lisa", "nygren", MovePickers.RandomPicker),
                 new Human("Freja", "nygren", MovePickers.RandomPicker),
                 new Human("Anja", "nygren", MovePickers.RandomPicker),

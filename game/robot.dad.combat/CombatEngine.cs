@@ -14,7 +14,7 @@ namespace robot.dad.combat
         public List<Combattant> Participants { get; set; } = new List<Combattant>();
         public List<Combattant> ParticipantsThatFled { get; set; } = new List<Combattant>();
         public List<Combattant> ParticipantsThatDied { get; set; } = new List<Combattant>();
-        public IEnumerable<Combattant> ParticipantsThatCanFight => Participants.Except(ParticipantsThatDied).Except(ParticipantsThatFled);
+        public IEnumerable<Combattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
         public PassiveStateMachine<States, Events> StateMachine { get; set; }
         public int Round { get; set; }
 
@@ -78,7 +78,12 @@ namespace robot.dad.combat
         public void PickMove()
         {
             var playerToPickFor = AliveParticipants.FirstOrDefault(p => !p.HasPicked);
+            if (playerToPickFor == null)
+            {
+                string wut = "Wurt?";
+            }
             playerToPickFor?.PickMove(AliveParticipants);
+
             StateMachine.Fire(Events.PlayerPicked);
         }
 
@@ -199,6 +204,6 @@ namespace robot.dad.combat
             return groupingdead.Any(b => b);
         }
 
-        public bool AllPlayersHavePicked => Participants.TrueForAll(p => p.HasPicked);
+        public bool AllPlayersHavePicked => AliveParticipants.TrueForAll(p => p.HasPicked);
     }
 }
