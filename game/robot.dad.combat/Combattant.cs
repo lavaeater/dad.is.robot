@@ -5,8 +5,12 @@ namespace robot.dad.combat
 {
     public class Human : Combattant
     {
-        public Human(string name, string team, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker) : base(name, 50, 75, 15, 5, team, HumanCombatMoves, movePicker)
+        public Human(string name, string team, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker, List<CombatMove> extraMoves = null) : base(name, 50, 75, 15, 5, team, HumanCombatMoves, movePicker)
         {
+            if (extraMoves != null)
+            {
+                CombatMoves.AddRange(extraMoves);
+            }
         }
 
         public static List<CombatMove> HumanCombatMoves => new List<CombatMove>()

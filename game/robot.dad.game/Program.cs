@@ -13,7 +13,10 @@ namespace robot.dad.game
                 new Human("Tommie", "nygren", MovePickers.RandomPicker),
                 new Human("Lisa", "nygren", MovePickers.RandomPicker),
                 new Human("Freja", "nygren", MovePickers.RandomPicker),
-                new Human("Anja", "nygren", MovePickers.RandomPicker),
+                new Human("Anja", "nygren", MovePickers.RandomPicker, new List<CombatMove>()
+                {
+                    new CombatMove("Läka sår", CombatMoveType.Special, 10, 5, 15, "helar", CombatMoveAppliers.HealingApplier)
+                }),
                 new Monster("Snarfor", 30, 90, 10, 5, "nygren", new List<CombatMove>()
                 {
                     new CombatMove("Vattenförmåga", CombatMoveType.Attack, 0, 5, 10, "vattenspruta", CombatMoveAppliers.DamageApplier)

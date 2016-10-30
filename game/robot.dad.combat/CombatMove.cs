@@ -53,13 +53,14 @@ namespace robot.dad.combat
             {
                 targetValue += target.CurrentMove.Modifier;
             }
+            int perfectRollValue = targetValue/10;
 
             int diceRoll = DiceRoller.RollHundredSided();
             Console.Write($"{attacker.Name} måste slå under {targetValue} för att {move.Verbified} {target.Name} - ");
             if (diceRoll <= targetValue)
             {
                 //1 == perfekt slag!
-                int damageRoll = diceRoll <= 5 ? move.MaxDamage : DiceRoller.RollDice(move.MinDamage, move.MaxDamage);
+                int damageRoll = diceRoll <= perfectRollValue ? move.MaxDamage : DiceRoller.RollDice(move.MinDamage, move.MaxDamage);
                 Console.WriteLine($"och slår {diceRoll}, träffar och gör {target.ApplyDamage(damageRoll)} i skada!");
                 Console.WriteLine($"{target.Name} har {target.Health} kvar i hälsa.");
             }
