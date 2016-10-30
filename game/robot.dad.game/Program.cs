@@ -16,15 +16,15 @@ namespace robot.dad.game
                 new Human("Anja", "nygren", MovePickers.RandomPicker),
                 new Monster("Snarfor", 30, 90, 10, 5, "nygren", new List<CombatMove>()
                 {
-                    new CombatMove("Vattenförmåga", CombatMoveType.Attack, 0, 5, 10, "vattenspruta")
+                    new CombatMove("Vattenförmåga", CombatMoveType.Attack, 0, 5, 10, "vattenspruta", CombatMoveAppliers.DamageApplier)
                 }, MovePickers.RandomPicker),
                 new Monster("Gargelbarg", 200, 60, 0, 5, "gargelbarg", new List<CombatMove>()
                 {
-                    new CombatMove("GargelBett", CombatMoveType.Attack, 15, 12, 25, "gargelbita")
+                    new CombatMove("GargelBett", CombatMoveType.Attack, 15, 12, 25, "gargelbita", CombatMoveAppliers.DamageApplier)
                 }, MovePickers.RandomPicker),
                 new Monster("Fyrkantsmonster", 100, 80, 30, 10, "gargelbarg", new List<CombatMove>()
                 {
-                    new CombatMove("Hypno", CombatMoveType.Special, -10, "hypnotisera")
+                    new CombatMove("Hypno", CombatMoveType.Special, -10, "hypnotisera", CombatMoveAppliers.HypnosisApplier)
                 }, MovePickers.RandomPicker)
             };
 

@@ -97,11 +97,13 @@ namespace robot.dad.combat
             Round++;
             Console.WriteLine($"Runda {Round}!");
 
-            ResolveRunaways();
+            AliveParticipants.ForEach(ap => ap.ApplyMove());
 
-            ResolveSpecialAttacks();
+            //ResolveRunaways();
 
-            ResolveRegularAttacks();
+            //ResolveSpecialAttacks();
+
+            //ResolveRegularAttacks();
 
             Console.WriteLine("Rundan över!");
             Thread.Sleep(3000);

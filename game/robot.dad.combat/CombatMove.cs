@@ -16,7 +16,7 @@ namespace robot.dad.combat
             ApplyMove = applyMove;
         }
 
-        public CombatMove(string name, CombatMoveType moveType, int modifier, string verbified)
+        public CombatMove(string name, CombatMoveType moveType, int modifier, string verbified, Action<CombatMove, Combattant, Combattant> moveApplier)
         {
             if (moveType == CombatMoveType.Attack)
             {
@@ -26,6 +26,7 @@ namespace robot.dad.combat
             MoveType = moveType;
             Modifier = modifier;
             Verbified = verbified;
+            ApplyMove = moveApplier;
         }
 
         public void Apply(Combattant attacker, Combattant target)
@@ -124,6 +125,11 @@ namespace robot.dad.combat
                 //100 == perfekt fail! Vad händer? Nåt kul!
                 Console.WriteLine($"men slår {diceRoll} och missar!");
             }
+        };
+
+        public static Action<CombatMove, Combattant, Combattant> DefendApplier = (move, attacker, target) =>
+        {
+            Console.WriteLine($"{attacker.Name} {move.Verbified}");
         };
     }
 

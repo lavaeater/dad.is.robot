@@ -12,9 +12,9 @@ namespace robot.dad.combat
         public static List<CombatMove> HumanCombatMoves => new List<CombatMove>()
         {
             new CombatMove("Slag", CombatMoveType.Attack, 10, 6, 12, "slå", CombatMoveAppliers.DamageApplier),
-            new CombatMove("Spark", CombatMoveType.Attack, -5, 10, 16, "sparka"),
-            new CombatMove("Undvik", CombatMoveType.Defend, 20, "undvika"),
-            new CombatMove("Fly", CombatMoveType.Runaway, -25, "fly")
+            new CombatMove("Spark", CombatMoveType.Attack, -5, 10, 16, "sparka", CombatMoveAppliers.DamageApplier),
+            new CombatMove("Undvik", CombatMoveType.Defend, 20, "undvika", CombatMoveAppliers.DefendApplier),
+            new CombatMove("Fly", CombatMoveType.Runaway, -25, "fly", CombatMoveAppliers.RunawayApplier)
         };
     }
 
@@ -27,7 +27,7 @@ namespace robot.dad.combat
 
     public class Combattant
     {
-        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, string team, List<CombatMove> combatMoves, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker, Action<CombatMove, Combattant,Combattant> moveApplier)
+        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, string team, List<CombatMove> combatMoves, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker)
         {
             Name = name;
             Health = health;
@@ -37,14 +37,17 @@ namespace robot.dad.combat
             Team = team;
             CombatMoves = combatMoves;
             MovePicker = movePicker;
-            ApplyMove = moveApplier;
             Status = CombatStatus.Active;
+        }
+
+        public void ApplyMove()
+        {
+            CurrentMove.Apply(this, CurrentTarget);
         }
 
         public string Team { get; set; }
         public List<CombatMove> CombatMoves { get; set; }
         public Action<Combattant, List<Combattant>, List<CombatMove>> MovePicker { get; private set; }
-        public Action<CombatMove, Combattant, Combattant> ApplyMove { get; set; }
 
         public int ApplyDamage(int damage)
         {
