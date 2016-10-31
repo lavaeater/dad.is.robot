@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace robot.dad.combat
 {
@@ -35,6 +36,7 @@ namespace robot.dad.combat
         {
             Name = name;
             Health = health;
+            CurrentHealth = Health;
             AttackSkill = attackSkill;
             DefenseSkill = defenseSkill;
             Armor = armor;
@@ -57,8 +59,8 @@ namespace robot.dad.combat
         {
             int actualDamage = damage - Armor;
             actualDamage = actualDamage < 0 ? 0 : actualDamage;
-            Health -= actualDamage;
-            if (Health < 1)
+            CurrentHealth -= actualDamage;
+            if (CurrentHealth < 1)
             {
                 Die();
                 Console.WriteLine($"{Name} dog!");
@@ -86,16 +88,17 @@ namespace robot.dad.combat
         }
 
         public Combattant CurrentTarget { get; set; }
-        public bool Dead => Health <= 0;
+        public bool Dead => CurrentHealth <= 0;
 
         public void ClearMove()
         {
             CurrentTarget = null;
             CurrentMove = null;
         }
-
+        
         public bool HasPicked => CurrentMove != null && CurrentTarget != null;
         public int Health { get; set; }
+        public int CurrentHealth { get; set; }
         public int DefenseSkill { get; set; }
         public int Armor { get; set; }
         public int AttackSkill { get; set; }
@@ -104,7 +107,11 @@ namespace robot.dad.combat
         public string Name { get; set; }
         public override string ToString()
         {
-            return $"{Name} - Hälsa: {Health} ";
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"{Name}");
+            sb.AppendLine($"Hälsa: {CurrentHealth} / {Health}");
+            sb.AppendLine($"Status: {Status}");
+            return sb.ToString();
         }
     }
 

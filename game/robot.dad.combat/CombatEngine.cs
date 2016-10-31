@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Xml.Serialization;
 using Appccelerate.StateMachine;
@@ -77,6 +78,7 @@ namespace robot.dad.combat
 
         public void PickMove()
         {
+            PrintCombatBoard();
             var playerToPickFor = AliveParticipants.FirstOrDefault(p => !p.HasPicked);
             if (playerToPickFor == null)
             {
@@ -99,12 +101,6 @@ namespace robot.dad.combat
 
             AliveParticipants.ForEach(ap => ap.ApplyMove());
 
-            //ResolveRunaways();
-
-            //ResolveSpecialAttacks();
-
-            //ResolveRegularAttacks();
-
             Console.WriteLine("Rundan över!");
             Thread.Sleep(3000);
             Console.Clear();
@@ -113,85 +109,34 @@ namespace robot.dad.combat
             StateMachine.Fire(CheckIfCombatIsOver() ? Events.CombatOver : Events.CombatRoundResolved);
         }
 
-        private void ResolveRegularAttacks()
+        public void PrintCombatBoard()
         {
-            //Defensive moves just means that one does not attack, you just get an extra defensive bonus this round
-            var attackingParticipants = AliveParticipants.FindAll(p => p.CurrentMove.MoveType == CombatMoveType.Attack);
-            foreach (var attackingParticipant in attackingParticipants)
+            //Assume stuff!
+            StringBuilder sb = new StringBuilder();
+            var grouping = Participants.GroupBy(p => p.Team);
+            int max = 0;
+            foreach (var group in grouping)
             {
-                int targetValue = attackingParticipant.AttackSkill +
-                                  attackingParticipant.CurrentMove.Modifier -
-                                  attackingParticipant.CurrentTarget.DefenseSkill;
-                if (attackingParticipant.CurrentTarget.CurrentMove.MoveType == CombatMoveType.Defend ||
-                    attackingParticipant.CurrentTarget.CurrentMove.MoveType == CombatMoveType.Runaway)
+                if (group.Count() > max) max = group.Count();
+            }
+            for (int i = 0; i < max; i++)
+            {
+                int j = 0;
+                foreach (var group in grouping)
                 {
-                    targetValue += attackingParticipant.CurrentTarget.CurrentMove.Modifier;
-                }
-                int attackRoll = DiceRoller.RollHundredSided();
-                Console.Write(
-                    $"{attackingParticipant.Name} vill {attackingParticipant.CurrentMove.Verbified} {attackingParticipant.CurrentTarget.Name} och måste slå {targetValue} och slog {attackRoll}");
+                    var people = group.ToList();
+                    if (i < group.Count())
+                        sb.Append($"{people[i]}");
+                    if (j%2 == 0)
+                        sb.Append("\t\t\t");
+                    if (j%2 != 0)
+                        sb.AppendLine();
 
-                if (attackRoll <= targetValue)
-                {
-                    int attackDamage = DiceRoller.RollDice(attackingParticipant.CurrentMove.MinDamage,
-                        attackingParticipant.CurrentMove.MaxDamage);
-                    Console.WriteLine($" och gjorde {attackingParticipant.CurrentTarget.ApplyDamage(attackDamage)} i skada");
-                    Console.WriteLine(
-                        $"{attackingParticipant.CurrentTarget.Name} har {attackingParticipant.CurrentTarget.Health} hälsa kvar");
-                }
-                else
-                {
-                    Console.WriteLine($" - men missade!");
+                    j++;
                 }
             }
-        }
+            Console.WriteLine(sb.ToString());
 
-        private void ResolveSpecialAttacks()
-        {
-            var specialParticipants = AliveParticipants.FindAll(p => p.CurrentMove.MoveType == CombatMoveType.Special);
-            foreach (var specialParticipant in specialParticipants)
-            {
-                int targetValue = specialParticipant.AttackSkill +
-                                  specialParticipant.CurrentMove.Modifier -
-                                  specialParticipant.CurrentTarget.DefenseSkill;
-
-                int specialRoll = DiceRoller.RollHundredSided();
-                Console.Write(
-                    $"{specialParticipant.Name} vill {specialParticipant.CurrentMove.Verbified} {specialParticipant.CurrentTarget.Name} och måste slå {targetValue} och slog {specialRoll}");
-
-                if (specialRoll <= targetValue)
-                {
-                    Console.WriteLine(
-                        $" - och lyckades!");
-                }
-                else
-                {
-                    Console.WriteLine(
-                        $"- och misslyckades");
-                }
-            }
-        }
-
-        private void ResolveRunaways()
-        {
-//Anyone trying to get away?
-            var runningParticipants = AliveParticipants.FindAll(p => p.CurrentMove.MoveType == CombatMoveType.Runaway);
-            foreach (var runningParticipant in runningParticipants)
-            {
-                int targetValue = runningParticipant.DefenseSkill + runningParticipant.CurrentMove.Modifier;
-                int runawayRoll = DiceRoller.RollHundredSided();
-                Console.Write($"{runningParticipant.Name} vill fly och måste slå {targetValue} och slog {runawayRoll}");
-                if (runawayRoll <= targetValue)
-                {
-                    ParticipantsThatFled.Add(runningParticipant);
-                    //No longer in the fight - but can still be attacked this round!
-                    Console.WriteLine($" - och lyckades {runningParticipant.CurrentMove.Verbified}");
-                }
-                else
-                {
-                    Console.WriteLine($" - och lyckades inte");
-                }
-            }
         }
 
         public List<Combattant> AliveParticipants { get; set; }

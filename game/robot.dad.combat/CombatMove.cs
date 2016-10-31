@@ -62,7 +62,7 @@ namespace robot.dad.combat
                 //1 == perfekt slag!
                 int damageRoll = diceRoll <= perfectRollValue ? move.MaxDamage : DiceRoller.RollDice(move.MinDamage, move.MaxDamage);
                 Console.WriteLine($"och slår {diceRoll}, träffar och gör {target.ApplyDamage(damageRoll)} i skada!");
-                Console.WriteLine($"{target.Name} har {target.Health} kvar i hälsa.");
+                Console.WriteLine($"{target.Name} har {target.CurrentHealth} kvar i hälsa.");
             }
             else
             {
@@ -80,9 +80,10 @@ namespace robot.dad.combat
             {               
                 //1 == perfekt slag!
                 int damageRoll = diceRoll <= 5 ? move.MaxDamage : DiceRoller.RollDice(move.MinDamage, move.MaxDamage);
-                target.Health += damageRoll;
+                target.CurrentHealth += damageRoll;
+                if (target.CurrentHealth > target.Health) target.CurrentHealth = target.Health;
                 Console.WriteLine($"och slår {diceRoll}, lyckas och helar {damageRoll} hälsa!");
-                Console.WriteLine($"{target.Name} har {target.Health} kvar i hälsa.");
+                Console.WriteLine($"{target.Name} har {target.CurrentHealth} kvar i hälsa.");
             }
             else
             {
