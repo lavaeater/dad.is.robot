@@ -53,7 +53,8 @@ namespace robot.dad.combat
 
         public string Team { get; set; }
         public List<CombatMove> CombatMoves { get; set; }
-        public Action<Combattant, List<Combattant>, List<CombatMove>> MovePicker { get; private set; }
+        public Action<Combattant, List<Combattant>, List<CombatMove>> MovePicker { get; set; }
+        public List<IApplyMoveEffects> CombatEffects => new List<IApplyMoveEffects>();
 
         public int ApplyDamage(int damage)
         {

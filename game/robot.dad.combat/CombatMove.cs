@@ -43,6 +43,107 @@ namespace robot.dad.combat
         public Action<CombatMove, Combattant, Combattant> ApplyMove { get; set; }
     }
 
+    public interface IResolveMove
+    {
+        void ResolveMove(CombatMove move, Combattant attacker, Combattant target);
+    }
+
+    public interface IApplyMoveEffects
+    {
+        string EffectName { get; set; }
+        int Min { get; set; }
+        int Max { get; set; }
+        int LastRound { get; set; }
+        EffectType EffectType { get; set; }
+        void ApplyEffects(Combattant target);
+        void EffectsEnded(Combattant target);
+    }
+
+    public abstract class ResolveMoveBase : IResolveMove
+    {
+        public void ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public abstract class ApplyMoveEffectsBase: IApplyMoveEffects
+    {
+        protected ApplyMoveEffectsBase(int min, int max, int lastRound, EffectType effectType)
+        {
+            Min = min;
+            Max = max;
+            LastRound = lastRound;
+            EffectType = effectType;
+        }
+
+        public string EffectName { get; set; }
+        public string AffectedProperty { get; set; }
+        public int Min { get; set; }
+        public int Max { get; set; }
+        public int LastRound { get; set; }
+        public EffectType EffectType { get; set; }
+        public abstract void ApplyEffects(Combattant target);
+
+        public virtual void EffectsEnded(Combattant target)
+        {
+            
+        }
+    }
+
+    public class NormalDamageEffectApplier : ApplyMoveEffectsBase 
+    {
+        public NormalDamageEffectApplier(int min, int max) : base(min, max, 0, EffectType.Immediate)
+        {
+        }
+
+        public override void ApplyEffects(Combattant target)
+        {
+            int damageRoll = DiceRoller.RollDice(Min, Max);
+            target.ApplyDamage(damageRoll);
+        }
+    }
+
+    public abstract class RecurringEffectApplierBase : ApplyMoveEffectsBase
+    {
+        protected RecurringEffectApplierBase(int min, int max, int lastRound) : base(min, max, lastRound, EffectType.Recurring)
+        {
+        }
+    }
+
+    public class HypnosisEffectApplier: RecurringEffectApplierBase
+    {
+        private bool _hasBeenApplied = false;
+        public HypnosisEffectApplier(int lastRound) : base(0, 0, lastRound)
+        {
+        }
+
+        public override void ApplyEffects(Combattant target)
+        {
+            //Switches movepickers!
+            if (!_hasBeenApplied)
+            {
+                OriginalPicker = target.MovePicker;
+                target.MovePicker = MovePickers.RandomReversePicker;
+                _hasBeenApplied = true;
+            }
+        }
+
+        public Action<Combattant, List<Combattant>, List<CombatMove>> OriginalPicker { get; set; }
+
+        public override void EffectsEnded(Combattant target)
+        {
+            target.MovePicker = OriginalPicker;
+        }
+    }
+
+    public enum EffectType
+    {
+        Immediate,
+        Recurring
+    }
+
+
     public static class CombatMoveAppliers
     {
         public static Action<CombatMove, Combattant, Combattant> DamageApplier = (move, attacker, target) =>

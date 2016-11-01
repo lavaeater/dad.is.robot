@@ -17,7 +17,7 @@ namespace robot.dad.combat
         public List<Combattant> ParticipantsThatDied { get; set; } = new List<Combattant>();
         public IEnumerable<Combattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
         public PassiveStateMachine<States, Events> StateMachine { get; set; }
-        public int Round { get; set; }
+        public static int Round { get; set; }
 
         public CombatEngine(List<Combattant> participants) : this()
         {
@@ -34,6 +34,7 @@ namespace robot.dad.combat
 
             StateMachine
                 .In(States.PlayerPicking)
+                .ExecuteOnEntry(ApplyCombatEffects)
                 .ExecuteOnEntry(PickMove)
                 .On(Events.PlayerPicked)
                 .If(() => AllPlayersHavePicked).Goto(States.ResolveCombat)
@@ -58,6 +59,17 @@ namespace robot.dad.combat
             StateMachine.Initialize(States.BeforeCombat);
         }
 
+        private void ApplyCombatEffects()
+        {
+            //Time delayed effects, hypnosis, fire, cold, poison, everything should be done here
+            /*
+             * Here we could like call some method on every object that takes rounds ticking into account?
+             * Or how do we keep track of rounds and passing time when it comes to hypnosis?
+             */
+
+            //Also fear
+        }
+
         private void ResetPicks()
         {
             Participants.ForEach(p => p.ClearMove());
@@ -79,12 +91,8 @@ namespace robot.dad.combat
         public void PickMove()
         {
             PrintCombatBoard();
-            var playerToPickFor = AliveParticipants.FirstOrDefault(p => !p.HasPicked);
-            if (playerToPickFor == null)
-            {
-                string wut = "Wurt?";
-            }
-            playerToPickFor?.PickMove(AliveParticipants);
+            var playerToPickFor = AliveParticipants.First(p => !p.HasPicked);
+            playerToPickFor.PickMove(AliveParticipants);
 
             StateMachine.Fire(Events.PlayerPicked);
         }
