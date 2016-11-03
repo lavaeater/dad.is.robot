@@ -5,15 +5,17 @@ namespace robot.dad.combat
 {
     public class CombatMove
     {
-        public CombatMove(string name, CombatMoveType moveType, int modifier, int minDamage, int maxDamage, string verbified, Action<CombatMove, Combattant, Combattant> applyMove)
+        private readonly IApplyMoveEffects _effectApplier;
+
+        public CombatMove(string name, CombatMoveType moveType, int modifier, int minDamage, int maxDamage, string verbified, IApplyMoveEffects effectApplier)
         {
+            _effectApplier = effectApplier;
             Name = name;
             MoveType = moveType;
             Modifier = modifier;
             MinDamage = minDamage;
             MaxDamage = maxDamage;
             Verbified = verbified;
-            ApplyMove = applyMove;
         }
 
         public CombatMove(string name, CombatMoveType moveType, int modifier, string verbified, Action<CombatMove, Combattant, Combattant> moveApplier)
@@ -61,10 +63,7 @@ namespace robot.dad.combat
 
     public abstract class ResolveMoveBase : IResolveMove
     {
-        public void ResolveMove(CombatMove move, Combattant attacker, Combattant target)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void ResolveMove(CombatMove move, Combattant attacker, Combattant target);
     }
 
     public abstract class ApplyMoveEffectsBase: IApplyMoveEffects
@@ -87,7 +86,7 @@ namespace robot.dad.combat
 
         public virtual void EffectsEnded(Combattant target)
         {
-            
+            throw new NotImplementedException("Recurring effects need a method to remove the effects!");
         }
     }
 
@@ -100,7 +99,24 @@ namespace robot.dad.combat
         public override void ApplyEffects(Combattant target)
         {
             int damageRoll = DiceRoller.RollDice(Min, Max);
-            target.ApplyDamage(damageRoll);
+            Console.WriteLine($", träffar och gör {target.ApplyDamage(damageRoll)} i skada!");
+            Console.WriteLine($"{target.Name} har {target.CurrentHealth} kvar i hälsa.");
+        }
+    }
+
+    public class HealingEffectApplier : ApplyMoveEffectsBase
+    {
+        public HealingEffectApplier(int min, int max) : base(min, max, 0, EffectType.Immediate)
+        {
+        }
+
+        public override void ApplyEffects(Combattant target)
+        {
+            int damageRoll = DiceRoller.RollDice(Min, Max);
+            target.CurrentHealth += damageRoll;
+            if (target.CurrentHealth > target.Health) target.CurrentHealth = target.Health;
+            Console.WriteLine($", lyckas och helar {damageRoll} hälsa!");
+            Console.WriteLine($"{target.Name} har {target.CurrentHealth} kvar i hälsa.");
         }
     }
 
@@ -121,6 +137,7 @@ namespace robot.dad.combat
         public override void ApplyEffects(Combattant target)
         {
             //Switches movepickers!
+            Console.WriteLine($"{target.Name} är hypnotiserad!");
             if (!_hasBeenApplied)
             {
                 OriginalPicker = target.MovePicker;
@@ -143,6 +160,101 @@ namespace robot.dad.combat
         Recurring
     }
 
+    public class ResolveAttackMove : ResolveMoveBase
+    {
+        public override void ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        {
+            int targetValue = attacker.AttackSkill + move.Modifier - target.DefenseSkill;
+            if (target.CurrentMove.MoveType == CombatMoveType.Defend ||
+                target.CurrentMove.MoveType == CombatMoveType.Runaway)
+            {
+                targetValue += target.CurrentMove.Modifier;
+            }
+            int perfectRollValue = targetValue / 10;
+
+            int diceRoll = DiceRoller.RollHundredSided();
+            Console.Write($"{attacker.Name} måste slå under {targetValue} för att {move.Verbified} {target.Name} - ");
+            if (diceRoll <= targetValue)
+            {
+                //1 == perfekt slag!
+                Console.Write($"slår {diceRoll}");
+                IApplyMoveEffects applier = diceRoll <= perfectRollValue ? new NormalDamageEffectApplier(move.MaxDamage, move.MaxDamage) : new NormalDamageEffectApplier(move.MinDamage, move.MaxDamage);
+                target.CombatEffects.Add(applier);
+            }
+            else
+            {
+                //100 == perfekt fail! Vad händer? Nåt kul!
+                Console.WriteLine($"men slår {diceRoll} och missar!");
+            }
+        }
+    }
+
+    public class ResolveHealingMove : ResolveMoveBase
+    {
+        public override void ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        {
+            int targetValue = attacker.AttackSkill + move.Modifier;
+            int diceRoll = DiceRoller.RollHundredSided();
+            Console.Write($"{attacker.Name} måste slå under {targetValue} för att {move.Verbified} {target.Name} - ");
+            if (diceRoll <= targetValue)
+            {
+                //1 == perfekt slag!
+                Console.Write($"slår {diceRoll}");
+                var applier = diceRoll <= 5 ? new HealingEffectApplier(move.MaxDamage, move.MaxDamage) : new HealingEffectApplier(move.MinDamage, move.MaxDamage);
+                target.CombatEffects.Add(applier);
+            }
+            else
+            {
+                //100 == perfekt fail! Vad händer? Nåt kul!
+                Console.WriteLine($"men slår {diceRoll} och missar!");
+            }
+        }
+    }
+
+    public class ResolveRunawayMove : ResolveMoveBase
+    {
+        public override void ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        {
+            int targetValue = attacker.DefenseSkill + move.Modifier;
+            int diceRoll = DiceRoller.RollHundredSided();
+            Console.Write($"{attacker.Name} måste slå under {targetValue} för att {move.Verbified} - ");
+            if (diceRoll <= targetValue)
+            {
+                //1 == perfekt slag!
+                //vad gör perfekt slag och hur?
+                Console.WriteLine($"och slår {diceRoll} och {move.Verbified}!");
+                attacker.Runaway();
+            }
+            else
+            {
+                //100 == perfekt fail! Vad händer? Nåt kul!
+                Console.WriteLine($"men slår {diceRoll} och missar!");
+            }
+        }
+    }
+
+    public class ResolveHypnosisMove : ResolveMoveBase
+    {
+        public override void ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        {
+            int targetValue = attacker.AttackSkill + move.Modifier - target.DefenseSkill;
+            int diceRoll = DiceRoller.RollHundredSided();
+            Console.Write($"{attacker.Name} måste slå under {targetValue} för att {move.Verbified} {target.Name} - ");
+            if (diceRoll <= targetValue)
+            {
+                //1 == perfekt slag!
+                Console.Write($"och slår {diceRoll}");
+                int perfectRoll = targetValue/10;
+                var applier = new HypnosisEffectApplier(diceRoll <= perfectRoll ? move.MaxDamage : DiceRoller.RollDice(move.MinDamage, move.MaxDamage));
+                target.CombatEffects.Add(applier);
+            }
+            else
+            {
+                //100 == perfekt fail! Vad händer? Nåt kul!
+                Console.WriteLine($"men slår {diceRoll} och missar!");
+            }
+        }
+    }
 
     public static class CombatMoveAppliers
     {
