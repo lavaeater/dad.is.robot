@@ -22,6 +22,22 @@ namespace robot.dad.combat
             }
         }
 
+        public static void RandomReversePicker(Combattant picker, List<Combattant> possibleTargets,
+    List<CombatMove> possibleMoves)
+        {
+            picker.CurrentMove = possibleMoves[DiceRoller.RollDice(0, possibleMoves.Count - 1)];
+            if (picker.CurrentMove.MoveType == CombatMoveType.Healing)
+            {
+                var pts = possibleTargets.Where(pt => pt.Team != picker.Team).ToList();
+                picker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
+            }
+            else
+            {
+                var pts = possibleTargets.Where(pt => pt.Team == picker.Team).ToList();
+                picker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
+            }
+        }
+
         public static void ManualPicker(Combattant picker, List<Combattant> possibleTargets, List<CombatMove> possibleMoves)
         {
             //1. List targets and make player choose one!

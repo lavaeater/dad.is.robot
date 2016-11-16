@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -56,19 +57,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EffectAppliers\ApplyMoveEffectsBase.cs" />
     <Compile Include="CombatEngine.cs" />
     <Compile Include="CombatMove.cs" />
     <Compile Include="CombatMoveType.cs" />
     <Compile Include="Combattant.cs" />
     <Compile Include="DiceRoller.cs" />
+    <Compile Include="EffectAppliers\EffectType.cs" />
     <Compile Include="Events.cs" />
+    <Compile Include="EffectAppliers\HealingEffectApplier.cs" />
+    <Compile Include="EffectAppliers\HypnosisEffectApplier.cs" />
+    <Compile Include="Interfaces\IApplyMoveEffects.cs" />
+    <Compile Include="Interfaces\IResolveMove.cs" />
     <Compile Include="MovePickers.cs" />
+    <Compile Include="EffectAppliers\NormalDamageEffectApplier.cs" />
+    <Compile Include="MoveResolvers\ResolveDefendMove.cs" />
+    <Compile Include="MoveResolvers\Resolvers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MoveResolvers\ResolveMoveBase.cs" />
+    <Compile Include="EffectAppliers\RecurringEffectApplierBase.cs" />
+    <Compile Include="MoveResolvers\ResolveAttackMove.cs" />
+    <Compile Include="MoveResolvers\ResolveHealingMove.cs" />
+    <Compile Include="MoveResolvers\ResolveHypnosisMove.cs" />
+    <Compile Include="MoveResolvers\ResolveRunawayMove.cs" />
     <Compile Include="States.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
