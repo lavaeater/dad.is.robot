@@ -1,0 +1,36 @@
+using System;
+using robot.dad.combat.EffectAppliers;
+using robot.dad.combat.Interfaces;
+
+namespace robot.dad.combat.MoveResolvers
+{
+    public class ResolveAttackMove : ResolveMoveBase
+    {
+        public override void ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        {
+            Console.WriteLine();
+            int targetValue = attacker.AttackSkill + move.Modifier - target.DefenseSkill;
+            if (target.CurrentMove.MoveType == CombatMoveType.Defend ||
+                target.CurrentMove.MoveType == CombatMoveType.Runaway)
+            {
+                targetValue += target.CurrentMove.Modifier;
+            }
+            int perfectRollValue = targetValue / 10;
+
+            int diceRoll = DiceRoller.RollHundredSided();
+            Console.Write($"{attacker.Name} måste slå under {targetValue} för att {move.Verbified} {target.Name} - ");
+            if (diceRoll <= targetValue)
+            {
+                //1 == perfekt slag!
+                Console.Write($"slår {diceRoll}");
+                IApplyMoveEffects applier = diceRoll <= perfectRollValue ? new NormalDamageEffectApplier(move.MaxDamage, move.MaxDamage) : new NormalDamageEffectApplier(move.MinDamage, move.MaxDamage);
+                applier.ApplyEffects(target);
+            }
+            else
+            {
+                //100 == perfekt fail! Vad händer? Nåt kul!
+                Console.WriteLine($"men slår {diceRoll} och missar!");
+            }
+        }
+    }
+}

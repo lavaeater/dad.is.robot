@@ -4,7 +4,7 @@ namespace robot.dad.combat
 {
     public static class DiceRoller
     {
-        private static readonly Random Rnd = new Random();
+        private static readonly Random Rnd = new Random(DateTime.Now.Second);
 
         public static int RollDice(int minVal, int maxVal)
         {

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using robot.dad.combat.Interfaces;
+using robot.dad.combat.MoveResolvers;
 
 namespace robot.dad.combat
 {
@@ -16,10 +18,10 @@ namespace robot.dad.combat
 
         public static List<CombatMove> HumanCombatMoves => new List<CombatMove>()
         {
-            new CombatMove("Slag", CombatMoveType.Attack, 10, 6, 12, "slå", CombatMoveAppliers.DamageApplier),
-            new CombatMove("Spark", CombatMoveType.Attack, -5, 10, 16, "sparka", CombatMoveAppliers.DamageApplier),
-            new CombatMove("Undvik", CombatMoveType.Defend, 20, "undvika", CombatMoveAppliers.DefendApplier),
-            new CombatMove("Fly", CombatMoveType.Runaway, -25, "fly", CombatMoveAppliers.RunawayApplier)
+            new CombatMove("Slag", CombatMoveType.Attack, 10, 6, 12, "slå", Resolvers.AttackResolver),
+            new CombatMove("Spark", CombatMoveType.Attack, -5, 10, 16, "sparka", Resolvers.AttackResolver),
+            new CombatMove("Undvik", CombatMoveType.Defend, 20, "undvika", Resolvers.DefendResolver),
+            new CombatMove("Fly", CombatMoveType.Runaway, -25, "fly", Resolvers.RunawayResolver)
         };
     }
 
@@ -46,7 +48,7 @@ namespace robot.dad.combat
             Status = CombatStatus.Active;
         }
 
-        public void ApplyMove()
+        public void ResolveMove()
         {
             CurrentMove.Apply(this, CurrentTarget);
         }
@@ -54,7 +56,7 @@ namespace robot.dad.combat
         public string Team { get; set; }
         public List<CombatMove> CombatMoves { get; set; }
         public Action<Combattant, List<Combattant>, List<CombatMove>> MovePicker { get; set; }
-        public List<IApplyMoveEffects> CombatEffects => new List<IApplyMoveEffects>();
+        public List<IApplyMoveEffects> CombatEffects { get; set; } = new List<IApplyMoveEffects>();
 
         public int ApplyDamage(int damage)
         {

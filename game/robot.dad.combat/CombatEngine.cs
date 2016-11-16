@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using System.Xml.Serialization;
 using Appccelerate.StateMachine;
+using robot.dad.combat.EffectAppliers;
+using robot.dad.combat.Interfaces;
 
 namespace robot.dad.combat
 {
@@ -67,7 +66,19 @@ namespace robot.dad.combat
              * Or how do we keep track of rounds and passing time when it comes to hypnosis?
              */
 
-            //Also fear
+            //Also fear 
+            foreach (var target in AliveParticipants.Where(t => t.CombatEffects.Any()))
+            {
+                foreach (var effect in target.CombatEffects)
+                {
+                    effect.ApplyEffects(target);
+                }
+                target.CombatEffects.Where(
+                    e =>
+                        (e.LastRound > Round))
+                    .ToList()
+                    .ForEach(e => e.EffectsEnded(target));
+            }
         }
 
         private void ResetPicks()
@@ -107,11 +118,10 @@ namespace robot.dad.combat
             Round++;
             Console.WriteLine($"Runda {Round}!");
 
-            AliveParticipants.ForEach(ap => ap.ApplyMove());
+            AliveParticipants.ForEach(ap => ap.ResolveMove());
 
             Console.WriteLine("Rundan över!");
-            Thread.Sleep(3000);
-            Console.Clear();
+            Console.ReadKey();
 
             //This will be a doozy
             StateMachine.Fire(CheckIfCombatIsOver() ? Events.CombatOver : Events.CombatRoundResolved);
