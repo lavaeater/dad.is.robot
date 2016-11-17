@@ -1,5 +1,8 @@
 ﻿namespace robot.dad.world
 {
+    /// <summary>
+    /// We are going HEX!
+    /// </summary>
     public class MapKey
     {
         public MapKey(long x, long y)
