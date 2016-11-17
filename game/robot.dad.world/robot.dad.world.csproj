@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MapEvent.cs" />
+    <Compile Include="MapEventType.cs" />
     <Compile Include="MapKey.cs" />
     <Compile Include="MapTile.cs" />
     <Compile Include="MapTileType.cs" />
