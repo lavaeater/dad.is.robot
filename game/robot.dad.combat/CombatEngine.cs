@@ -130,6 +130,7 @@ namespace robot.dad.combat
         public void PrintCombatBoard()
         {
             //Assume stuff!
+            Console.Clear();
             StringBuilder sb = new StringBuilder();
             var grouping = Participants.GroupBy(p => p.Team);
             int max = 0;
@@ -142,6 +143,7 @@ namespace robot.dad.combat
                 int j = 0;
                 foreach (var group in grouping)
                 {
+                    Console.SetCursorPosition(i * 20, 0);
                     var people = group.ToList();
                     if (i < group.Count())
                         sb.Append($"{people[i]}");
