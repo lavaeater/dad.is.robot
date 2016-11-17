@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.combat", "robot.d
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.tests", "robot.dad.tests\robot.dad.tests.csproj", "{4E2D3404-4EE6-407E-9830-7D88EF285116}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.world", "robot.dad.world\robot.dad.world.csproj", "{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,18 @@ Global
 		{4E2D3404-4EE6-407E-9830-7D88EF285116}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4E2D3404-4EE6-407E-9830-7D88EF285116}.Release|x86.ActiveCfg = Release|Any CPU
 		{4E2D3404-4EE6-407E-9830-7D88EF285116}.Release|x86.Build.0 = Release|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Debug|x86.Build.0 = Debug|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.NuGet|Any CPU.ActiveCfg = Release|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.NuGet|Any CPU.Build.0 = Release|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.NuGet|x86.ActiveCfg = Release|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.NuGet|x86.Build.0 = Release|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Release|x86.ActiveCfg = Release|Any CPU
+		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
