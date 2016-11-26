@@ -44,7 +44,7 @@ namespace Simplex
             return Generate(x * scale) * 128 + 128;
         }
 
-        float CalcPixel2D(int x, int y, float scale)
+        public static float CalcPixel2D(int x, int y, float scale)
         {
             return Generate(x * scale, y * scale) * 128 + 128;
         }

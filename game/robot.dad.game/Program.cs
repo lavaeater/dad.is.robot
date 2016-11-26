@@ -15,98 +15,184 @@ namespace robot.dad.game
             //demo.StartGame();
 
             var noise = new NoiseTest();
-            noise.TestNoise();
+            noise.OtherNoiseTest();
             Console.ReadKey();
         }
     }
 
+    public enum TerrainType
+    {
+        Ocean,
+        Beach,
+        Scorched,
+        Bare,
+        Tundra,
+        Snow,
+        TemperateDesert,
+        ShrubLand,
+        Taiga,
+        GrassLand,
+        TemperateForest,
+        TemperateRainForest,
+        SubTropicalDesert,
+        TropicalSeasonalForest,
+        TropicalRainForest
+    }
+
     public class NoiseTest
     {
-        public void TestNoise()
+        public float ForceRange(float value, float newMin, float newMax)
         {
-            int maxX = 80, maxY = 80;
-            float[,] noiseMap = Simplex.Noise.Calc2D(maxX, maxY, 0.05f);
-            int maxNoise = 0;
-            int minNoise = 255;
-            for (int y = 0; y < maxY; y++)
+            float oldMin = 14;
+            float oldMax = 241;
+            float newValue = ((value - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin;
+            return newValue;
+        }
+
+        public void OtherNoiseTest()
+        {
+            Noise.Seed = 12;
+            int xMax = 80;
+            int yMax = 800;
+            float scale = 0.05f;
+            for (int y = 0; y < yMax; y++)
             {
-                for (int x = 0; x < maxX; x++)
+                for (int x = 0; x < xMax; x++)
                 {
-                    int noiseVal = (int) noiseMap[x, y];
-                    if (noiseVal > maxNoise)
-                        maxNoise = noiseVal;
-
-                    if (noiseVal < minNoise)
-                        minNoise = noiseVal;
-                    char terrain = GetTerrainType(noiseVal);
-                    Console.BackgroundColor = GetTerrainColor(terrain);
-                    Console.Write(terrain);
-
+                    int elevation = (int)ForceRange(Noise.CalcPixel2D(x, y, scale), 0, 100);
+                    int moisture = (int)ForceRange(Noise.CalcPixel2D(x, y, 0.1f), 0, 100);
+                    TerrainType terrainType = GetTerrainType(elevation, moisture);
+                    Console.BackgroundColor = GetTerrainBackColor(terrainType);
+                    Console.ForegroundColor = GetTerrainForeColor(terrainType);
+                    Console.Write('X');
+                    Console.BackgroundColor = ConsoleColor.Black;
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine(maxNoise);
-            Console.WriteLine(minNoise);
         }
 
-        public ConsoleColor GetTerrainColor(char terrain)
+        private ConsoleColor GetTerrainForeColor(TerrainType terrainType)
         {
-            ConsoleColor returnColor = ConsoleColor.Blue;
-            switch (terrain)
+            switch (terrainType)
             {
-                case 'b':
-                    returnColor = ConsoleColor.Yellow;
-                    break;
-                case 'g':
-                    returnColor = ConsoleColor.Green;
-                    break;
-                case 'f':
-                    returnColor = ConsoleColor.DarkGreen;
-                    break;
-                case 'j':
-                    returnColor = ConsoleColor.DarkMagenta;
-                    break;
-                case 'd':
-                    returnColor = ConsoleColor.DarkYellow;
-                    break;
-                case 'm':
-                    returnColor = ConsoleColor.Gray;
-                    break;
-                case 'w':
-                    returnColor = ConsoleColor.Blue;
-                    break;
+                case TerrainType.Ocean:
+                    return ConsoleColor.Blue;
+                case TerrainType.Beach:
+                    return ConsoleColor.DarkYellow;
+                case TerrainType.GrassLand:
+                    return ConsoleColor.DarkGreen;
+                case TerrainType.Scorched:
+                    return ConsoleColor.Gray;
+                case TerrainType.ShrubLand:
+                    return ConsoleColor.DarkGray;
+                case TerrainType.SubTropicalDesert:
+                    return ConsoleColor.White;
+                case TerrainType.TemperateDesert:
+                    return ConsoleColor.DarkYellow;
+                case TerrainType.TemperateForest:
+                    return ConsoleColor.DarkRed;
+                case TerrainType.TemperateRainForest:
+                    return ConsoleColor.Magenta;
+                case TerrainType.TropicalRainForest:
+                    return ConsoleColor.Yellow;
+                case TerrainType.TropicalSeasonalForest:
+                    return ConsoleColor.DarkRed;
+                case TerrainType.Bare:
+                    return ConsoleColor.DarkGray;
+                case TerrainType.Snow:
+                    return ConsoleColor.White;
+                case TerrainType.Taiga:
+                    return ConsoleColor.DarkYellow;
+                case TerrainType.Tundra:
+                    return ConsoleColor.DarkGreen;
+                default:
+                    return ConsoleColor.Black;
             }
-            return returnColor;
         }
 
-
-
-        public char GetTerrainType(int noise)
+        private ConsoleColor GetTerrainBackColor(TerrainType terrainType)
         {
-            char terrain = 'w';
-            if (75 < noise && noise <= 100)
+            switch (terrainType)
             {
-                terrain = 'b';
+                case TerrainType.Ocean:
+                    return ConsoleColor.DarkBlue;
+                case TerrainType.Beach:
+                    return ConsoleColor.Yellow;
+                case TerrainType.GrassLand:
+                    return ConsoleColor.Green;
+                case TerrainType.Scorched:
+                    return ConsoleColor.DarkYellow;
+                case TerrainType.ShrubLand:
+                    return ConsoleColor.DarkGreen;
+                case TerrainType.SubTropicalDesert:
+                    return ConsoleColor.DarkYellow;
+                case TerrainType.TemperateDesert:
+                    return ConsoleColor.Yellow;
+                case TerrainType.TemperateForest:
+                    return ConsoleColor.DarkGreen;
+                case TerrainType.TemperateRainForest:
+                    return ConsoleColor.Green;
+                case TerrainType.TropicalRainForest:
+                    return ConsoleColor.Green;
+                case TerrainType.TropicalSeasonalForest:
+                    return ConsoleColor.DarkGreen;
+                case TerrainType.Bare:
+                    return ConsoleColor.Gray;
+                case TerrainType.Snow:
+                    return ConsoleColor.White;
+                case TerrainType.Taiga:
+                    return ConsoleColor.Gray;
+                case TerrainType.Tundra:
+                    return ConsoleColor.Gray;
+                default:
+                    return ConsoleColor.Black;
             }
-            if (100 < noise && noise <= 175)
+        }
+
+        public TerrainType GetTerrainType(int elevation, int moisture)
+        {
+            TerrainType terrain = TerrainType.Ocean;
+            if (15 < elevation && elevation <= 20)
             {
-                terrain = 'g';
+                terrain = TerrainType.Beach;
             }
-            if (175 < noise && noise <= 200)
+            if (20 < elevation && elevation <= 40)
             {
-                terrain = 'f';
+                terrain = TerrainType.TropicalRainForest;
+                if (0 < moisture && moisture <= 16)
+                    terrain = TerrainType.SubTropicalDesert;
+                if (16 < moisture && moisture <= 33)
+                    terrain = TerrainType.GrassLand;
+                if (33 < moisture && moisture <= 66)
+                    terrain = TerrainType.TropicalSeasonalForest;
             }
-            if (200 < noise && noise <= 215)
+            if (40 < elevation && elevation <= 75)
             {
-                terrain = 'j';
+                terrain = TerrainType.TemperateRainForest;
+                if (0 < moisture && moisture <= 16)
+                    terrain = TerrainType.TemperateDesert;
+                if (16 < moisture && moisture <= 50)
+                    terrain = TerrainType.GrassLand;
+                if (50 < moisture && moisture <= 83)
+                    terrain = TerrainType.TemperateForest;
             }
-            if (215 < noise && noise <= 225)
+            if (75 < elevation && elevation <= 90)
             {
-                terrain = 'd';
+                terrain = TerrainType.Taiga;
+                if (0 < moisture && moisture <= 33)
+                    terrain = TerrainType.TemperateDesert;
+                if (33 < moisture && moisture <= 66)
+                    terrain = TerrainType.ShrubLand;
             }
-            if (225 < noise && noise <= 255)
+            if (90 < elevation && elevation <= 100)
             {
-                terrain = 'm';
+                terrain = TerrainType.Snow;
+                if (0 < moisture && moisture <= 10)
+                    terrain = TerrainType.Scorched;
+                if (10 < moisture && moisture <= 20)
+                    terrain = TerrainType.Bare;
+                if (20 < moisture && moisture <= 50)
+                    terrain = TerrainType.Tundra;
             }
             return terrain;
         }
