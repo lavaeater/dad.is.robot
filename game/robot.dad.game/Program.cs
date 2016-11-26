@@ -9,7 +9,26 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
-            var participants = new List<Combattant>
+            //var demo = new CombatDemo();
+            //demo.StartGame();
+
+            var noise = new NoiseTest();
+            noise.TestNoise();
+        }
+    }
+
+    public class NoiseTest
+    {
+        public void TestNoise()
+        {
+            
+        }
+    }
+
+    public class CombatDemo
+    {
+        
+        List<Combattant> _participants = new List<Combattant>
             {
                 new Human("Tommie", "nygren", MovePickers.RandomPicker),
                 new Human("Lisa", "nygren", MovePickers.RandomPicker),
@@ -32,11 +51,11 @@ namespace robot.dad.game
                 }, MovePickers.RandomPicker)
             };
 
-            var ce = new CombatEngine(participants);
+        public void StartGame()
+        {
+            var ce = new CombatEngine(_participants);
             ce.StartCombat();
             Console.ReadKey();
-            //var game = new Game("dad is robot", 1600,900,60, true);
-            //game.Start();
         }
     }
 }

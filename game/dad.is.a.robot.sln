@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.tests", "robot.da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.world", "robot.dad.world\robot.dad.world.csproj", "{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.worldbuilder", "robot.dad.worldbuilder\robot.dad.worldbuilder.csproj", "{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplexNoise", "SimplexNoise\SimplexNoise.csproj", "{733B3143-822A-41B7-A021-9BF7AE84C2D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +84,30 @@ Global
 		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Release|x86.ActiveCfg = Release|Any CPU
 		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Release|x86.Build.0 = Release|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.Debug|x86.Build.0 = Debug|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.NuGet|Any CPU.ActiveCfg = Release|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.NuGet|Any CPU.Build.0 = Release|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.NuGet|x86.ActiveCfg = Release|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.NuGet|x86.Build.0 = Release|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.Release|x86.ActiveCfg = Release|Any CPU
+		{EEB25D87-91FE-44DA-A6EF-1A01DA86E5DF}.Release|x86.Build.0 = Release|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.Debug|x86.Build.0 = Debug|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.NuGet|Any CPU.ActiveCfg = Release|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.NuGet|Any CPU.Build.0 = Release|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.NuGet|x86.ActiveCfg = Release|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.NuGet|x86.Build.0 = Release|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.Release|x86.ActiveCfg = Release|Any CPU
+		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
