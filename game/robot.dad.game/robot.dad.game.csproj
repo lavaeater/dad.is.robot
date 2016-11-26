@@ -58,6 +58,10 @@
       <Project>{75A46945-48F3-41B7-9B72-1EE07CA0297B}</Project>
       <Name>robot.dad.combat</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SimplexNoise\SimplexNoise.csproj">
+      <Project>{733B3143-822A-41B7-A021-9BF7AE84C2D5}</Project>
+      <Name>SimplexNoise</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

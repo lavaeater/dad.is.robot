@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using robot.dad.combat;
 using robot.dad.combat.MoveResolvers;
+using Simplex;
 
 namespace robot.dad.game
 {
@@ -14,6 +16,7 @@ namespace robot.dad.game
 
             var noise = new NoiseTest();
             noise.TestNoise();
+            Console.ReadKey();
         }
     }
 
@@ -21,13 +24,97 @@ namespace robot.dad.game
     {
         public void TestNoise()
         {
-            
+            int maxX = 80, maxY = 80;
+            float[,] noiseMap = Simplex.Noise.Calc2D(maxX, maxY, 0.05f);
+            int maxNoise = 0;
+            int minNoise = 255;
+            for (int y = 0; y < maxY; y++)
+            {
+                for (int x = 0; x < maxX; x++)
+                {
+                    int noiseVal = (int) noiseMap[x, y];
+                    if (noiseVal > maxNoise)
+                        maxNoise = noiseVal;
+
+                    if (noiseVal < minNoise)
+                        minNoise = noiseVal;
+                    char terrain = GetTerrainType(noiseVal);
+                    Console.BackgroundColor = GetTerrainColor(terrain);
+                    Console.Write(terrain);
+
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine(maxNoise);
+            Console.WriteLine(minNoise);
+        }
+
+        public ConsoleColor GetTerrainColor(char terrain)
+        {
+            ConsoleColor returnColor = ConsoleColor.Blue;
+            switch (terrain)
+            {
+                case 'b':
+                    returnColor = ConsoleColor.Yellow;
+                    break;
+                case 'g':
+                    returnColor = ConsoleColor.Green;
+                    break;
+                case 'f':
+                    returnColor = ConsoleColor.DarkGreen;
+                    break;
+                case 'j':
+                    returnColor = ConsoleColor.DarkMagenta;
+                    break;
+                case 'd':
+                    returnColor = ConsoleColor.DarkYellow;
+                    break;
+                case 'm':
+                    returnColor = ConsoleColor.Gray;
+                    break;
+                case 'w':
+                    returnColor = ConsoleColor.Blue;
+                    break;
+            }
+            return returnColor;
+        }
+
+
+
+        public char GetTerrainType(int noise)
+        {
+            char terrain = 'w';
+            if (75 < noise && noise <= 100)
+            {
+                terrain = 'b';
+            }
+            if (100 < noise && noise <= 175)
+            {
+                terrain = 'g';
+            }
+            if (175 < noise && noise <= 200)
+            {
+                terrain = 'f';
+            }
+            if (200 < noise && noise <= 215)
+            {
+                terrain = 'j';
+            }
+            if (215 < noise && noise <= 225)
+            {
+                terrain = 'd';
+            }
+            if (225 < noise && noise <= 255)
+            {
+                terrain = 'm';
+            }
+            return terrain;
         }
     }
 
     public class CombatDemo
     {
-        
+
         List<Combattant> _participants = new List<Combattant>
             {
                 new Human("Tommie", "nygren", MovePickers.RandomPicker),
