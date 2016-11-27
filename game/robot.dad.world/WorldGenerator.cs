@@ -8,14 +8,14 @@ namespace robot.dad.world
     /// </summary>
     public class World
     {
-        private Dictionary<MapKey, MapTile> Map => new Dictionary<MapKey, MapTile>();
+        private Dictionary<HexMapKey, MapTile> Map => new Dictionary<HexMapKey, MapTile>();
 
         public MapTile GetMapTileAt(long x, long y)
         {
-            return GetMapTileForKey(new MapKey(x, y));
+            return GetMapTileForKey(new HexMapKey(x, y));
         }
 
-        public MapTile GetMapTileForKey(MapKey key)
+        public MapTile GetMapTileForKey(HexMapKey key)
         {
             if (!Map.ContainsKey(key))
             {
@@ -28,7 +28,7 @@ namespace robot.dad.world
     class WorldGenerator
     {
 
-        public static MapTile GenerateTileForKey(MapKey key)
+        public static MapTile GenerateTileForKey(HexMapKey key)
         {
             return new MapTile(key, MapTileType.Grassland);
         }
