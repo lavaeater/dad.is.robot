@@ -20,6 +20,11 @@ namespace robot.dad.game
         }
     }
 
+    public class OtterTest
+    {
+        
+    }
+
     public enum TerrainType
     {
         Ocean,
@@ -54,7 +59,7 @@ namespace robot.dad.game
             Noise.Seed = 12;
             int xMax = 80;
             int yMax = 800;
-            float scale = 0.05f;
+            float scale = 0.01f;
             for (int y = 0; y < yMax; y++)
             {
                 for (int x = 0; x < xMax; x++)

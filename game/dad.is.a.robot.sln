@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.worldbuilder", "r
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplexNoise", "SimplexNoise\SimplexNoise.csproj", "{733B3143-822A-41B7-A021-9BF7AE84C2D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.graphics", "robot.dad.graphics\robot.dad.graphics.csproj", "{D5B98C37-3714-4935-A61C-B467011E25DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,18 @@ Global
 		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.Release|x86.ActiveCfg = Release|Any CPU
 		{733B3143-822A-41B7-A021-9BF7AE84C2D5}.Release|x86.Build.0 = Release|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.Debug|x86.Build.0 = Debug|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.NuGet|Any CPU.ActiveCfg = Release|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.NuGet|Any CPU.Build.0 = Release|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.NuGet|x86.ActiveCfg = Release|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.NuGet|x86.Build.0 = Release|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.Release|x86.ActiveCfg = Release|Any CPU
+		{D5B98C37-3714-4935-A61C-B467011E25DA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
