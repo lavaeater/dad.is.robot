@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Otter;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using robot.dad.combat;
@@ -11,12 +12,15 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
+            var game = new Game("Dad is a Robot", 3200, 1800, 60, true);
+            game.Start();
+
             //var demo = new CombatDemo();
             //demo.StartGame();
 
-            var noise = new NoiseTest();
-            noise.OtherNoiseTest();
-            Console.ReadKey();
+            //var noise = new NoiseTest();
+            //noise.OtherNoiseTest();
+            //Console.ReadKey();
         }
     }
 
