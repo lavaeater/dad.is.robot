@@ -1,5 +1,4 @@
-﻿using Otter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +10,6 @@ namespace robot.dad.graphics
     {
         public void Something()
         {
-            var entity = new Entity();
-            entity.AddGraphic(Image.)
         }
     }
 }
