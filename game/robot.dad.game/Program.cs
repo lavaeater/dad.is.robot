@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Otter.Custom;
 using robot.dad.combat;
 using robot.dad.combat.MoveResolvers;
 using Simplex;
@@ -13,7 +14,17 @@ namespace robot.dad.game
         static void Main(string[] args)
         {
             var game = new Game("Dad is a Robot", 3200, 1800, 60, true);
-            game.Start();
+            var hexMap = new HexTileMap(3200, 1800, 65, "Terrain\\hexagonTerrain_sheet.xml");
+            hexMap.AddTile(900, 900);
+
+            var scene = new Scene();
+            scene.AddGraphic(hexMap);
+            hexMap.AddTile(500, 500);
+            hexMap.AddTile(1200, 1200);
+            hexMap.AddTile(100, 100);
+
+
+            game.Start(scene);
 
             //var demo = new CombatDemo();
             //demo.StartGame();
@@ -24,9 +35,22 @@ namespace robot.dad.game
         }
     }
 
-    public class OtterTest
+    public class HexMap : Graphic
     {
-        
+    }
+
+    public class ImageEntity : Entity
+    {
+        public ImageEntity(float x, float y, string imagePath) : base(x, y)
+        {
+            // Create an Image using the path passed in with the constructor
+            var image = new Image(imagePath);
+            // Center the origin of the Image
+            image.CenterOrigin();
+            // Add the Image to the Entity's Graphic list.
+            AddGraphic(image);
+        }
+
     }
 
     public enum TerrainType

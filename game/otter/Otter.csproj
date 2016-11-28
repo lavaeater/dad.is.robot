@@ -105,6 +105,7 @@
     <Compile Include="Components\Vertebrae.cs" />
     <Compile Include="Core\Entity.cs" />
     <Compile Include="Core\Game.cs" />
+    <Compile Include="Custom\HexTileMap.cs" />
     <Compile Include="Graphics\Anim.cs" />
     <Compile Include="Graphics\Atlas.cs" />
     <Compile Include="Graphics\Drawables\GraphicList.cs" />
@@ -217,6 +218,12 @@
     <None Include="libsndfile-1.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HexGrid\HexGrid.csproj">
+      <Project>{730ce1a8-6f93-424d-aaf1-057182bc21ef}</Project>
+      <Name>HexGrid</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
