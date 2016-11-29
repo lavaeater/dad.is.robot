@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using ca.axoninteractive.Geometry.Hex;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SFML.Graphics;
 using SFML.System;
 
@@ -16,22 +20,26 @@ namespace Otter.Custom
         private Dictionary<CubicHexCoord, HexTileInfo> _hexes;
         private HexAtlas _hexAtlas;
 
-        public HexTileMap(int viewPortWidth, int viewPortHeight, float hexRadius, string atlasFile)
+        public HexTileMap(int viewPortWidth, int viewPortHeight, float hexRadius, string atlasFile) :this(viewPortWidth, viewPortHeight,hexRadius, new HexAtlas(atlasFile))
+        {
+        }
+
+        public HexTileMap(int viewPortWidth, int viewPortHeight, float hexRadius, HexAtlas atlas)
         {
             _viewPortWidth = viewPortWidth;
             _viewPortHeight = viewPortHeight;
             _hexRadius = hexRadius;
             _hexGrid = new HexGrid(_hexRadius);
-            _hexAtlas = new HexAtlas(atlasFile);
+            _hexAtlas = atlas;
             SetTexture(_hexAtlas.Texture);
-            
+
             _hexes = new Dictionary<CubicHexCoord, HexTileInfo>();
         }
-
-        public void AddTile(float x, float y)
+        
+        public void AddTile(int x, int y, string textureName)
         {
-            CubicHexCoord coord = _hexGrid.PointToCubic(new Vec2D(x, y));
-            _hexes.Add(coord, new HexTileInfo(x,y, coord, _hexAtlas.GetAtlasTexture("dirt_01.png")));
+            CubicHexCoord hexCoord = new AxialHexCoord(x, y).ToCubic();
+            _hexes.Add(hexCoord, new HexTileInfo(hexCoord, _hexGrid, _hexAtlas.GetAtlasTexture(textureName)));
             NeedsUpdate = true;
         }
 
@@ -59,17 +67,17 @@ namespace Otter.Custom
 
     public class HexTileInfo
     {
-        private readonly float _x;
-        private readonly float _y;
+        private readonly HexGrid _hexGrid;
         private readonly float _w;
         private readonly float _h;
+        private Vec2D _position;
         public CubicHexCoord HexCoord { get; private set; }
         public HexAtlasTexture Texture { get; private set; }
 
-        public HexTileInfo(float x, float y, CubicHexCoord hexCoord, HexAtlasTexture texture)
+        public HexTileInfo(CubicHexCoord hexCoord, HexGrid hexGrid, HexAtlasTexture texture)
         {
-            _x = x;
-            _y = y;
+            _position = hexGrid.CubicToPoint(hexCoord);
+            _hexGrid = hexGrid;
             HexCoord = hexCoord;
             Texture = texture;
         }
@@ -77,7 +85,7 @@ namespace Otter.Custom
         internal Vertex CreateVertex(int x = 0, int y = 0, int tx = 0, int ty = 0)
         {
             var tileColor = new Color(SFML.Graphics.Color.White);
-            return new Vertex(new Vector2f(_x + x, _y + y), tileColor.SFMLColor, new Vector2f(Texture.X + tx, Texture.Y + ty));
+            return new Vertex(new Vector2f(_position.x + x, _position.y + y), tileColor.SFMLColor, new Vector2f(Texture.X + tx, Texture.Y + ty));
         }
 
         internal void AppendVertices(VertexArray array)
@@ -96,6 +104,7 @@ namespace Otter.Custom
 
         readonly Dictionary<string, HexAtlasTexture> _subtextures = new Dictionary<string, HexAtlasTexture>();
         public Texture Texture { get; private set; }
+        public IEnumerable<string> TextureNames => _subtextures.Keys;
 
         #endregion
 
@@ -129,11 +138,7 @@ namespace Otter.Custom
 
         #region Public Methods
 
-        /// <summary>
-        /// Add another atlas to the collection of textures.  Duplicate names will destroy this.
-        /// </summary>
-        /// <param name="source">The relative path to the data file.  The png should be in the same directory.</param>
-        public HexAtlas Add(string source)
+        public HexAtlas AddXml(string source)
         {
             var xml = new XmlDocument();
             xml.Load(source);
@@ -166,6 +171,52 @@ namespace Otter.Custom
                         //atext.FrameY = e.AttributeInt("frameY", 0);
                         _subtextures.Add(e.AttributeString("name"), atext);
                     }
+                }
+            }
+            return this;
+
+        }
+
+        /// <summary>
+        /// Add another atlas to the collection of textures.  Duplicate names will destroy this.
+        /// </summary>
+        /// <param name="source">The relative path to the data file.  The png should be in the same directory.</param>
+        public HexAtlas Add(string source)
+        {
+            if (Path.GetExtension(source).Contains("xml"))
+            {
+                return AddXml(source);
+            }
+            else if (Path.GetExtension(source).Contains("json"))
+            {
+                return AddJson(source);
+            }
+            throw new NotSupportedException("The file format is not supported");
+        }
+
+        private HexAtlas AddJson(string source)
+        {
+            var json = File.ReadAllText(source);
+            string folder = Path.GetDirectoryName(source);
+            JObject data = JObject.Parse(json);
+            var textureFilePath = (string) data["meta"]["image"];
+            Texture = new Texture(Path.Combine(folder, textureFilePath), true);
+            var frames = data["frames"];
+            foreach (JProperty frame in frames)
+            {
+                var name = frame.Name;
+                var textureData = frame.Children()["frame"].First();
+                if (!_subtextures.ContainsKey(name))
+                {
+                    var atext = new HexAtlasTexture
+                    {
+                        Name = name,
+                        X = (int)textureData["x"],
+                        Y = (int)textureData["y"],
+                        Width = (int)textureData["w"],
+                        Height= (int)textureData["h"]
+                    };
+                    _subtextures.Add(name, atext);
                 }
             }
             return this;

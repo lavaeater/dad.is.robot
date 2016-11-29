@@ -413,7 +413,7 @@ namespace ca.axoninteractive.Geometry.Hex
 
 		
 		/// <summary>
-		/// Returns an array of CubicHexCoords of a area centering around this hex and extending in 
+		/// Returns an array of CubicHexCoor<ds of a area centering around this hex and extending in 
 		/// every direction up to the given range. The hexes are ordered starting from the maximum 
 		/// range, in the given direction, spiraling inward in a clockwise direction until the 
 		/// center is reached (and is the last element in the array).

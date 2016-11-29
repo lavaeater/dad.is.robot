@@ -1,11 +1,6 @@
 ﻿using Otter;
-using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Otter.Custom;
-using robot.dad.combat;
-using robot.dad.combat.MoveResolvers;
-using Simplex;
 
 namespace robot.dad.game
 {
@@ -14,14 +9,40 @@ namespace robot.dad.game
         static void Main(string[] args)
         {
             var game = new Game("Dad is a Robot", 3200, 1800, 60, true);
-            var hexMap = new HexTileMap(3200, 1800, 65, "Terrain\\hexagonTerrain_sheet.xml");
-            hexMap.AddTile(900, 900);
+            string atlasFile = "Terrain\\terrain.json";
+            var hexAtlas = new HexAtlas(atlasFile);
+            var hexMap = new HexTileMap(3200, 1800, 65, hexAtlas);
+            var terrainEngine = new TerrainEngine(12, 0.01f, 0.1f);
+
+            var width = 3200/120;
+            var height = 1800/140;
+            var tiles = width*height;
+
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i < tiles; i++)
+            {
+                if (i%width == 0)
+                {
+                    y++;
+                    if (y%2 == 0)
+                    {
+                        x = 0 - y ;
+                    }
+                    else
+                    {
+                        x = 0 - y / 2;
+                    }
+                }
+                var terrainType = terrainEngine.GetTerrainTypeForCoord(x, y);
+                string textureName = Terrain.GetTextureName(terrainType);
+
+                hexMap.AddTile(x, y, textureName);
+                x++;
+            }
 
             var scene = new Scene();
             scene.AddGraphic(hexMap);
-            hexMap.AddTile(500, 500);
-            hexMap.AddTile(1200, 1200);
-            hexMap.AddTile(100, 100);
 
 
             game.Start(scene);
@@ -29,14 +50,10 @@ namespace robot.dad.game
             //var demo = new CombatDemo();
             //demo.StartGame();
 
-            //var noise = new NoiseTest();
+            //var noise = new TerrainEngine();
             //noise.OtherNoiseTest();
             //Console.ReadKey();
         }
-    }
-
-    public class HexMap : Graphic
-    {
     }
 
     public class ImageEntity : Entity
@@ -51,217 +68,5 @@ namespace robot.dad.game
             AddGraphic(image);
         }
 
-    }
-
-    public enum TerrainType
-    {
-        Ocean,
-        Beach,
-        Scorched,
-        Bare,
-        Tundra,
-        Snow,
-        TemperateDesert,
-        ShrubLand,
-        Taiga,
-        GrassLand,
-        TemperateForest,
-        TemperateRainForest,
-        SubTropicalDesert,
-        TropicalSeasonalForest,
-        TropicalRainForest
-    }
-
-    public class NoiseTest
-    {
-        public float ForceRange(float value, float newMin, float newMax)
-        {
-            float oldMin = 14;
-            float oldMax = 241;
-            float newValue = ((value - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin;
-            return newValue;
-        }
-
-        public void OtherNoiseTest()
-        {
-            Noise.Seed = 12;
-            int xMax = 80;
-            int yMax = 800;
-            float scale = 0.01f;
-            for (int y = 0; y < yMax; y++)
-            {
-                for (int x = 0; x < xMax; x++)
-                {
-                    int elevation = (int)ForceRange(Noise.CalcPixel2D(x, y, scale), 0, 100);
-                    int moisture = (int)ForceRange(Noise.CalcPixel2D(x, y, 0.1f), 0, 100);
-                    TerrainType terrainType = GetTerrainType(elevation, moisture);
-                    Console.BackgroundColor = GetTerrainBackColor(terrainType);
-                    Console.ForegroundColor = GetTerrainForeColor(terrainType);
-                    Console.Write('X');
-                    Console.BackgroundColor = ConsoleColor.Black;
-                }
-                Console.WriteLine();
-            }
-        }
-
-        private ConsoleColor GetTerrainForeColor(TerrainType terrainType)
-        {
-            switch (terrainType)
-            {
-                case TerrainType.Ocean:
-                    return ConsoleColor.Blue;
-                case TerrainType.Beach:
-                    return ConsoleColor.DarkYellow;
-                case TerrainType.GrassLand:
-                    return ConsoleColor.DarkGreen;
-                case TerrainType.Scorched:
-                    return ConsoleColor.Gray;
-                case TerrainType.ShrubLand:
-                    return ConsoleColor.DarkGray;
-                case TerrainType.SubTropicalDesert:
-                    return ConsoleColor.White;
-                case TerrainType.TemperateDesert:
-                    return ConsoleColor.DarkYellow;
-                case TerrainType.TemperateForest:
-                    return ConsoleColor.DarkRed;
-                case TerrainType.TemperateRainForest:
-                    return ConsoleColor.Magenta;
-                case TerrainType.TropicalRainForest:
-                    return ConsoleColor.Yellow;
-                case TerrainType.TropicalSeasonalForest:
-                    return ConsoleColor.DarkRed;
-                case TerrainType.Bare:
-                    return ConsoleColor.DarkGray;
-                case TerrainType.Snow:
-                    return ConsoleColor.White;
-                case TerrainType.Taiga:
-                    return ConsoleColor.DarkYellow;
-                case TerrainType.Tundra:
-                    return ConsoleColor.DarkGreen;
-                default:
-                    return ConsoleColor.Black;
-            }
-        }
-
-        private ConsoleColor GetTerrainBackColor(TerrainType terrainType)
-        {
-            switch (terrainType)
-            {
-                case TerrainType.Ocean:
-                    return ConsoleColor.DarkBlue;
-                case TerrainType.Beach:
-                    return ConsoleColor.Yellow;
-                case TerrainType.GrassLand:
-                    return ConsoleColor.Green;
-                case TerrainType.Scorched:
-                    return ConsoleColor.DarkYellow;
-                case TerrainType.ShrubLand:
-                    return ConsoleColor.DarkGreen;
-                case TerrainType.SubTropicalDesert:
-                    return ConsoleColor.DarkYellow;
-                case TerrainType.TemperateDesert:
-                    return ConsoleColor.Yellow;
-                case TerrainType.TemperateForest:
-                    return ConsoleColor.DarkGreen;
-                case TerrainType.TemperateRainForest:
-                    return ConsoleColor.Green;
-                case TerrainType.TropicalRainForest:
-                    return ConsoleColor.Green;
-                case TerrainType.TropicalSeasonalForest:
-                    return ConsoleColor.DarkGreen;
-                case TerrainType.Bare:
-                    return ConsoleColor.Gray;
-                case TerrainType.Snow:
-                    return ConsoleColor.White;
-                case TerrainType.Taiga:
-                    return ConsoleColor.Gray;
-                case TerrainType.Tundra:
-                    return ConsoleColor.Gray;
-                default:
-                    return ConsoleColor.Black;
-            }
-        }
-
-        public TerrainType GetTerrainType(int elevation, int moisture)
-        {
-            TerrainType terrain = TerrainType.Ocean;
-            if (15 < elevation && elevation <= 20)
-            {
-                terrain = TerrainType.Beach;
-            }
-            if (20 < elevation && elevation <= 40)
-            {
-                terrain = TerrainType.TropicalRainForest;
-                if (0 < moisture && moisture <= 16)
-                    terrain = TerrainType.SubTropicalDesert;
-                if (16 < moisture && moisture <= 33)
-                    terrain = TerrainType.GrassLand;
-                if (33 < moisture && moisture <= 66)
-                    terrain = TerrainType.TropicalSeasonalForest;
-            }
-            if (40 < elevation && elevation <= 75)
-            {
-                terrain = TerrainType.TemperateRainForest;
-                if (0 < moisture && moisture <= 16)
-                    terrain = TerrainType.TemperateDesert;
-                if (16 < moisture && moisture <= 50)
-                    terrain = TerrainType.GrassLand;
-                if (50 < moisture && moisture <= 83)
-                    terrain = TerrainType.TemperateForest;
-            }
-            if (75 < elevation && elevation <= 90)
-            {
-                terrain = TerrainType.Taiga;
-                if (0 < moisture && moisture <= 33)
-                    terrain = TerrainType.TemperateDesert;
-                if (33 < moisture && moisture <= 66)
-                    terrain = TerrainType.ShrubLand;
-            }
-            if (90 < elevation && elevation <= 100)
-            {
-                terrain = TerrainType.Snow;
-                if (0 < moisture && moisture <= 10)
-                    terrain = TerrainType.Scorched;
-                if (10 < moisture && moisture <= 20)
-                    terrain = TerrainType.Bare;
-                if (20 < moisture && moisture <= 50)
-                    terrain = TerrainType.Tundra;
-            }
-            return terrain;
-        }
-    }
-
-    public class CombatDemo
-    {
-
-        List<Combattant> _participants = new List<Combattant>
-            {
-                new Human("Tommie", "nygren", MovePickers.RandomPicker),
-                new Human("Lisa", "nygren", MovePickers.RandomPicker),
-                new Human("Freja", "nygren", MovePickers.RandomPicker),
-                new Human("Anja", "nygren", MovePickers.RandomPicker, new List<CombatMove>()
-                {
-                    new CombatMove("Läka sår", CombatMoveType.Healing, 10, 5, 15, "helar", Resolvers.HealingResolver)
-                }),
-                new Monster("Snarfor", 30, 90, 10, 5, "nygren", new List<CombatMove>()
-                {
-                    new CombatMove("Vattenförmåga", CombatMoveType.Attack, 0, 5, 10, "vattenspruta", Resolvers.AttackResolver)
-                }, MovePickers.RandomPicker),
-                new Monster("Gargelbarg", 200, 60, 0, 5, "gargelbarg", new List<CombatMove>()
-                {
-                    new CombatMove("GargelBett", CombatMoveType.Attack, 15, 12, 25, "gargelbita", Resolvers.AttackResolver)
-                }, MovePickers.RandomPicker),
-                new Monster("Fyrkantsmonster", 100, 40, 30, 10, "gargelbarg", new List<CombatMove>()
-                {
-                    new CombatMove("Hypno", CombatMoveType.Special, -10, "hypnotisera", Resolvers.HypnosisResolver)
-                }, MovePickers.RandomPicker)
-            };
-
-        public void StartGame()
-        {
-            var ce = new CombatEngine(_participants);
-            ce.StartCombat();
-            Console.ReadKey();
-        }
     }
 }

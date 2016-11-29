@@ -93,6 +93,11 @@ namespace ca.axoninteractive.Geometry.Hex
 
 			return new Vec2D( x, y );
 		}
+
+	    public Vec2D CubicToPoint(CubicHexCoord hex)
+	    {
+	        return AxialToPoint(hex.ToAxial());
+	    }
 		
 		/// <summary>
 		/// Get the point on the x-z cartesian plane where the center of the given hex is located.
