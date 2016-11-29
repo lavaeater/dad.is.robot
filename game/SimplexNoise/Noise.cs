@@ -49,7 +49,8 @@ namespace Simplex
             return Generate(x * scale, y * scale) * 128 + 128;
         }
 
-        float CalcPixel3D(int x, int y, int z, float scale)
+
+        public static float CalcPixel3D(int x, int y, int z, float scale)
         {
             return Generate(x * scale, y * scale, z * scale) * 128 + 128;
         }

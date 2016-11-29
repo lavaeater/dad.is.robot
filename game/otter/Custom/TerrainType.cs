@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace robot.dad.game
+namespace Otter.Custom
 {
     public enum TerrainType
     {

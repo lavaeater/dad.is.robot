@@ -1,6 +1,5 @@
 ﻿using Otter;
 using System.Runtime.CompilerServices;
-using Otter.Custom;
 
 namespace robot.dad.game
 {
@@ -8,65 +7,29 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
-            var game = new Game("Dad is a Robot", 3200, 1800, 60, true);
+
+            var game = new Game("Dad is a Robot", 1600, 900, 60, false);
             string atlasFile = "Terrain\\terrain.json";
-            var hexAtlas = new HexAtlas(atlasFile);
-            var hexMap = new HexTileMap(3200, 1800, 65, hexAtlas);
-            var terrainEngine = new TerrainEngine(12, 0.01f, 0.1f);
 
-            var width = 3200/120;
-            var height = 1800/140;
-            var tiles = width*height;
+           
+            var player = new Player(800, 450, "Sprites\\spaceShips_003.png");
 
-            int x = 0;
-            int y = 0;
-            for (int i = 0; i < tiles; i++)
-            {
-                if (i%width == 0)
-                {
-                    y++;
-                    if (y%2 == 0)
-                    {
-                        x = 0 - y ;
-                    }
-                    else
-                    {
-                        x = 0 - y / 2;
-                    }
-                }
-                var terrainType = terrainEngine.GetTerrainTypeForCoord(x, y);
-                string textureName = Terrain.GetTextureName(terrainType);
+            Global.PlayerOne = game.AddSession("playerone");
+            Global.PlayerOne.Controller.AddButton(Controls.Up);
+            Global.PlayerOne.Controller.AddButton(Controls.Down);
+            Global.PlayerOne.Controller.AddButton(Controls.Left);
+            Global.PlayerOne.Controller.AddButton(Controls.Right);
 
-                hexMap.AddTile(x, y, textureName);
-                x++;
-            }
+            Global.PlayerOne.Controller.Button(Controls.Up).AddKey(Key.Up);
+            Global.PlayerOne.Controller.Button(Controls.Down).AddKey(Key.Down);
+            Global.PlayerOne.Controller.Button(Controls.Left).AddKey(Key.Left);
+            Global.PlayerOne.Controller.Button(Controls.Right).AddKey(Key.Right);
 
-            var scene = new Scene();
-            scene.AddGraphic(hexMap);
-
-
+            var background = new HexBackGround(atlasFile);
+            var scene = new MainScene(Global.PlayerOne);
+            scene.Add(background);
+            scene.Add(player);
             game.Start(scene);
-
-            //var demo = new CombatDemo();
-            //demo.StartGame();
-
-            //var noise = new TerrainEngine();
-            //noise.OtherNoiseTest();
-            //Console.ReadKey();
         }
-    }
-
-    public class ImageEntity : Entity
-    {
-        public ImageEntity(float x, float y, string imagePath) : base(x, y)
-        {
-            // Create an Image using the path passed in with the constructor
-            var image = new Image(imagePath);
-            // Center the origin of the Image
-            image.CenterOrigin();
-            // Add the Image to the Entity's Graphic list.
-            AddGraphic(image);
-        }
-
     }
 }

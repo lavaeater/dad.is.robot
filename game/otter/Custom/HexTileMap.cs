@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Xml;
 using ca.axoninteractive.Geometry.Hex;
 using Newtonsoft.Json;
@@ -19,23 +20,30 @@ namespace Otter.Custom
         private HexGrid _hexGrid;
         private Dictionary<CubicHexCoord, HexTileInfo> _hexes;
         private HexAtlas _hexAtlas;
+        private readonly TerrainEngine _terrainEngine;
 
-        public HexTileMap(int viewPortWidth, int viewPortHeight, float hexRadius, string atlasFile) :this(viewPortWidth, viewPortHeight,hexRadius, new HexAtlas(atlasFile))
+        public HexTileMap(float hexRadius, string atlasFile, TerrainEngine terrainEngine) :this(hexRadius, new HexAtlas(atlasFile), terrainEngine)
         {
         }
 
-        public HexTileMap(int viewPortWidth, int viewPortHeight, float hexRadius, HexAtlas atlas)
+        public HexTileMap(float hexRadius, HexAtlas atlas, TerrainEngine terrainEngine)
         {
-            _viewPortWidth = viewPortWidth;
-            _viewPortHeight = viewPortHeight;
             _hexRadius = hexRadius;
             _hexGrid = new HexGrid(_hexRadius);
             _hexAtlas = atlas;
+            _terrainEngine = terrainEngine;
             SetTexture(_hexAtlas.Texture);
 
             _hexes = new Dictionary<CubicHexCoord, HexTileInfo>();
+            Scale = 3.0f; // keep it "simple" for now
         }
-        
+
+        public void AddTile(CubicHexCoord coord, string textureName)
+        {
+            _hexes.Add(coord, new HexTileInfo(coord, _hexGrid, _hexAtlas.GetAtlasTexture(textureName)));
+            NeedsUpdate = true;
+        }
+
         public void AddTile(int x, int y, string textureName)
         {
             CubicHexCoord hexCoord = new AxialHexCoord(x, y).ToCubic();
@@ -53,7 +61,6 @@ namespace Otter.Custom
         {
             base.UpdateDrawable();
             SFMLVertices.Clear();
-
             foreach (var tile in VisibleTiles())
             {
                 //tile.tilemapColor.R = Color.R;
@@ -62,6 +69,52 @@ namespace Otter.Custom
                 //tile.tilemapColor.A = Color.A;
                 tile.AppendVertices(SFMLVertices);
             }
+        }
+
+        public void Map(int startQ, int startR, int mapHeight, int mapWidth)
+        {
+            for (int r = startR; r < mapWidth + startR; r++)
+            {
+                int r_offset = r >> 1;//(int)Math.Floor((double)r / 2); // or r>>1
+                for (int q = startQ -r_offset; q < mapHeight - r_offset + startQ; q++)
+                {
+                    var hexcoord = new CubicHexCoord(q,r, -q-r);
+                    if (!_hexes.ContainsKey(hexcoord))
+                    {
+                        var terrainType = _terrainEngine.GetTerrainTypeForCoord(hexcoord.x, hexcoord.y);
+                        string textureName = Terrain.GetTextureName(terrainType);
+
+                        AddTile(hexcoord, textureName);
+                    }
+                }
+            }
+        }
+
+        public void CreateHexes(float x, float y)
+        {
+            var hex = _hexGrid.PointToCubic(new Vec2D(x, y));
+            foreach (var cubicHexCoord in hex.AreaAround(20))
+            {
+                if (!_hexes.ContainsKey(cubicHexCoord))
+                {
+                    var terrainType = _terrainEngine.GetTerrainTypeForCoord(cubicHexCoord.x, cubicHexCoord.y);
+                    string textureName = Terrain.GetTextureName(terrainType);
+
+                    AddTile(cubicHexCoord, textureName);
+                }
+            }
+        }
+
+        public void CreateHexes(Rectangle bounds)
+        {
+            //1. Top Left
+            var topLeft = _hexGrid.PointToCubic(new Vec2D(bounds.Left, bounds.Top));
+            var bottomRight = _hexGrid.PointToCubic(new Vec2D(bounds.Right, bounds.Bottom));
+
+
+            //2. Bottom Right
+            Map( topLeft.x, topLeft.y, bottomRight.x - topLeft.x, topLeft.y - bottomRight.y);
+            //Everyone in between! Yay
         }
     }
 
