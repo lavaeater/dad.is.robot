@@ -1,4 +1,5 @@
-﻿using Otter;
+﻿using System;
+using Otter;
 using System.Runtime.CompilerServices;
 
 namespace robot.dad.game
@@ -8,7 +9,7 @@ namespace robot.dad.game
         static void Main(string[] args)
         {
 
-            var game = new Game("Dad is a Robot", 1600, 900, 60, true);
+            var game = new Game("Dad is a Robot", 1600, 900, 60, false);
             string atlasFile = "Terrain\\terrain.json";
 
            
@@ -25,10 +26,11 @@ namespace robot.dad.game
             Global.PlayerOne.Controller.Button(Controls.Left).AddKey(Key.Left);
             Global.PlayerOne.Controller.Button(Controls.Right).AddKey(Key.Right);
 
-            var background = new HexBackGround(atlasFile, 69, 4, 15);
+            var background = new HexBackGround(atlasFile, 69, 2, 5);
             var scene = new MainScene(Global.PlayerOne);
-            scene.Add(background);
+            scene.AddBackGround(background);
             scene.Add(player);
+            game.OnEnd = () => background.SaveMap("map.json");
             game.Start(scene);
         }
     }

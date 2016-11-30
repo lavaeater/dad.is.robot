@@ -37,5 +37,13 @@ namespace robot.dad.game
             CameraX += _speed.X;
             CameraY += _speed.Y;
         }
+
+        public void AddBackGround(HexBackGround background)
+        {
+            base.Add(background);
+            BackGround = background;
+        }
+
+        public HexBackGround BackGround { get; set; }
     }
 }

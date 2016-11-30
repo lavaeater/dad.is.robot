@@ -105,6 +105,11 @@ namespace Otter.Custom
 
             AddTile(cubicHexCoord, textureName);
         }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(_hexes);
+        }
     }
 
     public class HexTileInfo

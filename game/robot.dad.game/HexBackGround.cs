@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using ca.axoninteractive.Geometry.Hex;
@@ -58,6 +59,13 @@ namespace robot.dad.game
             int left = Scene.CameraBounds.Left;
             int top = Scene.CameraBounds.Top;
 
+
+        }
+
+        public void SaveMap(string fileName)
+        {
+            string json = _hexMap.ToJson();
+            File.WriteAllText(fileName, json);
 
         }
     }
