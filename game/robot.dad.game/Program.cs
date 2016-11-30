@@ -8,7 +8,7 @@ namespace robot.dad.game
         static void Main(string[] args)
         {
 
-            var game = new Game("Dad is a Robot", 1600, 900, 60, false);
+            var game = new Game("Dad is a Robot", 1600, 900, 60, true);
             string atlasFile = "Terrain\\terrain.json";
 
            

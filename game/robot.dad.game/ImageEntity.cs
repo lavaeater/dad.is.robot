@@ -10,6 +10,7 @@ namespace robot.dad.game
             var image = new Image(imagePath);
             // Center the origin of the Image
             image.CenterOrigin();
+            image.Scale = 0.5f;
             // Add the Image to the Entity's Graphic list.
             AddGraphic(image);
         }

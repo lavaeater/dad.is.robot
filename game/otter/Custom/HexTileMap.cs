@@ -35,7 +35,7 @@ namespace Otter.Custom
             SetTexture(_hexAtlas.Texture);
 
             _hexes = new Dictionary<CubicHexCoord, HexTileInfo>();
-            Scale = 3.0f; // keep it "simple" for now
+            Scale = 1.0f; // keep it "simple" for now
         }
 
         public void AddTile(CubicHexCoord coord, string textureName)

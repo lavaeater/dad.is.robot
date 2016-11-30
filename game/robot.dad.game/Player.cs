@@ -5,6 +5,7 @@
         public Player(float x, float y, string imagePath) : base (x, y, imagePath)
         {
             
+            
         }
 
         public override void Update()
