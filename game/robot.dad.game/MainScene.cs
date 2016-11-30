@@ -10,7 +10,7 @@ namespace robot.dad.game
         public MainScene(Session player)
         {
             _player = player;
-            _speed = new Speed(5);
+            _speed = new Speed(3);
             ApplyCamera = true;
         }
 
