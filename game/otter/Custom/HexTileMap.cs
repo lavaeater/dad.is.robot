@@ -14,54 +14,43 @@ namespace Otter.Custom
 {
     public class HexTileMap : Graphic
     {
-        private readonly int _viewPortWidth;
-        private readonly int _viewPortHeight;
-        private readonly float _hexRadius;
-        private HexGrid _hexGrid;
-        private Dictionary<CubicHexCoord, HexTileInfo> _hexes;
-        private HexAtlas _hexAtlas;
+        public readonly HexGrid HexGrid;
+        private readonly Dictionary<CubicHexCoord, HexTileInfo> _hexes;
+        private readonly HexAtlas _hexAtlas;
         private readonly TerrainEngine _terrainEngine;
+        private HexTileInfo[] _visibleTiles;
+        private readonly int _visibleRadius;
 
-        public HexTileMap(float hexRadius, string atlasFile, TerrainEngine terrainEngine) :this(hexRadius, new HexAtlas(atlasFile), terrainEngine)
+        public HexTileMap(float hexRadius, int visibleRadius, float scale, HexAtlas atlas, TerrainEngine terrainEngine)
         {
-        }
-
-        public HexTileMap(float hexRadius, HexAtlas atlas, TerrainEngine terrainEngine)
-        {
-            _hexRadius = hexRadius;
-            _hexGrid = new HexGrid(_hexRadius);
+            _visibleRadius = visibleRadius;
+            HexGrid = new HexGrid(hexRadius);
             _hexAtlas = atlas;
             _terrainEngine = terrainEngine;
             SetTexture(_hexAtlas.Texture);
 
             _hexes = new Dictionary<CubicHexCoord, HexTileInfo>();
-            Scale = 1.0f; // keep it "simple" for now
+            Scale = scale;
         }
 
         public void AddTile(CubicHexCoord coord, string textureName)
         {
-            _hexes.Add(coord, new HexTileInfo(coord, _hexGrid, _hexAtlas.GetAtlasTexture(textureName)));
+            _hexes.Add(coord, new HexTileInfo(coord, HexGrid, _hexAtlas.GetAtlasTexture(textureName)));
             NeedsUpdate = true;
         }
 
         public void AddTile(int x, int y, string textureName)
         {
             CubicHexCoord hexCoord = new AxialHexCoord(x, y).ToCubic();
-            _hexes.Add(hexCoord, new HexTileInfo(hexCoord, _hexGrid, _hexAtlas.GetAtlasTexture(textureName)));
+            _hexes.Add(hexCoord, new HexTileInfo(hexCoord, HexGrid, _hexAtlas.GetAtlasTexture(textureName)));
             NeedsUpdate = true;
-        }
-
-        private IEnumerable<HexTileInfo> VisibleTiles()
-        {
-            //TODO: Figure out which hexes are showing on screen riiight now.
-            return _hexes.Values;
         }
 
         protected override void UpdateDrawable()
         {
             base.UpdateDrawable();
             SFMLVertices.Clear();
-            foreach (var tile in VisibleTiles())
+            foreach (var tile in _visibleTiles)
             {
                 //tile.tilemapColor.R = Color.R;
                 //tile.tilemapColor.G = Color.G;
@@ -90,31 +79,31 @@ namespace Otter.Custom
             }
         }
 
-        public void CreateHexes(float x, float y)
+        public void CreateInitialHexes(float x, float y)
         {
-            var hex = _hexGrid.PointToCubic(new Vec2D(x, y));
-            foreach (var cubicHexCoord in hex.AreaAround(20))
+            UpdateVisibleTiles(HexGrid.PointToCubic(new Vec2D(x, y)));
+        }
+
+        public void UpdateVisibleTiles(CubicHexCoord currentPosition)
+        {
+            var visibleHexCoords = currentPosition.AreaAround(_visibleRadius);
+            foreach (var cubicHexCoord in visibleHexCoords)
             {
                 if (!_hexes.ContainsKey(cubicHexCoord))
                 {
-                    var terrainType = _terrainEngine.GetTerrainTypeForCoord(cubicHexCoord.x, cubicHexCoord.y);
-                    string textureName = Terrain.GetTextureName(terrainType);
-
-                    AddTile(cubicHexCoord, textureName);
+                    CreateAndAtTileAt(cubicHexCoord);
                 }
             }
+            _visibleTiles = visibleHexCoords.Select(coord => _hexes[coord]).ToArray();
+            NeedsUpdate = true;
         }
 
-        public void CreateHexes(Rectangle bounds)
+        private void CreateAndAtTileAt(CubicHexCoord cubicHexCoord)
         {
-            //1. Top Left
-            var topLeft = _hexGrid.PointToCubic(new Vec2D(bounds.Left, bounds.Top));
-            var bottomRight = _hexGrid.PointToCubic(new Vec2D(bounds.Right, bounds.Bottom));
+            var terrainType = _terrainEngine.GetTerrainTypeForCoord(cubicHexCoord.x, cubicHexCoord.y);
+            string textureName = Terrain.GetTextureName(terrainType);
 
-
-            //2. Bottom Right
-            Map( topLeft.x, topLeft.y, bottomRight.x - topLeft.x, topLeft.y - bottomRight.y);
-            //Everyone in between! Yay
+            AddTile(cubicHexCoord, textureName);
         }
     }
 

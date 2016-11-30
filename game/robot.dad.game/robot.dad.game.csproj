@@ -62,6 +62,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HexGrid\HexGrid.csproj">
+      <Project>{730CE1A8-6F93-424D-AAF1-057182BC21EF}</Project>
+      <Name>HexGrid</Name>
+    </ProjectReference>
     <ProjectReference Include="..\otter\Otter.csproj">
       <Project>{236485c2-a7ba-4dcd-808a-b3a634764402}</Project>
       <Name>Otter</Name>

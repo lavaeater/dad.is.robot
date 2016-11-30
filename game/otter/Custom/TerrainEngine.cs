@@ -38,7 +38,7 @@ namespace Otter.Custom
         public TerrainType GetTerrainType(int elevation, int moisture)
         {
             TerrainType terrain = TerrainType.Ocean;
-            if (15 < elevation && elevation <= 20)
+            if (17 < elevation && elevation <= 20)
             {
                 terrain = TerrainType.Beach;
             }
