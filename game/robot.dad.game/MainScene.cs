@@ -32,7 +32,6 @@ namespace robot.dad.game
             if (_player.Controller.Button(Controls.Left).Down)
             {
                 _speed.X--;
-                string something = "debug break;";
             }
             CameraX += _speed.X;
             CameraY += _speed.Y;

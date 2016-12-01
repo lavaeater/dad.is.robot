@@ -114,9 +114,7 @@ namespace Otter.Custom
 
     public class HexTileInfo
     {
-        private readonly HexGrid _hexGrid;
-        private readonly float _w;
-        private readonly float _h;
+//        private readonly HexGrid _hexGrid;
         private Vec2D _position;
         public CubicHexCoord HexCoord { get; private set; }
         public HexAtlasTexture Texture { get; private set; }
@@ -124,7 +122,6 @@ namespace Otter.Custom
         public HexTileInfo(CubicHexCoord hexCoord, HexGrid hexGrid, HexAtlasTexture texture)
         {
             _position = hexGrid.CubicToPoint(hexCoord);
-            _hexGrid = hexGrid;
             HexCoord = hexCoord;
             Texture = texture;
         }

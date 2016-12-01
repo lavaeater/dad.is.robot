@@ -9,6 +9,8 @@ namespace Otter.Custom
 {
     public class TerrainEngine
     {
+        private readonly Noise _terrainNoise;
+        private readonly Noise _moistureNoise;
         private readonly float _terrainScale;
         private readonly float _moistureScale;
 
@@ -16,7 +18,8 @@ namespace Otter.Custom
         {
             _terrainScale = terrainScale;
             _moistureScale = moistureScale;
-            Noise.Seed = seed;
+            _terrainNoise = new Noise(seed);
+            _moistureNoise = new Noise();
         }
 
         public float ForceRange(float value, float newMin, float newMax)
@@ -29,8 +32,8 @@ namespace Otter.Custom
 
         public TerrainType GetTerrainTypeForCoord(int x, int y)
         {
-            int elevation = (int) ForceRange(Noise.CalcPixel3D(x, y, 0, _terrainScale), 0, 100);
-            int moisture = (int) ForceRange(Noise.CalcPixel3D(x, y, 0, _moistureScale), 0, 100);
+            int elevation = (int) ForceRange(_terrainNoise.CalcPixel3D(x, y, 0, _terrainScale), 0, 100);
+            int moisture = (int) ForceRange(_moistureNoise.CalcPixel3D(x, y, 0, _moistureScale), 0, 100);
             TerrainType terrainType = GetTerrainType(elevation, moisture);
             return terrainType;
         }

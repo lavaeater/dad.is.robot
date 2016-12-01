@@ -36,7 +36,7 @@ namespace robot.dad.game
         {
             _boundRadius = boundRadius;
             _viewPortRadius = viewPortRadius;
-            _hexMap = new HexTileMap(hexRadius, _viewPortRadius, 1f, new HexAtlas(atlasFile), new TerrainEngine(12, 0.01f, 0.1f));
+            _hexMap = new HexTileMap(hexRadius, _viewPortRadius, 1f, new HexAtlas(atlasFile), new TerrainEngine(12, 0.05f, 0.07f));
 
             Graphic = _hexMap;
         }

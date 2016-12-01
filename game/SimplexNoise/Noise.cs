@@ -12,7 +12,7 @@ namespace Simplex
     /// </summary>
     public class Noise
     {
-        public static float[] Calc1D(int width, float scale)
+        public float[] Calc1D(int width, float scale)
         {
             float[] values = new float[width];
             for (int i = 0; i < width; i++)
@@ -20,7 +20,7 @@ namespace Simplex
             return values;
         }
 
-        public static float[,] Calc2D(int width, int height, float scale)
+        public float[,] Calc2D(int width, int height, float scale)
         {
             float[,] values = new float[width, height];
             for (int i = 0; i < width; i++)
@@ -29,7 +29,7 @@ namespace Simplex
             return values;
         }
 
-        public static float[, ,] Calc3D(int width, int height, int length, float scale)
+        public float[, ,] Calc3D(int width, int height, int length, float scale)
         {
             float[, ,] values = new float[width, height, length];
             for (int i = 0; i < width; i++)
@@ -44,24 +44,28 @@ namespace Simplex
             return Generate(x * scale) * 128 + 128;
         }
 
-        public static float CalcPixel2D(int x, int y, float scale)
+        public float CalcPixel2D(int x, int y, float scale)
         {
             return Generate(x * scale, y * scale) * 128 + 128;
         }
 
 
-        public static float CalcPixel3D(int x, int y, int z, float scale)
+        public float CalcPixel3D(int x, int y, int z, float scale)
         {
             return Generate(x * scale, y * scale, z * scale) * 128 + 128;
         }
 
-        static Noise()
+        public Noise(int seed = 0)
         {
             perm = new byte[permOriginal.Length];
-            Simplex.Noise.permOriginal.CopyTo(perm, 0);
+            permOriginal.CopyTo(perm, 0);
+            if (seed != 0)
+            {
+                Seed = seed;
+            }
         }
 
-        public static int Seed
+        public int Seed
         {
             get { return seed; }
             set
@@ -69,7 +73,7 @@ namespace Simplex
                 if (value == 0)
                 {
                     perm = new byte[permOriginal.Length];
-                    Simplex.Noise.permOriginal.CopyTo(perm, 0);
+                    permOriginal.CopyTo(perm, 0);
                 }
                 else
                 {
@@ -79,14 +83,14 @@ namespace Simplex
                 }
             }
         }
-        private static int seed = 0;
+        private int seed = 0;
 
         /// <summary>
         /// 1D simplex noise
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        internal static float Generate(float x)
+        internal float Generate(float x)
         {
             int i0 = FastFloor(x);
             int i1 = i0 + 1;
@@ -113,7 +117,7 @@ namespace Simplex
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        internal static float Generate(float x, float y)
+        internal float Generate(float x, float y)
         {
             const float F2 = 0.366025403f; // F2 = 0.5*(sqrt(3.0)-1.0)
             const float G2 = 0.211324865f; // G2 = (3.0-Math.sqrt(3.0))/6.0
@@ -183,7 +187,7 @@ namespace Simplex
         }
 
 
-        internal static float Generate(float x, float y, float z)
+        internal float Generate(float x, float y, float z)
         {
             // Simple skewing factors for the 3D case
             const float F3 = 0.333333333f;
@@ -286,9 +290,9 @@ namespace Simplex
             return 32.0f * (n0 + n1 + n2 + n3); // TODO: The scale factor is preliminary!
         }
 
-        private static byte[] perm;
+        private byte[] perm;
 
-        private static readonly byte[] permOriginal = new byte[]
+        private readonly byte[] permOriginal = new byte[]
         {
             151,160,137,91,90,15,
             131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
@@ -318,18 +322,18 @@ namespace Simplex
             138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180 
         };
 
-        private static int FastFloor(float x)
+        private int FastFloor(float x)
         {
             return (x > 0) ? ((int)x) : (((int)x) - 1);
         }
 
-        private static int Mod(int x, int m)
+        private int Mod(int x, int m)
         {
             int a = x % m;
             return a < 0 ? a + m : a;
         }
 
-        private static float grad(int hash, float x)
+        private float grad(int hash, float x)
         {
             int h = hash & 15;
             float grad = 1.0f + (h & 7);   // Gradient value 1.0, 2.0, ..., 8.0
@@ -337,7 +341,7 @@ namespace Simplex
             return (grad * x);           // Multiply the gradient with the distance
         }
 
-        private static float grad(int hash, float x, float y)
+        private float grad(int hash, float x, float y)
         {
             int h = hash & 7;      // Convert low 3 bits of hash code
             float u = h < 4 ? x : y;  // into 8 simple gradient directions,
@@ -345,7 +349,7 @@ namespace Simplex
             return ((h & 1) != 0 ? -u : u) + ((h & 2) != 0 ? -2.0f * v : 2.0f * v);
         }
 
-        private static float grad(int hash, float x, float y, float z)
+        private float grad(int hash, float x, float y, float z)
         {
             int h = hash & 15;     // Convert low 4 bits of hash code into 12 simple
             float u = h < 8 ? x : y; // gradient directions, and compute dot product.
@@ -353,7 +357,7 @@ namespace Simplex
             return ((h & 1) != 0 ? -u : u) + ((h & 2) != 0 ? -v : v);
         }
 
-        private static float grad(int hash, float x, float y, float z, float t)
+        private float grad(int hash, float x, float y, float z, float t)
         {
             int h = hash & 31;      // Convert low 5 bits of hash code into 32 simple
             float u = h < 24 ? x : y; // gradient directions, and compute dot product.
