@@ -109,9 +109,14 @@
     <Compile Include="Components\Vertebrae.cs" />
     <Compile Include="Core\Entity.cs" />
     <Compile Include="Core\Game.cs" />
+    <Compile Include="Custom\EventEngine.cs" />
+    <Compile Include="Custom\HexAtlas.cs" />
+    <Compile Include="Custom\HexAtlasTexture.cs" />
+    <Compile Include="Custom\HexTileInfo.cs" />
     <Compile Include="Custom\HexTileMap.cs" />
     <Compile Include="Custom\TerrainEngine.cs" />
     <Compile Include="Custom\TerrainType.cs" />
+    <Compile Include="Custom\TileEvent.cs" />
     <Compile Include="Graphics\Anim.cs" />
     <Compile Include="Graphics\Atlas.cs" />
     <Compile Include="Graphics\Drawables\GraphicList.cs" />

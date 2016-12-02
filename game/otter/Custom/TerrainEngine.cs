@@ -22,20 +22,12 @@ namespace Otter.Custom
             _moistureNoise = new Noise();
         }
 
-        public float ForceRange(float value, float newMin, float newMax)
+        public TerrainInfo GetTerrainTypeForCoord(int x, int y)
         {
-            float oldMin = 14;
-            float oldMax = 241;
-            float newValue = ((value - oldMin)/(oldMax - oldMin))*(newMax - newMin) + newMin;
-            return newValue;
-        }
-
-        public TerrainType GetTerrainTypeForCoord(int x, int y)
-        {
-            int elevation = (int) ForceRange(_terrainNoise.CalcPixel3D(x, y, 0, _terrainScale), 0, 100);
-            int moisture = (int) ForceRange(_moistureNoise.CalcPixel3D(x, y, 0, _moistureScale), 0, 100);
+            int elevation = (int)_terrainNoise.CalcPixel3D(x, y, 0, _terrainScale).ForceRange(100, 1);
+            int moisture = (int)_moistureNoise.CalcPixel3D(x, y, 0, _moistureScale).ForceRange(100, 1);
             TerrainType terrainType = GetTerrainType(elevation, moisture);
-            return terrainType;
+            return new TerrainInfo(terrainType, elevation, moisture);
         }
 
         public TerrainType GetTerrainType(int elevation, int moisture)
@@ -84,6 +76,30 @@ namespace Otter.Custom
                     terrain = TerrainType.Tundra;
             }
             return terrain;
+        }
+    }
+
+    public struct TerrainInfo
+    {
+        public TerrainInfo(TerrainType terrainType, float elevation, float moisture)
+        {
+            TerrainType = terrainType;
+            Elevation = elevation;
+            Moisture = moisture;
+        }
+        public TerrainType TerrainType;
+        public float Elevation;
+        public float Moisture;
+    }
+
+    public static class RangeForcer
+    {
+        public static float ForceRange(this float value, float newMax, float newMin)
+        {
+            float oldMin = 14;
+            float oldMax = 241;
+            float newValue = ((value - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin;
+            return newValue;
         }
     }
 }
