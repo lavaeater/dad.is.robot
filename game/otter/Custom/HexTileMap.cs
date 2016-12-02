@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SFML.Graphics;
 using SFML.System;
+using Simplex;
 
 namespace Otter.Custom
 {
@@ -20,6 +21,7 @@ namespace Otter.Custom
         private readonly TerrainEngine _terrainEngine;
         private HexTileInfo[] _visibleTiles;
         private readonly int _visibleRadius;
+        private EventEngine _eventEngine;
 
         public HexTileMap(float hexRadius, int visibleRadius, float scale, HexAtlas atlas, TerrainEngine terrainEngine)
         {
@@ -91,17 +93,19 @@ namespace Otter.Custom
             {
                 if (!_hexes.ContainsKey(cubicHexCoord))
                 {
-                    CreateAndAtTileAt(cubicHexCoord);
+                    CreateAndAddTileAt(cubicHexCoord);
                 }
             }
             _visibleTiles = visibleHexCoords.Select(coord => _hexes[coord]).ToArray();
             NeedsUpdate = true;
         }
 
-        private void CreateAndAtTileAt(CubicHexCoord cubicHexCoord)
+        private void CreateAndAddTileAt(CubicHexCoord cubicHexCoord)
         {
             var terrainType = _terrainEngine.GetTerrainTypeForCoord(cubicHexCoord.x, cubicHexCoord.y);
             string textureName = Terrain.GetTextureName(terrainType);
+
+            var tileEvent = _eventEngine.GetEventForTile(terrainType);
 
             AddTile(cubicHexCoord, textureName);
         }
@@ -110,6 +114,24 @@ namespace Otter.Custom
         {
             return JsonConvert.SerializeObject(_hexes);
         }
+    }
+
+    internal class EventEngine
+    {
+        private Noise _eventNoise;
+
+        public EventEngine()
+        {
+            _eventNoise = new Noise(42);
+        }
+        public TileEvent GetEventForTile(TerrainType terrainType)
+        {
+            return new TileEvent();
+        }
+    }
+
+    internal class TileEvent
+    {
     }
 
     public class HexTileInfo
