@@ -57,10 +57,12 @@ namespace Otter.Custom
 //                return CreateVertex(new Vector2f(_position.x + x, _position.y + y), tileColor, new Vector2f(Texture.X + tx, Texture.Y + ty));
 
                 var tileColor = new Color(SFML.Graphics.Color.White);
-                array.Append(CreateVertex(new Vector2f(_position.x, _position.y), tileColor, new Vector2f(buildingTexture.X, buildingTexture.Y))); //upper-left
-                array.Append(CreateVertex(new Vector2f(_position.x + buildingTexture.Width, _position.y), tileColor, new Vector2f(buildingTexture.X + buildingTexture.Width, buildingTexture.Y))); //upper-right
-                array.Append(CreateVertex(new Vector2f(_position.x + buildingTexture.Width, _position.y + buildingTexture.Height), tileColor, new Vector2f(buildingTexture.X + buildingTexture.Width, buildingTexture.Y + buildingTexture.Width))); //lower-right
-                array.Append(CreateVertex(new Vector2f(_position.x, _position.y + buildingTexture.Height), tileColor, new Vector2f(buildingTexture.X, buildingTexture.Y + buildingTexture.Width))); //lower-left
+                float buildingX = _position.x + (Texture.Width - buildingTexture.Width)/2;
+                float buildingY = _position.y + (Texture.Height - buildingTexture.Height) / 2;
+                array.Append(CreateVertex(new Vector2f(buildingX, buildingY), tileColor, new Vector2f(buildingTexture.X, buildingTexture.Y))); //upper-left
+                array.Append(CreateVertex(new Vector2f(buildingX + buildingTexture.Width, buildingY), tileColor, new Vector2f(buildingTexture.X + buildingTexture.Width, buildingTexture.Y))); //upper-right
+                array.Append(CreateVertex(new Vector2f(buildingX + buildingTexture.Width, buildingY + buildingTexture.Height), tileColor, new Vector2f(buildingTexture.X + buildingTexture.Width, buildingTexture.Y + buildingTexture.Height))); //lower-right
+                array.Append(CreateVertex(new Vector2f(buildingX, buildingY + buildingTexture.Height), tileColor, new Vector2f(buildingTexture.X, buildingTexture.Y + buildingTexture.Height))); //lower-left
             }
             //Should render a completely different texture, so let's add one from texturepacker
         }
