@@ -23,7 +23,7 @@ namespace Otter.Custom
             _hexAtlas = atlas;
             _terrainEngine = terrainEngine;
             SetTexture(_hexAtlas.Texture);
-
+            _eventEngine = new EventEngine();
             _hexes = new Dictionary<CubicHexCoord, HexTileInfo>();
             Scale = scale;
         }

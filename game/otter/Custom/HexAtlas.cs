@@ -111,10 +111,10 @@ namespace Otter.Custom
             var textureFilePath = (string) data["meta"]["image"];
             Texture = new Texture(Path.Combine(folder, textureFilePath), true);
             var frames = data["frames"];
-            foreach (JProperty frame in frames)
+            foreach (JObject frame in frames)
             {
-                var name = frame.Name;
-                var textureData = frame.Children()["frame"].First();
+                var name = (string)frame["filename"];
+                var textureData = frame["frame"];
                 if (!_subtextures.ContainsKey(name))
                 {
                     var atext = new HexAtlasTexture
