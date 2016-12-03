@@ -17,7 +17,7 @@ namespace robot.dad.game
 
             //File.WriteAllText("TerrainConfig.json", json);
 
-            var game = new Game("Dad is a Robot", 1600, 900, 60, false);
+            var game = new Game("Dad is a Robot", 1600, 900, 60, true);
             string atlasFile = "Terrain\\terrain.json";
 
            
@@ -36,7 +36,7 @@ namespace robot.dad.game
 
 
             var terrainData = File.ReadAllText("Terrain\\TerrainConfig.json");
-            var background = new HexBackGround(atlasFile, terrainData, 5, 15);
+            var background = new HexBackGround(atlasFile, terrainData, 3, 12);
             var scene = new MainScene(Global.PlayerOne);
             scene.AddBackGround(background);
             scene.Add(player);

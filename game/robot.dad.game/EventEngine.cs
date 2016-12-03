@@ -15,23 +15,23 @@ namespace robot.dad.game
         public EventEngine()
         {
             _eventNoise = new Noise(42);
-            _scale = 0.01f;
+            _scale = 0.015f;
             _rand = new Random(32);
             _maxVal = 0;
         }
 
         public TileEvent GetEventForTile(CubicHexCoord coord, TerrainInfo terrainType)
         {
-            int noiseValue = _rand.Next(1, 101);//(int)_eventNoise.CalcPixel3D(coord.x, coord.y, 0, _scale).ForceRange(100,1);
-            if(noiseValue > _maxVal) 
-                _maxVal = noiseValue;
-
-            if (95 < noiseValue && noiseValue <= 100)
+            int diceRoll = _rand.Next(1, 101);//
+            //int diceRoll = (int)_eventNoise.CalcPixel3D(coord.x, coord.y, 0, _scale).ForceRange(100, 1);
+            if (diceRoll > _maxVal)
+                _maxVal = diceRoll;
+            if (terrainType.TerrainType == TerrainType.TemperateDesert || terrainType.TerrainType == TerrainType.SubTropicalDesert || terrainType.TerrainType == TerrainType.Scorched)
             {
-                //if (terrainType.TerrainType == TerrainType.Beach || terrainType.TerrainType == TerrainType.ShrubLand)
-                //{
+                if (98 < diceRoll && diceRoll <= 100)
+                {
                     return new TileEvent("Ruin", coord); //More thinking required!
-                //}
+                }
             }
 
             return null; // null means nothing happens here. Deal with it!
