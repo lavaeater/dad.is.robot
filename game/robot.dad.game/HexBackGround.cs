@@ -16,7 +16,7 @@ namespace robot.dad.game
         private CubicHexCoord _previousPosition;
         private CubicHexCoord[] _previousArea;
         private EventEngine _eventEngine;
-        public Dictionary<CubicHexCoord, List<Entity>> MapEntities;
+        public Dictionary<CubicHexCoord, List<TileEvent>> MapEntities;
 
         public override void Added()
         {
@@ -43,7 +43,7 @@ namespace robot.dad.game
             _hexMap = new HexTileMap(_viewPortRadius, 1f, new HexAtlas(atlasFile),
                 new TerrainEngine(12, 0.05f, 0.07f));
 
-            MapEntities = new Dictionary<CubicHexCoord, List<Entity>>();
+            MapEntities = new Dictionary<CubicHexCoord, List<TileEvent>>();
             Graphic = _hexMap;
         }
 
@@ -57,44 +57,50 @@ namespace robot.dad.game
                 _hexMap.UpdateVisibleTiles(CurrentPosition);
                 _previousPosition = CurrentPosition;
                 _previousArea = _previousPosition.AreaAround(_boundRadius);
-                UpdateMapEntities();
             }
-
-            //If true, tell hextilemap to get new list of visible tiles - and make sure they exist...
-
-            //Only update map, sometimes, not all the time
-            int left = Scene.CameraBounds.Left;
-            int top = Scene.CameraBounds.Top;
+            UpdateMapEntities();
         }
 
         private void UpdateMapEntities()
         {
             var visibleMapTileCoords = _hexMap.VisibleTiles.Select(t => t.HexCoord).ToList();
+
             var notVisibleCoords = MapEntities.Keys.Except(visibleMapTileCoords);
             foreach (CubicHexCoord notVisibleMapEntity in notVisibleCoords)
             {
                 MapEntities[notVisibleMapEntity].ForEach(e => e.Visible = false);
             }
 
-            var missingTileCoords = visibleMapTileCoords.Except(MapEntities.Keys);
-            foreach (var missingTileCoord in missingTileCoords)
+            foreach (var missingTileCoord in visibleMapTileCoords)
             {
-                var mapEvent = _eventEngine.GetEventForTile(missingTileCoord,
+                if(!MapEntities.ContainsKey(missingTileCoord))
+                { var mapEvent = _eventEngine.GetEventForTile(missingTileCoord,
                     _hexMap.Hexes[missingTileCoord].TerrainInfo);
-                if (mapEvent != default(TileEvent))
-                {
-                    MapEntities.Add(missingTileCoord, new List<Entity> {mapEvent});
-                    Scene.Add(mapEvent);
-                }
-                else
-                {
-                    //We only add mapevents ONCE for every tile, to begin with
-                    MapEntities.Add(missingTileCoord, new List<Entity>()); //This gives an empty list too loop over, which makes everything better
+
+                    if (mapEvent != null)
+                    {
+                        MapEntities.Add(missingTileCoord, new List<TileEvent> { mapEvent });
+                        Scene.Add(mapEvent);
+                    }
+                    else
+                    {
+                        //We only add mapevents ONCE for every tile, to begin with
+                        MapEntities.Add(missingTileCoord, new List<TileEvent>()); //This gives an empty list too loop over, which makes everything better
+                    }
                 }
             }
+
+            var identifiCationRangeCoords = CurrentPosition.AreaAround(3);
+
             foreach (CubicHexCoord coord in MapEntities.Keys.Intersect(visibleMapTileCoords))
             {
-                MapEntities[coord].ForEach(e => e.Visible = true);
+                bool identified = identifiCationRangeCoords.Contains(coord);
+                MapEntities[coord].ForEach(e =>
+                {
+                    e.Visible = true;
+                    if(identified)
+                        e.Identify();
+                });
             }
         }
 

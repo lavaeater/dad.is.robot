@@ -1,3 +1,4 @@
+using System;
 using ca.axoninteractive.Geometry.Hex;
 using Otter.Custom;
 using Simplex;
@@ -8,23 +9,28 @@ namespace robot.dad.game
     {
         private readonly Noise _eventNoise;
         private readonly float _scale;
+        private readonly Random _rand;
+        private int _maxVal;
 
         public EventEngine()
         {
             _eventNoise = new Noise(42);
             _scale = 0.01f;
+            _rand = new Random(32);
+            _maxVal = 0;
         }
 
         public TileEvent GetEventForTile(CubicHexCoord coord, TerrainInfo terrainType)
         {
-            int noiseValue = (int)_eventNoise.CalcPixel3D(coord.x, coord.y, 0, _scale).ForceRange(100,1);
+            int noiseValue = _rand.Next(1, 101);//(int)_eventNoise.CalcPixel3D(coord.x, coord.y, 0, _scale).ForceRange(100,1);
+            if(noiseValue > _maxVal) 
+                _maxVal = noiseValue;
 
-            if (70 < noiseValue && noiseValue <= 90)
+            if (95 < noiseValue && noiseValue <= 100)
             {
                 //if (terrainType.TerrainType == TerrainType.Beach || terrainType.TerrainType == TerrainType.ShrubLand)
                 //{
-                    var pos = Hex.Grid.CubicToPoint(coord);
-                    return new TileEvent("Ruin", pos.x, pos.y); //More thinking required!
+                    return new TileEvent("Ruin", coord); //More thinking required!
                 //}
             }
 

@@ -1,3 +1,4 @@
+using ca.axoninteractive.Geometry.Hex;
 using Otter;
 using robot.dad.game.Sprites;
 
@@ -5,23 +6,51 @@ namespace robot.dad.game
 {
     public class TileEvent : Entity
     {
+        public CubicHexCoord Hex { get; set; }
         public string EventType;
+        private int _xDiff;
+        private int _yDiff;
 
-        public TileEvent(string eventType, float x, float y) : base(x, y)
+        public TileEvent(string eventType, CubicHexCoord hex)
         {
+            Hex = hex;
             this.EventType = eventType;
             //Set image, set position
 
             // Create an Image using the path passed in with the constructor
-            var image = SpritePipe.Ruin;
+            IdentifiedImage = SpritePipe.Ruin;
             // Center the origin of the Image
-            //image.CenterOrigin();
+            
             //image.Scale = 0.5f;
             // Add the Image to the Entity's Graphic list.
-            AddGraphic(image);
             Visible = false;
-            X = x;
-            Y = y;
+            _xDiff = (SpritePipe.UnknownTile.Width - IdentifiedImage.Width)/2;
+            _yDiff = (SpritePipe.UnknownTile.Height - IdentifiedImage.Height)/2;
+
+            Graphic = SpritePipe.UnknownTile;
+            //Graphic.CenterOrigin();
+            var tilePos = Otter.Custom.Hex.Grid.CubicToPoint(Hex);
+
+            X = tilePos.x;
+            Y = tilePos.y;
         }
+
+        public void Identify()
+        {
+            if (!Identified)
+            {
+                Identified = true;
+                Graphic = IdentifiedImage;
+                //Update position since this sprite is smaller than the old one!
+                X += _xDiff;
+                Y += _yDiff;
+                //Graphic.CenterOrigin();
+                //Graphic.CenterOriginZero();
+            }
+        }
+
+        public Image IdentifiedImage { get; set; }
+
+        public bool Identified { get; set; }
     }
 }
