@@ -11,11 +11,11 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
-            var terrainConfig = TerrainConfigBuilder.BuildTerrainConfig2();
+            //var terrainConfig = TerrainConfigBuilder.BuildTerrainConfig();
 
-            string json = terrainConfig.ToJson();
+            //string json = terrainConfig.ToJson();
 
-            File.WriteAllText("TerrainConfig.json", json);
+            //File.WriteAllText("TerrainConfig.json", json);
 
             var game = new Game("Dad is a Robot", 1600, 900, 60, false);
             string atlasFile = "Terrain\\terrain.json";

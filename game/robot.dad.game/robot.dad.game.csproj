@@ -75,6 +75,9 @@
     <Content Include="Terrain\TerrainConfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Terrain\TerrainConfig.json.orig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HexGrid\HexGrid.csproj">

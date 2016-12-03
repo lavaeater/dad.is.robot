@@ -15,7 +15,7 @@ namespace Otter.Custom
         private readonly Noise _moistureNoise;
         private readonly float _terrainScale;
         private readonly float _moistureScale;
-        private TerrainConfig _terrainConfig;
+        private readonly TerrainConfig _terrainConfig;
 
         public TerrainEngine(int seed, float terrainScale, float moistureScale, string terrainData)
         {
@@ -34,77 +34,21 @@ namespace Otter.Custom
             return new TerrainInfo(terrainType, elevation, moisture);
         }
 
-        public TerrainType GetTerrainType(int elevation, int moisture)
-        {
-            TerrainType terrain = TerrainType.Ocean;
-            if (17 < elevation && elevation <= 20)
-            {
-                terrain = TerrainType.Beach;
-            }
-            if (20 < elevation && elevation <= 40)
-            {
-                terrain = TerrainType.TropicalRainForest;
-                if (0 < moisture && moisture <= 16)
-                    terrain = TerrainType.SubTropicalDesert;
-                if (16 < moisture && moisture <= 33)
-                    terrain = TerrainType.GrassLand;
-                if (33 < moisture && moisture <= 66)
-                    terrain = TerrainType.TropicalSeasonalForest;
-            }
-            if (40 < elevation && elevation <= 75)
-            {
-                terrain = TerrainType.TemperateRainForest;
-                if (0 < moisture && moisture <= 16)
-                    terrain = TerrainType.TemperateDesert;
-                if (16 < moisture && moisture <= 50)
-                    terrain = TerrainType.GrassLand;
-                if (50 < moisture && moisture <= 83)
-                    terrain = TerrainType.TemperateForest;
-            }
-            if (75 < elevation && elevation <= 90)
-            {
-                terrain = TerrainType.Taiga;
-                if (0 < moisture && moisture <= 33)
-                    terrain = TerrainType.TemperateDesert;
-                if (33 < moisture && moisture <= 66)
-                    terrain = TerrainType.ShrubLand;
-            }
-            if (90 < elevation && elevation <= 100)
-            {
-                terrain = TerrainType.Snow;
-                if (0 < moisture && moisture <= 10)
-                    terrain = TerrainType.Scorched;
-                if (10 < moisture && moisture <= 20)
-                    terrain = TerrainType.Bare;
-                if (20 < moisture && moisture <= 50)
-                    terrain = TerrainType.Tundra;
-            }
-            return terrain;
-        }
-
         public TerrainType GetTerrainTypeFromConfig(int elevation, int moisture)
         {
-            _terrainConfig = TerrainConfigBuilder.BuildTerrainConfig();
             return _terrainConfig.GetTerrainType(elevation, moisture);
-        }
-
-        private static TerrainType Terrain(int elevation, int moisture, TerrainConfig terrainConfig)
-        {
-            return terrainConfig.Config.Single(
-                elevConfig => elevConfig.Key.Item1 < elevation && elevation <= elevConfig.Key.Item2)
-                .Value.Single(moistConfig => moistConfig.Key.Item1 < moisture && moisture <= moistConfig.Key.Item2)
-                .Value;
         }
     }
 
-    
-
     public class TerrainConfig
     {
-        public Dictionary<RangeInt, Dictionary<RangeInt, TerrainType>> Config2 = new Dictionary<RangeInt, Dictionary<RangeInt, TerrainType>>();
-
-        public Dictionary<Tuple<int, int>, Dictionary<Tuple<int, int>, TerrainType>> Config =
-            new Dictionary<Tuple<int, int>, Dictionary<Tuple<int, int>, TerrainType>>();
+        public ElevationConfig AddElevationConfig(int @from, int to)
+        {
+            var elevationConfig = new ElevationConfig(@from, to, new List<MoistureConfig>());
+            Config.Add(elevationConfig);
+            return elevationConfig;
+        }
+        public List<ElevationConfig> Config { get; set; } = new List<ElevationConfig>();
 
         public TerrainType GetTerrainType(int elevation, int moisture)
         {
@@ -117,31 +61,16 @@ namespace Otter.Custom
                 moisture = 100;
             if (moisture < 1)
                 moisture = 1;
-            return Config.Single(
-                elevConfig => elevConfig.Key.Item1 < elevation && elevation <= elevConfig.Key.Item2)
-                .Value.Single(moistConfig => moistConfig.Key.Item1 < moisture && moisture <= moistConfig.Key.Item2)
-                .Value;
+
+            var elevationConfig = Config.Single(config => config.From < elevation && elevation <= config.To);
+            var moistureConfig = elevationConfig.MoistureConfigs.Single(config => config.From < moisture && moisture <= config.To);
+            return moistureConfig.TerrainType;
         }
 
         public string ToJson()
         {
-            return JsonConvert.SerializeObject(Config2, TerrainConfigBuilder.GetSerializerSettings());
+            return JsonConvert.SerializeObject(Config, TerrainConfigBuilder.GetSerializerSettings());
         }
-    }
-
-    public class RangeInt
-    {
-        public RangeInt()
-        {
-
-        }
-        public RangeInt(int min, int max)
-        {
-            Min = min;
-            Max = max;
-        }
-        public int Min { get; set; }
-        public int Max { get; set; }
     }
 
     public class TerrainConfigBuilder
@@ -154,134 +83,94 @@ namespace Otter.Custom
                 CamelCaseText = false
             });
             return settings;
-            ;
         }
+
         public static TerrainConfig BuildTerrainConfig(string terrainData)
         {
             var terrainConfig = new TerrainConfig();
             var config =
-                JsonConvert.DeserializeObject<Dictionary<RangeInt, Dictionary<RangeInt, TerrainType>>>(
+                JsonConvert.DeserializeObject<List<ElevationConfig>>(
                     terrainData);
-            terrainConfig.Config2 = config;
+            terrainConfig.Config = config;
             return terrainConfig;
         }
-
-        public static TerrainConfig BuildTerrainConfig2()
-        {
-            var terrainConfig = new TerrainConfig();
-
-            var oceanConfig = new Dictionary<RangeInt, TerrainType>
-            {
-                {new RangeInt(0, 100), TerrainType.Ocean}
-            };
-
-            terrainConfig.Config2.Add(new RangeInt(0, 17), oceanConfig);
-
-            var beachConfig = new Dictionary<RangeInt, TerrainType>
-            {
-                {new RangeInt(0, 100), TerrainType.Beach}
-            };
-
-            terrainConfig.Config2.Add(new RangeInt(17, 20), beachConfig);
-
-            var config = new Dictionary<RangeInt, TerrainType>
-            {
-                {new RangeInt(66, 100), TerrainType.TropicalRainForest},
-                {new RangeInt(0, 16), TerrainType.SubTropicalDesert},
-                {new RangeInt(16, 33), TerrainType.GrassLand},
-                {new RangeInt(33, 66), TerrainType.TropicalSeasonalForest}
-            };
-
-            terrainConfig.Config2.Add(new RangeInt(20, 40), config);
-
-            config = new Dictionary<RangeInt, TerrainType>
-            {
-                {new RangeInt(0, 16), TerrainType.TemperateDesert},
-                {new RangeInt(16, 50), TerrainType.GrassLand},
-                {new RangeInt(50, 83), TerrainType.TemperateForest},
-                {new RangeInt(83, 100), TerrainType.TemperateRainForest}
-            };
-
-            terrainConfig.Config2.Add(new RangeInt(40, 75), config);
-            config = new Dictionary<RangeInt, TerrainType>
-            {
-                {new RangeInt(0, 33), TerrainType.TemperateDesert},
-                {new RangeInt(33, 66), TerrainType.ShrubLand},
-                {new RangeInt(66, 100), TerrainType.Taiga}
-            };
-
-            terrainConfig.Config2.Add(new RangeInt(75, 90), config);
-
-            config = new Dictionary<RangeInt, TerrainType>
-            {
-                {new RangeInt(0, 10), TerrainType.Scorched},
-                {new RangeInt(10, 20), TerrainType.Bare},
-                {new RangeInt(20, 50), TerrainType.Tundra},
-                { new RangeInt(50, 100), TerrainType.Snow}
-            };
-
-            terrainConfig.Config2.Add(new RangeInt(90, 100), config);
-
-            return terrainConfig;
-        }
-
+        
         public static TerrainConfig BuildTerrainConfig()
         {
             var terrainConfig = new TerrainConfig();
 
-            var oceanConfig = new Dictionary<Tuple<int, int>, TerrainType>
-            {
-                {new Tuple<int, int>(0, 100), TerrainType.Ocean}
-            };
+            terrainConfig.AddElevationConfig(1, 17)
+                .AddMoistureConfig(0, 100, TerrainType.Ocean);
 
-            terrainConfig.Config.Add(new Tuple<int, int>(0, 17), oceanConfig);
+            terrainConfig.AddElevationConfig(17, 20)
+                .AddMoistureConfig(0, 100, TerrainType.Beach);
 
-            var beachConfig = new Dictionary<Tuple<int, int>, TerrainType>
-            {
-                {new Tuple<int, int>(0, 100), TerrainType.Beach}
-            };
+            terrainConfig.AddElevationConfig(20, 40)
+                .AddMoistureConfig(0, 16, TerrainType.SubTropicalDesert)
+                .AddMoistureConfig(16, 33, TerrainType.GrassLand)
+                .AddMoistureConfig(33, 66, TerrainType.TropicalSeasonalForest)
+                .AddMoistureConfig(66, 100, TerrainType.TropicalRainForest);
 
-            terrainConfig.Config.Add(new Tuple<int, int>(17, 20), beachConfig);
+            terrainConfig.AddElevationConfig(40, 75)
+                .AddMoistureConfig(0, 16, TerrainType.TemperateDesert)
+                .AddMoistureConfig(16, 50, TerrainType.GrassLand)
+                .AddMoistureConfig(50, 83, TerrainType.TemperateForest)
+                .AddMoistureConfig(83,100, TerrainType.TemperateRainForest);
+            
+            terrainConfig.AddElevationConfig(75, 90)
+                .AddMoistureConfig(0, 33, TerrainType.TemperateDesert)
+                .AddMoistureConfig(33, 66, TerrainType.ShrubLand)
+                .AddMoistureConfig(66, 100, TerrainType.Taiga);
 
-            var config = new Dictionary<Tuple<int, int>, TerrainType>
-            {
-                {new Tuple<int, int>(66, 100), TerrainType.TropicalRainForest},
-                {new Tuple<int, int>(0, 16), TerrainType.SubTropicalDesert},
-                {new Tuple<int, int>(16, 33), TerrainType.GrassLand},
-                {new Tuple<int, int>(33, 66), TerrainType.TropicalSeasonalForest}
-            };
-
-            terrainConfig.Config.Add(new Tuple<int, int>(20, 40), config);
-
-            config = new Dictionary<Tuple<int, int>, TerrainType>
-            {
-                {new Tuple<int, int>(0, 16), TerrainType.TemperateDesert},
-                {new Tuple<int, int>(16, 50), TerrainType.GrassLand},
-                {new Tuple<int, int>(50, 83), TerrainType.TemperateForest},
-                {new Tuple<int, int>(83, 100), TerrainType.TemperateRainForest}
-            };
-
-            terrainConfig.Config.Add(new Tuple<int, int>(40, 75), config);
-            config = new Dictionary<Tuple<int, int>, TerrainType>
-            {
-                {new Tuple<int, int>(0, 33), TerrainType.TemperateDesert},
-                {new Tuple<int, int>(33, 66), TerrainType.ShrubLand},
-                {new Tuple<int, int>(66, 100), TerrainType.Taiga}
-            };
-
-            terrainConfig.Config.Add(new Tuple<int, int>(75, 90), config);
-
-            config = new Dictionary<Tuple<int, int>, TerrainType>
-            {
-                {new Tuple<int, int>(0, 10), TerrainType.Scorched},
-                {new Tuple<int, int>(10, 20), TerrainType.Bare},
-                {new Tuple<int, int>(20, 50), TerrainType.Tundra},
-                { new Tuple<int, int>(50, 100), TerrainType.Snow}
-            };
-
-            terrainConfig.Config.Add(new Tuple<int, int>(90, 100), config);
+            terrainConfig.AddElevationConfig(90, 100)
+                .AddMoistureConfig(0, 10, TerrainType.Scorched)
+                .AddMoistureConfig(10, 20, TerrainType.Tundra)
+                .AddMoistureConfig(20, 50, TerrainType.Bare)
+                .AddMoistureConfig(50, 100, TerrainType.Snow);
 
             return terrainConfig;
         }
+    }
+
+    public class ElevationConfig
+    {
+        public ElevationConfig()
+        {
+            MoistureConfigs = new List<MoistureConfig>();   
+        }
+
+        public ElevationConfig(int @from, int to, List<MoistureConfig> moistureConfigs)
+        {
+            From = @from;
+            To = to;
+            MoistureConfigs = moistureConfigs;
+        }
+
+        public ElevationConfig AddMoistureConfig(int @from, int to, TerrainType terrainType)
+        {
+            MoistureConfigs.Add(new MoistureConfig(@from, to, terrainType));
+            return this;
+        }
+
+        public int From { get; set; }
+        public int To { get; set; }
+        public List<MoistureConfig> MoistureConfigs { get; set; }
+    }
+
+    public class MoistureConfig
+    {
+        public MoistureConfig()
+        {
+            
+        }
+        public MoistureConfig(int @from, int to, TerrainType terrainType)
+        {
+            From = @from;
+            To = to;
+            TerrainType = terrainType;
+        }
+        public int From { get; set; }
+        public int To { get; set; }
+        public TerrainType TerrainType { get; set; }
     }
 }

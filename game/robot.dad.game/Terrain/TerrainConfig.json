@@ -1,1 +1,108 @@
-{"Otter.RangeInt":{"Otter.RangeInt":"Ocean"},"Otter.RangeInt":{"Otter.RangeInt":"Beach"},"Otter.RangeInt":{"Otter.RangeInt":"TropicalRainForest","Otter.RangeInt":"SubTropicalDesert","Otter.RangeInt":"GrassLand","Otter.RangeInt":"TropicalSeasonalForest"},"Otter.RangeInt":{"Otter.RangeInt":"TemperateDesert","Otter.RangeInt":"GrassLand","Otter.RangeInt":"TemperateForest","Otter.RangeInt":"TemperateRainForest"},"Otter.RangeInt":{"Otter.RangeInt":"TemperateDesert","Otter.RangeInt":"ShrubLand","Otter.RangeInt":"Taiga"},"Otter.RangeInt":{"Otter.RangeInt":"Scorched","Otter.RangeInt":"Bare","Otter.RangeInt":"Tundra","Otter.RangeInt":"Snow"}}
+[
+  {
+    "From": 0,
+    "To": 30,
+    "MoistureConfigs": [
+      {
+        "From": 0,
+        "To": 100,
+        "TerrainType": "Ocean"
+      }
+    ]
+  },
+  {
+    "From": 30,
+    "To": 40,
+    "MoistureConfigs": [
+      {
+        "From": 0,
+        "To": 100,
+        "TerrainType": "Beach"
+      }
+    ]
+  },
+  {
+    "From": 40,
+    "To": 45,
+    "MoistureConfigs": [
+      {
+        "From": 0,
+        "To": 70,
+        "TerrainType": "SubTropicalDesert"
+      },
+      {
+        "From": 70,
+        "To": 100,
+        "TerrainType": "GrassLand"
+      }
+    ]
+  },
+  {
+    "From": 45,
+    "To": 75,
+    "MoistureConfigs": [
+      {
+        "From": 0,
+        "To": 60,
+        "TerrainType": "TemperateDesert"
+      },
+      {
+        "From": 60,
+        "To": 80,
+        "TerrainType": "GrassLand"
+      },
+      {
+        "From": 80,
+        "To": 100,
+        "TerrainType": "TemperateForest"
+      }
+    ]
+  },
+  {
+    "From": 75,
+    "To": 90,
+    "MoistureConfigs": [
+      {
+        "From": 0,
+        "To": 50,
+        "TerrainType": "TemperateDesert"
+      },
+      {
+        "From": 50,
+        "To": 85,
+        "TerrainType": "ShrubLand"
+      },
+      {
+        "From": 85,
+        "To": 100,
+        "TerrainType": "Taiga"
+      }
+    ]
+  },
+  {
+    "From": 90,
+    "To": 100,
+    "MoistureConfigs": [
+      {
+        "From": 0,
+        "To": 10,
+        "TerrainType": "Scorched"
+      },
+      {
+        "From": 10,
+        "To": 20,
+        "TerrainType": "Tundra"
+      },
+      {
+        "From": 20,
+        "To": 50,
+        "TerrainType": "Bare"
+      },
+      {
+        "From": 50,
+        "To": 100,
+        "TerrainType": "Snow"
+      }
+    ]
+  }
+]

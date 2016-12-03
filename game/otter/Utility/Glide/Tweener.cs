@@ -51,8 +51,8 @@ namespace Otter {
 
             /// <summary>
             /// <para>Tweens a set of properties on an object.</para>
-            /// <para>To tween instance properties/fields, pass the object.</para>
-            /// <para>To tween static properties/fields, pass the type of the object, using typeof(ObjectType) or object.GetType().</para>
+            /// <para>max tween instance properties/fields, pass the object.</para>
+            /// <para>max tween static properties/fields, pass the type of the object, using typeof(ObjectType) or object.GetType().</para>
             /// </summary>
             /// <param name="target">The object or type to tween.</param>
             /// <param name="values">The values to tween to, in an anonymous type ( new { prop1 = 100, prop2 = 0} ).</param>

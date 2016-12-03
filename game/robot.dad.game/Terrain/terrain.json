@@ -11,7 +11,7 @@
 },
 {
 	"filename": "beach.png",
-	"frame": {"x":120,"y":0,"w":120,"h":140},
+	"frame": {"x":0,"y":140,"w":120,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
@@ -19,17 +19,8 @@
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
-	"filename": "beigeBuilding.png",
-	"frame": {"x":240,"y":0,"w":52,"h":60},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":52,"h":60},
-	"sourceSize": {"w":52,"h":60},
-	"pivot": {"x":0.5,"y":0.5}
-},
-{
 	"filename": "grassland.png",
-	"frame": {"x":292,"y":0,"w":120,"h":140},
+	"frame": {"x":0,"y":280,"w":120,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
@@ -38,7 +29,7 @@
 },
 {
 	"filename": "ocean.png",
-	"frame": {"x":412,"y":0,"w":120,"h":140},
+	"frame": {"x":0,"y":420,"w":120,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
@@ -47,7 +38,7 @@
 },
 {
 	"filename": "scorched.png",
-	"frame": {"x":532,"y":0,"w":120,"h":140},
+	"frame": {"x":0,"y":560,"w":120,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
@@ -56,7 +47,7 @@
 },
 {
 	"filename": "shrubland.png",
-	"frame": {"x":652,"y":0,"w":120,"h":140},
+	"frame": {"x":0,"y":700,"w":120,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
@@ -65,7 +56,7 @@
 },
 {
 	"filename": "snow.png",
-	"frame": {"x":772,"y":0,"w":120,"h":140},
+	"frame": {"x":0,"y":840,"w":120,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
@@ -74,7 +65,7 @@
 },
 {
 	"filename": "subtropicaldesert.png",
-	"frame": {"x":892,"y":0,"w":120,"h":140},
+	"frame": {"x":0,"y":980,"w":120,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
@@ -83,7 +74,7 @@
 },
 {
 	"filename": "taiga.png",
-	"frame": {"x":1012,"y":0,"w":120,"h":140},
+	"frame": {"x":0,"y":1120,"w":120,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
@@ -92,7 +83,7 @@
 },
 {
 	"filename": "temperatedesert.png",
-	"frame": {"x":1132,"y":0,"w":120,"h":140},
+	"frame": {"x":0,"y":1260,"w":120,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
@@ -101,34 +92,7 @@
 },
 {
 	"filename": "temperateforest.png",
-	"frame": {"x":1252,"y":0,"w":120,"h":140},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
-	"sourceSize": {"w":120,"h":140},
-	"pivot": {"x":0.5,"y":0.5}
-},
-{
-	"filename": "temperaterainforest.png",
-	"frame": {"x":1372,"y":0,"w":120,"h":140},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
-	"sourceSize": {"w":120,"h":140},
-	"pivot": {"x":0.5,"y":0.5}
-},
-{
-	"filename": "tropicalrainforest.png",
-	"frame": {"x":1492,"y":0,"w":120,"h":140},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
-	"sourceSize": {"w":120,"h":140},
-	"pivot": {"x":0.5,"y":0.5}
-},
-{
-	"filename": "tropicalseasonalforest.png",
-	"frame": {"x":1612,"y":0,"w":120,"h":140},
+	"frame": {"x":0,"y":1400,"w":120,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
@@ -137,7 +101,7 @@
 },
 {
 	"filename": "tundra.png",
-	"frame": {"x":1732,"y":0,"w":120,"h":140},
+	"frame": {"x":0,"y":1540,"w":120,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":140},
@@ -149,8 +113,8 @@
 	"version": "1.0",
 	"image": "terrain.png",
 	"format": "RGBA8888",
-	"size": {"w":1852,"h":140},
+	"size": {"w":120,"h":1680},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:6cef2736116c88852956f1c410ecc275:e3da629e69a7ced794573abb25c2fdc6:a52c91d73586a2a634ceb55ad22f4949$"
+	"smartupdate": "$TexturePacker:SmartUpdate:80f6faae6551aad035ed89fe0c8002e3:e313a0807d27c22ce30ff7e11b75db15:a52c91d73586a2a634ceb55ad22f4949$"
 }
 }
