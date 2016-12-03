@@ -86,6 +86,11 @@ namespace robot.dad.game
                     MapEntities.Add(missingTileCoord, new List<Entity> {mapEvent});
                     Scene.Add(mapEvent);
                 }
+                else
+                {
+                    //We only add mapevents ONCE for every tile, to begin with
+                    MapEntities.Add(missingTileCoord, new List<Entity>()); //This gives an empty list too loop over, which makes everything better
+                }
             }
             foreach (CubicHexCoord coord in MapEntities.Keys.Intersect(visibleMapTileCoords))
             {
