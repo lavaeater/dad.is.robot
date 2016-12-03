@@ -15,14 +15,9 @@ namespace robot.dad.game
         {
             Hex = hex;
             this.EventType = eventType;
-            //Set image, set position
 
-            // Create an Image using the path passed in with the constructor
             IdentifiedImage = SpritePipe.Ruin;
-            // Center the origin of the Image
             
-            //image.Scale = 0.5f;
-            // Add the Image to the Entity's Graphic list.
             Visible = false;
 
             Graphic = SpritePipe.UnknownTile;
