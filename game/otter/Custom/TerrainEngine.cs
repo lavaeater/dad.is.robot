@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Simplex;
 
 namespace Otter.Custom
@@ -13,6 +15,7 @@ namespace Otter.Custom
         private readonly Noise _moistureNoise;
         private readonly float _terrainScale;
         private readonly float _moistureScale;
+        private TerrainConfig _terrainConfig;
 
         public TerrainEngine(int seed, float terrainScale, float moistureScale)
         {
@@ -26,7 +29,7 @@ namespace Otter.Custom
         {
             int elevation = (int)_terrainNoise.CalcPixel3D(x, y, 0, _terrainScale).ForceRange(100, 1);
             int moisture = (int)_moistureNoise.CalcPixel3D(x, y, 0, _moistureScale).ForceRange(100, 1);
-            TerrainType terrainType = GetTerrainType(elevation, moisture);
+            TerrainType terrainType = GetTerrainTypeFromConfig(elevation, moisture);
             return new TerrainInfo(terrainType, elevation, moisture);
         }
 
@@ -77,29 +80,114 @@ namespace Otter.Custom
             }
             return terrain;
         }
-    }
 
-    public struct TerrainInfo
-    {
-        public TerrainInfo(TerrainType terrainType, float elevation, float moisture)
+        public TerrainType GetTerrainTypeFromConfig(int elevation, int moisture)
         {
-            TerrainType = terrainType;
-            Elevation = elevation;
-            Moisture = moisture;
+            _terrainConfig = TerrainConfigBuilder.BuildTerrainConfig();
+            return _terrainConfig.GetTerrainType(elevation, moisture);
         }
-        public TerrainType TerrainType;
-        public float Elevation;
-        public float Moisture;
+
+        private static TerrainType Terrain(int elevation, int moisture, TerrainConfig terrainConfig)
+        {
+            return terrainConfig.Config.Single(
+                elevConfig => elevConfig.Key.Item1 < elevation && elevation <= elevConfig.Key.Item2)
+                .Value.Single(moistConfig => moistConfig.Key.Item1 < moisture && moisture <= moistConfig.Key.Item2)
+                .Value;
+        }
     }
 
-    public static class RangeForcer
+    public class TerrainConfig
     {
-        public static float ForceRange(this float value, float newMax, float newMin)
+        public Dictionary<Tuple<int, int>, Dictionary<Tuple<int, int>, TerrainType>> Config =
+            new Dictionary<Tuple<int, int>, Dictionary<Tuple<int, int>, TerrainType>>();
+
+        public TerrainType GetTerrainType(int elevation, int moisture)
         {
-            float oldMin = 14;
-            float oldMax = 241;
-            float newValue = ((value - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin;
-            return newValue;
+            if (elevation > 100)
+                elevation = 100;
+            if (elevation < 1)
+                elevation = 1;
+
+            if (moisture > 100)
+                moisture = 100;
+            if (moisture < 1)
+                moisture = 1;
+            return Config.Single(
+                elevConfig => elevConfig.Key.Item1 < elevation && elevation <= elevConfig.Key.Item2)
+                .Value.Single(moistConfig => moistConfig.Key.Item1 < moisture && moisture <= moistConfig.Key.Item2)
+                .Value;
+        }
+
+        public string ToJson()
+        {
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new StringEnumConverter
+            {
+                CamelCaseText = false
+            });
+            return JsonConvert.SerializeObject(Config, settings);
+        }
+    }
+
+    public class TerrainConfigBuilder
+    {
+        public static TerrainConfig BuildTerrainConfig()
+        {
+            var terrainConfig = new TerrainConfig();
+
+            var oceanConfig = new Dictionary<Tuple<int, int>, TerrainType>
+            {
+                {new Tuple<int, int>(0, 100), TerrainType.Ocean}
+            };
+
+            terrainConfig.Config.Add(new Tuple<int, int>(0, 17), oceanConfig);
+
+            var beachConfig = new Dictionary<Tuple<int, int>, TerrainType>
+            {
+                {new Tuple<int, int>(0, 100), TerrainType.Beach}
+            };
+
+            terrainConfig.Config.Add(new Tuple<int, int>(17, 20), beachConfig);
+
+            var config = new Dictionary<Tuple<int, int>, TerrainType>
+            {
+                {new Tuple<int, int>(66, 100), TerrainType.TropicalRainForest},
+                {new Tuple<int, int>(0, 16), TerrainType.SubTropicalDesert},
+                {new Tuple<int, int>(16, 33), TerrainType.GrassLand},
+                {new Tuple<int, int>(33, 66), TerrainType.TropicalSeasonalForest}
+            };
+
+            terrainConfig.Config.Add(new Tuple<int, int>(20, 40), config);
+
+            config = new Dictionary<Tuple<int, int>, TerrainType>
+            {
+                {new Tuple<int, int>(0, 16), TerrainType.TemperateDesert},
+                {new Tuple<int, int>(16, 50), TerrainType.GrassLand},
+                {new Tuple<int, int>(50, 83), TerrainType.TemperateForest},
+                {new Tuple<int, int>(83, 100), TerrainType.TemperateRainForest}
+            };
+
+            terrainConfig.Config.Add(new Tuple<int, int>(40, 75), config);
+            config = new Dictionary<Tuple<int, int>, TerrainType>
+            {
+                {new Tuple<int, int>(0, 33), TerrainType.TemperateDesert},
+                {new Tuple<int, int>(33, 66), TerrainType.ShrubLand},
+                {new Tuple<int, int>(66, 100), TerrainType.Taiga}
+            };
+
+            terrainConfig.Config.Add(new Tuple<int, int>(75, 90), config);
+
+            config = new Dictionary<Tuple<int, int>, TerrainType>
+            {
+                {new Tuple<int, int>(0, 10), TerrainType.Scorched},
+                {new Tuple<int, int>(10, 20), TerrainType.Bare},
+                {new Tuple<int, int>(20, 50), TerrainType.Tundra},
+                { new Tuple<int, int>(50, 100), TerrainType.Snow}
+            };
+
+            terrainConfig.Config.Add(new Tuple<int, int>(90, 100), config);
+
+            return terrainConfig;
         }
     }
 }

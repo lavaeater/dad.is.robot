@@ -113,7 +113,9 @@
     <Compile Include="Custom\HexAtlasTexture.cs" />
     <Compile Include="Custom\HexTileInfo.cs" />
     <Compile Include="Custom\HexTileMap.cs" />
+    <Compile Include="Custom\RangeForcer.cs" />
     <Compile Include="Custom\TerrainEngine.cs" />
+    <Compile Include="Custom\TerrainInfo.cs" />
     <Compile Include="Custom\TerrainType.cs" />
     <Compile Include="Graphics\Anim.cs" />
     <Compile Include="Graphics\Atlas.cs" />
