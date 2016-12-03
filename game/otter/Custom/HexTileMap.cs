@@ -49,30 +49,7 @@ namespace Otter.Custom
             SFMLVertices.Clear();
             foreach (var tile in VisibleTiles)
             {
-                //tile.tilemapColor.R = Color.R;
-                //tile.tilemapColor.G = Color.G;
-                //tile.tilemapColor.B = Color.B;
-                //tile.tilemapColor.A = Color.A;
                 tile.AppendVertices(SFMLVertices);
-            }
-        }
-
-        public void Map(int startQ, int startR, int mapHeight, int mapWidth)
-        {
-            for (int r = startR; r < mapWidth + startR; r++)
-            {
-                int r_offset = r >> 1;//(int)Math.Floor((double)r / 2); // or r>>1
-                for (int q = startQ -r_offset; q < mapHeight - r_offset + startQ; q++)
-                {
-                    var hexcoord = new CubicHexCoord(q,r, -q-r);
-                    if (!Hexes.ContainsKey(hexcoord))
-                    {
-                        var terrainInfo = _terrainEngine.GetTerrainTypeForCoord(hexcoord.x, hexcoord.y);
-                        string textureName = Terrain.GetTextureName(terrainInfo.TerrainType);
-
-                        AddTile(hexcoord, textureName, terrainInfo);
-                    }
-                }
             }
         }
 

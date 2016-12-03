@@ -24,11 +24,9 @@ namespace robot.dad.game
             //image.Scale = 0.5f;
             // Add the Image to the Entity's Graphic list.
             Visible = false;
-            _xDiff = (SpritePipe.UnknownTile.Width - IdentifiedImage.Width)/2;
-            _yDiff = (SpritePipe.UnknownTile.Height - IdentifiedImage.Height)/2;
 
             Graphic = SpritePipe.UnknownTile;
-            //Graphic.CenterOrigin();
+            Graphic.CenterOrigin();
             var tilePos = Otter.Custom.Hex.Grid.CubicToPoint(Hex);
 
             X = tilePos.x;
@@ -41,11 +39,7 @@ namespace robot.dad.game
             {
                 Identified = true;
                 Graphic = IdentifiedImage;
-                //Update position since this sprite is smaller than the old one!
-                X += _xDiff;
-                Y += _yDiff;
-                //Graphic.CenterOrigin();
-                //Graphic.CenterOriginZero();
+                Graphic.CenterOrigin();
             }
         }
 

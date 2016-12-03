@@ -32,10 +32,10 @@ namespace Otter.Custom
 
         internal void AppendVertices(VertexArray array)
         {
-            array.Append(CreateVertex(0, 0, 0, 0)); //upper-left
-            array.Append(CreateVertex(Texture.Width, 0, Texture.Width, 0)); //upper-right
-            array.Append(CreateVertex(Texture.Width, Texture.Height, Texture.Width, Texture.Height)); //lower-right
-            array.Append(CreateVertex(0, Texture.Height, 0, Texture.Height)); //lower-left
+            array.Append(CreateVertex(0 - Texture.Width / 2, 0 - Texture.Height / 2, 0, 0)); //upper-left
+            array.Append(CreateVertex(Texture.Width / 2, 0 - Texture.Height / 2, Texture.Width, 0)); //upper-right
+            array.Append(CreateVertex(Texture.Width / 2, Texture.Height / 2, Texture.Width, Texture.Height)); //lower-right
+            array.Append(CreateVertex(0 - Texture.Width / 2, Texture.Height / 2, 0, Texture.Height)); //lower-left
         }
     }
 }
