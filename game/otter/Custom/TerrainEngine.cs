@@ -17,12 +17,13 @@ namespace Otter.Custom
         private readonly float _moistureScale;
         private TerrainConfig _terrainConfig;
 
-        public TerrainEngine(int seed, float terrainScale, float moistureScale)
+        public TerrainEngine(int seed, float terrainScale, float moistureScale, string terrainData)
         {
             _terrainScale = terrainScale;
             _moistureScale = moistureScale;
             _terrainNoise = new Noise(seed);
             _moistureNoise = new Noise();
+            _terrainConfig = TerrainConfigBuilder.BuildTerrainConfig(terrainData);
         }
 
         public TerrainInfo GetTerrainTypeForCoord(int x, int y)
@@ -96,8 +97,12 @@ namespace Otter.Custom
         }
     }
 
+    
+
     public class TerrainConfig
     {
+        public Dictionary<RangeInt, Dictionary<RangeInt, TerrainType>> Config2 = new Dictionary<RangeInt, Dictionary<RangeInt, TerrainType>>();
+
         public Dictionary<Tuple<int, int>, Dictionary<Tuple<int, int>, TerrainType>> Config =
             new Dictionary<Tuple<int, int>, Dictionary<Tuple<int, int>, TerrainType>>();
 
@@ -120,17 +125,106 @@ namespace Otter.Custom
 
         public string ToJson()
         {
+            return JsonConvert.SerializeObject(Config2, TerrainConfigBuilder.GetSerializerSettings());
+        }
+    }
+
+    public class RangeInt
+    {
+        public RangeInt()
+        {
+
+        }
+        public RangeInt(int min, int max)
+        {
+            Min = min;
+            Max = max;
+        }
+        public int Min { get; set; }
+        public int Max { get; set; }
+    }
+
+    public class TerrainConfigBuilder
+    {
+        public static JsonSerializerSettings GetSerializerSettings()
+        {
             var settings = new JsonSerializerSettings();
             settings.Converters.Add(new StringEnumConverter
             {
                 CamelCaseText = false
             });
-            return JsonConvert.SerializeObject(Config, settings);
+            return settings;
+            ;
         }
-    }
+        public static TerrainConfig BuildTerrainConfig(string terrainData)
+        {
+            var terrainConfig = new TerrainConfig();
+            var config =
+                JsonConvert.DeserializeObject<Dictionary<RangeInt, Dictionary<RangeInt, TerrainType>>>(
+                    terrainData);
+            terrainConfig.Config2 = config;
+            return terrainConfig;
+        }
 
-    public class TerrainConfigBuilder
-    {
+        public static TerrainConfig BuildTerrainConfig2()
+        {
+            var terrainConfig = new TerrainConfig();
+
+            var oceanConfig = new Dictionary<RangeInt, TerrainType>
+            {
+                {new RangeInt(0, 100), TerrainType.Ocean}
+            };
+
+            terrainConfig.Config2.Add(new RangeInt(0, 17), oceanConfig);
+
+            var beachConfig = new Dictionary<RangeInt, TerrainType>
+            {
+                {new RangeInt(0, 100), TerrainType.Beach}
+            };
+
+            terrainConfig.Config2.Add(new RangeInt(17, 20), beachConfig);
+
+            var config = new Dictionary<RangeInt, TerrainType>
+            {
+                {new RangeInt(66, 100), TerrainType.TropicalRainForest},
+                {new RangeInt(0, 16), TerrainType.SubTropicalDesert},
+                {new RangeInt(16, 33), TerrainType.GrassLand},
+                {new RangeInt(33, 66), TerrainType.TropicalSeasonalForest}
+            };
+
+            terrainConfig.Config2.Add(new RangeInt(20, 40), config);
+
+            config = new Dictionary<RangeInt, TerrainType>
+            {
+                {new RangeInt(0, 16), TerrainType.TemperateDesert},
+                {new RangeInt(16, 50), TerrainType.GrassLand},
+                {new RangeInt(50, 83), TerrainType.TemperateForest},
+                {new RangeInt(83, 100), TerrainType.TemperateRainForest}
+            };
+
+            terrainConfig.Config2.Add(new RangeInt(40, 75), config);
+            config = new Dictionary<RangeInt, TerrainType>
+            {
+                {new RangeInt(0, 33), TerrainType.TemperateDesert},
+                {new RangeInt(33, 66), TerrainType.ShrubLand},
+                {new RangeInt(66, 100), TerrainType.Taiga}
+            };
+
+            terrainConfig.Config2.Add(new RangeInt(75, 90), config);
+
+            config = new Dictionary<RangeInt, TerrainType>
+            {
+                {new RangeInt(0, 10), TerrainType.Scorched},
+                {new RangeInt(10, 20), TerrainType.Bare},
+                {new RangeInt(20, 50), TerrainType.Tundra},
+                { new RangeInt(50, 100), TerrainType.Snow}
+            };
+
+            terrainConfig.Config2.Add(new RangeInt(90, 100), config);
+
+            return terrainConfig;
+        }
+
         public static TerrainConfig BuildTerrainConfig()
         {
             var terrainConfig = new TerrainConfig();

@@ -11,7 +11,7 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
-            var terrainConfig = TerrainConfigBuilder.BuildTerrainConfig();
+            var terrainConfig = TerrainConfigBuilder.BuildTerrainConfig2();
 
             string json = terrainConfig.ToJson();
 
@@ -34,7 +34,9 @@ namespace robot.dad.game
             Global.PlayerOne.Controller.Button(Controls.Left).AddKey(Key.Left);
             Global.PlayerOne.Controller.Button(Controls.Right).AddKey(Key.Right);
 
-            var background = new HexBackGround(atlasFile, 5, 15);
+
+            var terrainData = File.ReadAllText("Terrain\\TerrainConfig.json");
+            var background = new HexBackGround(atlasFile, terrainData, 5, 15);
             var scene = new MainScene(Global.PlayerOne);
             scene.AddBackGround(background);
             scene.Add(player);

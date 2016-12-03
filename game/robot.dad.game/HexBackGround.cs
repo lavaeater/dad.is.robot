@@ -35,13 +35,13 @@ namespace robot.dad.game
         private CubicHexCoord CurrentPosition
             => Hex.Grid.PointToCubic(new Vec2D(Scene.CameraCenterX, Scene.CameraCenterY));
 
-        public HexBackGround(string atlasFile, int boundRadius, int viewPortRadius)
+        public HexBackGround(string atlasFile, string terrainFile, int boundRadius, int viewPortRadius)
         {
             _boundRadius = boundRadius;
             _viewPortRadius = viewPortRadius;
             _eventEngine = new EventEngine();
             _hexMap = new HexTileMap(_viewPortRadius, 1f, new HexAtlas(atlasFile),
-                new TerrainEngine(12, 0.05f, 0.07f));
+                new TerrainEngine(12, 0.05f, 0.07f, terrainFile));
 
             MapEntities = new Dictionary<CubicHexCoord, List<TileEvent>>();
             Graphic = _hexMap;
