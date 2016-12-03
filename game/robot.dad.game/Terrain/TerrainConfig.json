@@ -1,7 +1,7 @@
 [
   {
     "From": 0,
-    "To": 30,
+    "To": 20,
     "MoistureConfigs": [
       {
         "From": 0,
@@ -11,8 +11,8 @@
     ]
   },
   {
-    "From": 30,
-    "To": 40,
+    "From": 20,
+    "To": 25,
     "MoistureConfigs": [
       {
         "From": 0,
@@ -22,16 +22,16 @@
     ]
   },
   {
-    "From": 40,
+    "From": 25,
     "To": 45,
     "MoistureConfigs": [
       {
         "From": 0,
-        "To": 70,
+        "To": 80,
         "TerrainType": "SubTropicalDesert"
       },
       {
-        "From": 70,
+        "From": 80,
         "To": 100,
         "TerrainType": "GrassLand"
       }
@@ -64,11 +64,11 @@
     "MoistureConfigs": [
       {
         "From": 0,
-        "To": 50,
+        "To": 60,
         "TerrainType": "TemperateDesert"
       },
       {
-        "From": 50,
+        "From": 60,
         "To": 85,
         "TerrainType": "ShrubLand"
       },
