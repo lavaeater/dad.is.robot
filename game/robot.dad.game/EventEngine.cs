@@ -1,3 +1,4 @@
+using ca.axoninteractive.Geometry.Hex;
 using Otter.Custom;
 using Simplex;
 
@@ -14,16 +15,17 @@ namespace robot.dad.game
             _scale = 0.01f;
         }
 
-        public TileEvent GetEventForTile(int x, int y, TerrainInfo terrainType)
+        public TileEvent GetEventForTile(CubicHexCoord coord, TerrainInfo terrainType)
         {
-            int noiseValue = (int)_eventNoise.CalcPixel3D(x, y, 0, _scale).ForceRange(100,1);
+            int noiseValue = (int)_eventNoise.CalcPixel3D(coord.x, coord.y, 0, _scale).ForceRange(100,1);
 
             if (70 < noiseValue && noiseValue <= 90)
             {
-                if (terrainType.TerrainType == TerrainType.Beach || terrainType.TerrainType == TerrainType.ShrubLand)
-                {
-                    return new TileEvent("Ruin"); //More thinking required!
-                }
+                //if (terrainType.TerrainType == TerrainType.Beach || terrainType.TerrainType == TerrainType.ShrubLand)
+                //{
+                    var pos = Hex.Grid.CubicToPoint(coord);
+                    return new TileEvent("Ruin", pos.x, pos.y); //More thinking required!
+                //}
             }
 
             return null; // null means nothing happens here. Deal with it!

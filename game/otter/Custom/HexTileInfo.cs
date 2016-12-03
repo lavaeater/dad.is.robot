@@ -7,15 +7,14 @@ namespace Otter.Custom
     public class HexTileInfo
     {
         public readonly TerrainInfo TerrainInfo;
-//        private readonly HexGrid _hexGrid;
         private Vec2D _position;
         public CubicHexCoord HexCoord { get; private set; }
         public HexAtlasTexture Texture { get; private set; }
 
-        public HexTileInfo(CubicHexCoord hexCoord, HexGrid hexGrid, HexAtlasTexture texture, TerrainInfo terrainInfo)
+        public HexTileInfo(CubicHexCoord hexCoord, HexAtlasTexture texture, TerrainInfo terrainInfo)
         {
             TerrainInfo = terrainInfo;
-            _position = hexGrid.CubicToPoint(hexCoord);
+            _position = Hex.Grid.CubicToPoint(hexCoord);
             HexCoord = hexCoord;
             Texture = texture;
         }

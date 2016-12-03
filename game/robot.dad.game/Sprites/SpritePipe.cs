@@ -12,6 +12,5 @@ namespace robot.dad.game.Sprites
         public static Image Ship => new Image("Sprites\\spaceShips_003.png");
         public static Image Ruin => new Image("Sprites\\ruinsCorner.png");
         public static Image UnknownTile => new Image("Sprites\\grass_01.png");
-
     }
 }

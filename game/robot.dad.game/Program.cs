@@ -26,7 +26,7 @@ namespace robot.dad.game
             Global.PlayerOne.Controller.Button(Controls.Left).AddKey(Key.Left);
             Global.PlayerOne.Controller.Button(Controls.Right).AddKey(Key.Right);
 
-            var background = new HexBackGround(atlasFile, 69, 5, 15);
+            var background = new HexBackGround(atlasFile, 5, 15);
             var scene = new MainScene(Global.PlayerOne);
             scene.AddBackGround(background);
             scene.Add(player);

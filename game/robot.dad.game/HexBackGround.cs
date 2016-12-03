@@ -33,14 +33,14 @@ namespace robot.dad.game
         }
 
         private CubicHexCoord CurrentPosition
-            => _hexMap.HexGrid.PointToCubic(new Vec2D(Scene.CameraCenterX, Scene.CameraCenterY));
+            => Hex.Grid.PointToCubic(new Vec2D(Scene.CameraCenterX, Scene.CameraCenterY));
 
-        public HexBackGround(string atlasFile, float hexRadius, int boundRadius, int viewPortRadius)
+        public HexBackGround(string atlasFile, int boundRadius, int viewPortRadius)
         {
             _boundRadius = boundRadius;
             _viewPortRadius = viewPortRadius;
             _eventEngine = new EventEngine();
-            _hexMap = new HexTileMap(hexRadius, _viewPortRadius, 1f, new HexAtlas(atlasFile),
+            _hexMap = new HexTileMap(_viewPortRadius, 1f, new HexAtlas(atlasFile),
                 new TerrainEngine(12, 0.05f, 0.07f));
 
             MapEntities = new Dictionary<CubicHexCoord, List<Entity>>();
@@ -79,7 +79,7 @@ namespace robot.dad.game
             var missingTileCoords = visibleMapTileCoords.Except(MapEntities.Keys);
             foreach (var missingTileCoord in missingTileCoords)
             {
-                var mapEvent = _eventEngine.GetEventForTile(missingTileCoord.x, missingTileCoord.y,
+                var mapEvent = _eventEngine.GetEventForTile(missingTileCoord,
                     _hexMap.Hexes[missingTileCoord].TerrainInfo);
                 if (mapEvent != default(TileEvent))
                 {

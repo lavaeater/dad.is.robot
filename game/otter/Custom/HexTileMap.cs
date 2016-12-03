@@ -6,19 +6,23 @@ using Newtonsoft.Json;
 
 namespace Otter.Custom
 {
+    public static class Hex
+    {
+        public static float HexRadius = 69f;
+        public static HexGrid Grid => new HexGrid(HexRadius);
+    }
+
     public class HexTileMap : Graphic
     {
-        public readonly HexGrid HexGrid;
         public readonly Dictionary<CubicHexCoord, HexTileInfo> Hexes;
         private readonly HexAtlas _hexAtlas;
         private readonly TerrainEngine _terrainEngine;
         public HexTileInfo[] VisibleTiles;
         private readonly int _visibleRadius;
         
-        public HexTileMap(float hexRadius, int visibleRadius, float scale, HexAtlas atlas, TerrainEngine terrainEngine)
+        public HexTileMap(int visibleRadius, float scale, HexAtlas atlas, TerrainEngine terrainEngine)
         {
             _visibleRadius = visibleRadius;
-            HexGrid = new HexGrid(hexRadius);
             _hexAtlas = atlas;
             _terrainEngine = terrainEngine;
             SetTexture(_hexAtlas.Texture);
@@ -28,14 +32,14 @@ namespace Otter.Custom
 
         public void AddTile(CubicHexCoord coord, string textureName, TerrainInfo terrainInfo)
         {
-            Hexes.Add(coord, new HexTileInfo(coord, HexGrid, _hexAtlas.GetAtlasTexture(textureName), terrainInfo));
+            Hexes.Add(coord, new HexTileInfo(coord, _hexAtlas.GetAtlasTexture(textureName), terrainInfo));
             NeedsUpdate = true;
         }
 
         public void AddTile(int x, int y, string textureName, TerrainInfo terrainInfo)
         {
             CubicHexCoord hexCoord = new AxialHexCoord(x, y).ToCubic();
-            Hexes.Add(hexCoord, new HexTileInfo(hexCoord, HexGrid, _hexAtlas.GetAtlasTexture(textureName), terrainInfo));
+            Hexes.Add(hexCoord, new HexTileInfo(hexCoord, _hexAtlas.GetAtlasTexture(textureName), terrainInfo));
             NeedsUpdate = true;
         }
 
@@ -74,7 +78,7 @@ namespace Otter.Custom
 
         public void CreateInitialHexes(float x, float y)
         {
-            UpdateVisibleTiles(HexGrid.PointToCubic(new Vec2D(x, y)));
+            UpdateVisibleTiles(Hex.Grid.PointToCubic(new Vec2D(x, y)));
         }
 
         public void UpdateVisibleTiles(CubicHexCoord currentPosition)
