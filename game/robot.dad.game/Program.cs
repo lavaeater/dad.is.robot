@@ -16,9 +16,6 @@ namespace robot.dad.game
             var game = new Game("Dad is a Robot", 1600, 900, 60, true);
             string atlasFile = "Terrain\\terrain.json";
 
-           
-            var player = new Player(800, 450, "Sprites\\spaceShips_003.png");
-
             Global.PlayerOne = game.AddSession("playerone");
             Global.PlayerOne.Controller.AddButton(Controls.Up);
             Global.PlayerOne.Controller.AddButton(Controls.Down);
@@ -33,9 +30,9 @@ namespace robot.dad.game
 
             var terrainData = File.ReadAllText("Terrain\\TerrainConfig.json");
             var background = new HexBackGround(atlasFile, terrainData, 3, 12);
-            var scene = new MainScene(Global.PlayerOne);
+            var player = new Player(800, 450, "Sprites\\spaceShips_003.png", Global.PlayerOne);
+            var scene = new MainScene(player);
             scene.AddBackGround(background);
-            scene.Add(player);
             game.OnEnd = () => background.SaveMap("map.json");
             game.Start(scene);
         }
