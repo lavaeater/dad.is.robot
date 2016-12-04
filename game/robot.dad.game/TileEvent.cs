@@ -17,8 +17,13 @@ namespace robot.dad.game
             Hex = hex;
             this.EventType = eventType;
 
+            if (eventType == "Ruin")
+            {
+                AddComponents(new AggressorComponent(this, 2));
+            }
+
             IdentifiedImage = SpritePipe.Ruin;
-            
+
             Visible = false;
 
             Graphic = SpritePipe.UnknownTile;

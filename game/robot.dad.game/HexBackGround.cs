@@ -32,7 +32,7 @@ namespace robot.dad.game
             _previousArea = _previousPosition.AreaAround(_boundRadius);
         }
 
-        private CubicHexCoord CurrentPosition
+        public CubicHexCoord CurrentPosition
             => Hex.Grid.PointToCubic(new Vec2D(Scene.CameraCenterX, Scene.CameraCenterY));
 
         public HexBackGround(string atlasFile, string terrainData, int boundRadius, int viewPortRadius)
