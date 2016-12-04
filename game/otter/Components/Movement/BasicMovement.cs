@@ -55,12 +55,14 @@ namespace Otter {
         /// <param name="xMax">The maximum speed allowed in the x axis.</param>
         /// <param name="yMax">The maximum speed allowed in the y axis.</param>
         /// <param name="accel">The acceleration.</param>
-        public BasicMovement(float xMax, float yMax, float accel)
+        /// <param name="axis">The axis. I mean, come on.</param>
+        public BasicMovement(float xMax, float yMax, float accel, Axis axis)
             : base() {
             Speed = new Speed(xMax, yMax);
             TargetSpeed = new Speed(xMax, yMax);
             Accel = accel;
-        }
+            Axis = axis;
+            }
 
         #endregion
 
