@@ -1,4 +1,4 @@
-﻿namespace Otter.Custom
+﻿namespace robot.dad.graphics
 {
     public struct TerrainInfo
     {

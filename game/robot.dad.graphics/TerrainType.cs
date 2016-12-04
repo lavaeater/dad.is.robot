@@ -1,4 +1,4 @@
-namespace Otter.Custom
+namespace robot.dad.graphics
 {
     public enum TerrainType
     {
@@ -17,13 +17,5 @@ namespace Otter.Custom
         SubTropicalDesert,
         TropicalSeasonalForest,
         TropicalRainForest
-    }
-
-    public static class Terrain
-    {
-        public static string GetTextureName(TerrainType terrainType)
-        {
-            return $"{terrainType.ToString().ToLower()}.png";
-        }
     }
 }

@@ -30,6 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="sfmlnet-graphics-2, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferenceAssemblies\sfmlnet-graphics-2.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-system-2, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferenceAssemblies\sfmlnet-system-2.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,8 +52,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="HexAtlas.cs" />
+    <Compile Include="HexAtlasTexture.cs" />
+    <Compile Include="HexTileInfo.cs" />
+    <Compile Include="HexTileMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RangeForcer.cs" />
+    <Compile Include="Terrain.cs" />
+    <Compile Include="TerrainEngine.cs" />
+    <Compile Include="TerrainInfo.cs" />
+    <Compile Include="TerrainType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HexGrid\HexGrid.csproj">
+      <Project>{730ce1a8-6f93-424d-aaf1-057182bc21ef}</Project>
+      <Name>HexGrid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\otter\Otter.csproj">
+      <Project>{236485c2-a7ba-4dcd-808a-b3a634764402}</Project>
+      <Name>Otter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimplexNoise\SimplexNoise.csproj">
+      <Project>{733b3143-822a-41b7-a021-9bf7ae84c2d5}</Project>
+      <Name>SimplexNoise</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

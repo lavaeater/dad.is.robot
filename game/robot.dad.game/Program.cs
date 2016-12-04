@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using Otter;
-using System.Runtime.CompilerServices;
-using Otter.Custom;
 
 namespace robot.dad.game
 {

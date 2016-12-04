@@ -1,6 +1,7 @@
 using ca.axoninteractive.Geometry.Hex;
 using Otter;
 using robot.dad.game.Sprites;
+using robot.dad.graphics;
 
 namespace robot.dad.game
 {
@@ -22,7 +23,7 @@ namespace robot.dad.game
 
             Graphic = SpritePipe.UnknownTile;
             Graphic.CenterOrigin();
-            var tilePos = Otter.Custom.Hex.Grid.CubicToPoint(Hex);
+            var tilePos = graphics.Hex.Grid.CubicToPoint(Hex);
 
             X = tilePos.x;
             Y = tilePos.y;

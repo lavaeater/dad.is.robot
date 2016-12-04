@@ -92,6 +92,10 @@
       <Project>{75A46945-48F3-41B7-9B72-1EE07CA0297B}</Project>
       <Name>robot.dad.combat</Name>
     </ProjectReference>
+    <ProjectReference Include="..\robot.dad.graphics\robot.dad.graphics.csproj">
+      <Project>{d5b98c37-3714-4935-a61c-b467011e25da}</Project>
+      <Name>robot.dad.graphics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SimplexNoise\SimplexNoise.csproj">
       <Project>{733B3143-822A-41B7-A021-9BF7AE84C2D5}</Project>
       <Name>SimplexNoise</Name>

@@ -1,4 +1,6 @@
-namespace Otter.Custom
+using Otter;
+
+namespace robot.dad.graphics
 {
     public class HexAtlasTexture
     {

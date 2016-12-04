@@ -21,6 +21,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexGrid", "HexGrid\HexGrid.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otter", "otter\Otter.csproj", "{236485C2-A7BA-4DCD-808A-B3A634764402}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReferenceAssemblies", "ReferenceAssemblies", "{BC62BA58-55E9-49D1-83C0-D5F6CCA0D686}"
+	ProjectSection(SolutionItems) = preProject
+		ReferenceAssemblies\csfml-audio-2.dll = ReferenceAssemblies\csfml-audio-2.dll
+		ReferenceAssemblies\csfml-graphics-2.dll = ReferenceAssemblies\csfml-graphics-2.dll
+		ReferenceAssemblies\csfml-network-2.dll = ReferenceAssemblies\csfml-network-2.dll
+		ReferenceAssemblies\csfml-system-2.dll = ReferenceAssemblies\csfml-system-2.dll
+		ReferenceAssemblies\csfml-window-2.dll = ReferenceAssemblies\csfml-window-2.dll
+		ReferenceAssemblies\libsndfile-1.dll = ReferenceAssemblies\libsndfile-1.dll
+		ReferenceAssemblies\openal32.dll = ReferenceAssemblies\openal32.dll
+		ReferenceAssemblies\packages.config = ReferenceAssemblies\packages.config
+		ReferenceAssemblies\sfmlnet-audio-2.dll = ReferenceAssemblies\sfmlnet-audio-2.dll
+		ReferenceAssemblies\sfmlnet-audio-2.dll.config = ReferenceAssemblies\sfmlnet-audio-2.dll.config
+		ReferenceAssemblies\sfmlnet-graphics-2.dll = ReferenceAssemblies\sfmlnet-graphics-2.dll
+		ReferenceAssemblies\sfmlnet-graphics-2.dll.config = ReferenceAssemblies\sfmlnet-graphics-2.dll.config
+		ReferenceAssemblies\sfmlnet-system-2.dll = ReferenceAssemblies\sfmlnet-system-2.dll
+		ReferenceAssemblies\sfmlnet-window-2.dll = ReferenceAssemblies\sfmlnet-window-2.dll
+		ReferenceAssemblies\sfmlnet-window-2.dll.config = ReferenceAssemblies\sfmlnet-window-2.dll.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

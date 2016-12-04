@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using ca.axoninteractive.Geometry.Hex;
 using Newtonsoft.Json;
+using Otter;
 
-namespace Otter.Custom
+namespace robot.dad.graphics
 {
     public static class Hex
     {

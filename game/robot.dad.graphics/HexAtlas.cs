@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml;
 using Newtonsoft.Json.Linq;
+using Otter;
 
-namespace Otter.Custom
+namespace robot.dad.graphics
 {
     public class HexAtlas
     { 

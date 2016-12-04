@@ -1,8 +1,9 @@
 ﻿using ca.axoninteractive.Geometry.Hex;
 using SFML.Graphics;
 using SFML.System;
+using Color = Otter.Color;
 
-namespace Otter.Custom
+namespace robot.dad.graphics
 {
     public class HexTileInfo
     {

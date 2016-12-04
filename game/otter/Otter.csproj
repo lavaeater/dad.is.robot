@@ -55,25 +55,21 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="sfmlnet-audio-2, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\sfmlnet-audio-2.dll</HintPath>
+      <HintPath>..\ReferenceAssemblies\sfmlnet-audio-2.dll</HintPath>
     </Reference>
     <Reference Include="sfmlnet-graphics-2, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\sfmlnet-graphics-2.dll</HintPath>
+      <HintPath>..\ReferenceAssemblies\sfmlnet-graphics-2.dll</HintPath>
     </Reference>
     <Reference Include="sfmlnet-system-2, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\sfmlnet-system-2.dll</HintPath>
+      <HintPath>..\ReferenceAssemblies\sfmlnet-system-2.dll</HintPath>
     </Reference>
     <Reference Include="sfmlnet-window-2, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\sfmlnet-window-2.dll</HintPath>
+      <HintPath>..\ReferenceAssemblies\sfmlnet-window-2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -109,14 +105,6 @@
     <Compile Include="Components\Vertebrae.cs" />
     <Compile Include="Core\Entity.cs" />
     <Compile Include="Core\Game.cs" />
-    <Compile Include="Custom\HexAtlas.cs" />
-    <Compile Include="Custom\HexAtlasTexture.cs" />
-    <Compile Include="Custom\HexTileInfo.cs" />
-    <Compile Include="Custom\HexTileMap.cs" />
-    <Compile Include="Custom\RangeForcer.cs" />
-    <Compile Include="Custom\TerrainEngine.cs" />
-    <Compile Include="Custom\TerrainInfo.cs" />
-    <Compile Include="Custom\TerrainType.cs" />
     <Compile Include="Graphics\Anim.cs" />
     <Compile Include="Graphics\Atlas.cs" />
     <Compile Include="Graphics\Drawables\GraphicList.cs" />
@@ -224,22 +212,11 @@
     <None Include="csfml-network-2.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libsndfile-1.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HexGrid\HexGrid.csproj">
-      <Project>{730ce1a8-6f93-424d-aaf1-057182bc21ef}</Project>
-      <Name>HexGrid</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SimplexNoise\SimplexNoise.csproj">
-      <Project>{733b3143-822a-41b7-a021-9bf7ae84c2d5}</Project>
-      <Name>SimplexNoise</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
