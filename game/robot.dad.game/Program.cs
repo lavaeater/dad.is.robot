@@ -14,6 +14,8 @@ namespace robot.dad.game
             //File.WriteAllText("TerrainConfig.json", json);
 
             var game = new Game("Dad is a Robot", 1600, 900, 60, false);
+            game.DrawInactiveScenes = false;
+
             string atlasFile = "Terrain\\terrain.json";
 
             Global.PlayerOne = game.AddSession("playerone");

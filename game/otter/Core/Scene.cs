@@ -331,6 +331,11 @@ namespace Otter {
             get { return Game.Debugger; }
         }
 
+        /// <summary>
+        /// Default background color of the scene, so we can have different ones for different scenes
+        /// </summary>
+        public Color BackGroundColor;
+
         #endregion
 
         #region Constructors

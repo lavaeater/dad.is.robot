@@ -23,7 +23,7 @@ namespace robot.dad.game
 
         public void StartChase()
         {
-            Game.AddScene(new ChaseScene(_player));
+            Game.AddScene(new ChaseScene());
         }
     }
 
@@ -31,9 +31,12 @@ namespace robot.dad.game
     {
         private Player _player;
 
-        public ChaseScene(Player player)
+        public ChaseScene()
         {
-            _player = player;
+            _player = new Player(Center.X, Center.Y, Global.PlayerOne);
+            Add(_player);
+            CameraFocus = _player;
+            BackGroundColor = new Color(0.85f, 0.85f);
         }
     }
 }
