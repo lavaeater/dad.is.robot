@@ -20,5 +20,20 @@ namespace robot.dad.game
         }
 
         public HexBackGround BackGround { get; set; }
+
+        public void StartChase()
+        {
+            Game.AddScene(new ChaseScene(_player));
+        }
+    }
+
+    public class ChaseScene : Scene
+    {
+        private Player _player;
+
+        public ChaseScene(Player player)
+        {
+            _player = player;
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace robot.dad.game
 
             var terrainData = File.ReadAllText("Terrain\\TerrainConfig.json");
             var background = new HexBackGround(atlasFile, terrainData, 3, 12);
-            var player = new Player(800, 450, "Sprites\\spaceShips_003.png", Global.PlayerOne);
+            var player = new Player(800, 450,  Global.PlayerOne);
             var scene = new MainScene(player);
             scene.AddBackGround(background);
             game.OnEnd = () => background.SaveMap("map.json");

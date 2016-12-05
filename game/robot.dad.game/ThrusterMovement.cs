@@ -1,4 +1,5 @@
-﻿using Otter;
+﻿using System;
+using Otter;
 
 namespace robot.dad.game
 {
@@ -10,18 +11,32 @@ namespace robot.dad.game
         private readonly float _drag;
         private readonly float _roation;
         private readonly Speed Speed;
-        private Axis Axis;
-        private float Angle;
+        private readonly Axis _axis;
+        private float _angle;
+
+        private readonly float _maxAcceleration;
+        private float _currentAcceleration;
+
+        private readonly float _maxSpeed;
+        private float _currentSpeed;
 
         public ThrusterMovement(float maxSpeed, float rotationSpeed, float drag, float acceleration, Axis axis)
         {
-            Angle = 180;
-            Speed = new Speed(maxSpeed);
-            TargetSpeed = new Speed(maxSpeed);
-            _rotationSpeed = rotationSpeed; //not important right now
-            _drag = drag;
-            Axis = axis;
-            Accel = acceleration;
+            //Hardcoded values until we get it right!
+            /*
+             * When the player presses the accelerator, acceleration goes up! (of course)
+             * So, acceleration AND speed have maxValues, and currentValues
+             * 
+             * _currentSpeed is then lowered by drag in opposite direction
+             */
+            _angle = 90;
+            _drag = 5;
+            _axis = axis;
+            _currentAcceleration = 0;
+            _maxAcceleration = 200;
+            _currentSpeed = 0;
+            _maxSpeed = 500;
+            _rotationSpeed = 3;
         }
 
 
@@ -29,22 +44,35 @@ namespace robot.dad.game
         {
             if (Freeze) return;
 
-            Angle = Util.ApproachAngle(Angle, Util.WrapAngle(Angle + (_rotationSpeed * -Axis.X)),  2f);
-            Entity.Graphic.Angle = Angle - 90f;
+            _angle = Util.ApproachAngle(_angle, Util.WrapAngle(_angle + (_rotationSpeed * -_axis.X)), _rotationSpeed);
 
-            TargetSpeed.MaxX = Speed.MaxX;
-            TargetSpeed.MaxY = Speed.MaxX;
+            Entity.Graphics.ForEach(g => g.Angle = _angle + 90f);
 
-            if (Axis != null)
+            if (_axis != null)
             {
-                TargetSpeed.X = Util.PolarX(Angle, Axis.Y * TargetSpeed.MaxX);
-                TargetSpeed.Y = Util.PolarY(Angle, Axis.Y * TargetSpeed.MaxY);
+                if (Math.Abs(_axis.Y) > 0)
+                {
+                    _currentAcceleration = Util.Approach(_currentAcceleration, _maxAcceleration, 50);
+                }
+                else
+                {
+                    _currentAcceleration = 0;
+                }
             }
 
-            Speed.X = Util.Approach(Speed.X, TargetSpeed.X, Accel);
-            Speed.Y = Util.Approach(Speed.Y, TargetSpeed.Y, Accel);
+            if (_currentAcceleration > 0)
+            {
+                _currentSpeed = Util.Approach(_currentSpeed, _maxSpeed, _currentAcceleration);
+            }
+            else
+            {
+                _currentSpeed = Util.Approach(_currentSpeed, 0, _drag);
+            }
+            _speedX = (int)Util.PolarX(_angle, _currentSpeed);
+            _speedY = (int) Util.PolarY(_angle, _currentSpeed);
 
-            MoveXY((int)Speed.X, (int)Speed.Y, Collider);
+
+            MoveXY(_speedX, _speedY, Collider);
 
             if (OnMove != null)
             {
@@ -54,5 +82,7 @@ namespace robot.dad.game
 
         public bool Freeze;
         private float Accel;
+        private int _speedX;
+        private int _speedY;
     }
 }

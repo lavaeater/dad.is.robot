@@ -24,11 +24,12 @@ namespace robot.dad.game
 
             //We're visible, time to find the player! How?
             //Through the scene!
-            var curPos = (_tileEvent.Scene as MainScene).BackGround.CurrentPosition;
-            if (_areaAround.Contains(curPos))
-            {
-                string something = "or other";
-            }
+            //var mainScene = (_tileEvent.Scene as MainScene);
+            //var curPos = mainScene.BackGround.CurrentPosition;
+            //if (_areaAround.Contains(curPos))
+            //{
+            //    mainScene.StartChase();
+            //}
         }
     }
 }
