@@ -26,17 +26,4 @@ namespace robot.dad.game
             Game.AddScene(new ChaseScene());
         }
     }
-
-    public class ChaseScene : Scene
-    {
-        private Player _player;
-
-        public ChaseScene()
-        {
-            _player = new Player(Center.X, Center.Y, Global.PlayerOne);
-            Add(_player);
-            CameraFocus = _player;
-            BackGroundColor = new Color(0.85f, 0.85f);
-        }
-    }
 }

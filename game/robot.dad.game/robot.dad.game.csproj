@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggressorComponent.cs" />
+    <Compile Include="ChaseScene.cs" />
     <Compile Include="CombatDemo.cs" />
     <Compile Include="EventEngine.cs" />
     <Compile Include="Global.cs" />
