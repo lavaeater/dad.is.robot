@@ -28,7 +28,7 @@ namespace robot.dad.game
                 _maxVal = diceRoll;
             if (terrainType.TerrainType == TerrainType.TemperateDesert || terrainType.TerrainType == TerrainType.SubTropicalDesert || terrainType.TerrainType == TerrainType.Scorched)
             {
-                if (98 < diceRoll && diceRoll <= 100)
+                if (99 < diceRoll && diceRoll <= 100)
                 {
                     return new TileEvent("Ruin", coord); //More thinking required!
                 }

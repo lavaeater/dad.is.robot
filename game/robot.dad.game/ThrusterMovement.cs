@@ -6,7 +6,8 @@ namespace robot.dad.game
 {
     public class ThrusterMovement : Movement
     {
-        private float _rotationSpeed;
+        private readonly float _rotationSpeed;
+        private float _currentRotationSpeed;
         private readonly float _drag;
         private readonly Axis _axis;
         private float _angle;
@@ -18,12 +19,13 @@ namespace robot.dad.game
         private int _speedY;
         private readonly bool _enableThrustGraphic;
         public bool Freeze;
-        private int _smallThrust;
-        private int _mediumThrust;
+        private readonly int _smallThrust;
+        private readonly int _mediumThrust;
 
         public ThrusterMovement(float rotationSpeed, float drag, Axis axis, float angle, float maxThrust, float maxSpeed, bool enableThrustGraphic)
         {
             _rotationSpeed = rotationSpeed;
+            _currentRotationSpeed = rotationSpeed;
             _drag = drag;
             _axis = axis;
             _angle = angle;
@@ -34,7 +36,7 @@ namespace robot.dad.game
             _speedX = 0;
             _speedY = 0;
             _smallThrust = (int)_maxThrust / 2;
-            _mediumThrust = (int)_maxThrust - (int)_maxThrust / 4;
+            _mediumThrust = (int)_maxThrust - (int)_maxThrust / 5;
         }
 
         public override void Update()
@@ -58,28 +60,28 @@ namespace robot.dad.game
                 int currThrust = (int)_currentThrust;
                 if (0 < currThrust && currThrust < _smallThrust)
                 {
-                    _rotationSpeed = 5;
+                    _currentRotationSpeed = _rotationSpeed + 2;
                     SmallThrust.Visible = true;
                 }
                 else if (_smallThrust < currThrust && currThrust < _mediumThrust)
                 {
-                    _rotationSpeed = 3;
+                    _currentRotationSpeed = _rotationSpeed;
                     MediumThrust.Visible = true;
                 }
                 else if (_mediumThrust < currThrust)
                 {
-                    _rotationSpeed = 2;
+                    _currentRotationSpeed = _rotationSpeed - 1;
                     MaxThrust.Visible = true;
                 }
                 else if (currThrust == 0)
                 {
                     if (_currentSpeed < 1)
                     {
-                        _rotationSpeed = 0;
+                        _currentRotationSpeed = 0;
                     }
                     else
                     {
-                        _rotationSpeed = 5;
+                        _currentRotationSpeed = _rotationSpeed + 2;
                     }
                     SmallThrust.Visible = false;
                     MediumThrust.Visible = false;
@@ -87,12 +89,9 @@ namespace robot.dad.game
                 }
             }
 
-            _angle = Util.ApproachAngle(_angle, Util.WrapAngle(_angle + (_rotationSpeed * -_axis.X)), _rotationSpeed);
+            _angle = Util.ApproachAngle(_angle, Util.WrapAngle(_angle + (_currentRotationSpeed * -_axis.X)), _currentRotationSpeed);
 
             Entity.Graphics.ForEach(g => g.Angle = _angle + 90f);
-
-
-
 
             if (_currentThrust > 0)
             {
