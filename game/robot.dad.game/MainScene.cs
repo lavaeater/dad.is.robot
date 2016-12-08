@@ -10,9 +10,9 @@ namespace robot.dad.game
         {
             _player = player;
             Add(player);
-            CameraFocus= _player;
+            CameraFocus = _player;
         }
-        
+
         public void AddBackGround(HexBackGround background)
         {
             base.Add(background);
@@ -23,7 +23,14 @@ namespace robot.dad.game
 
         public void StartChase()
         {
-            Game.AddScene(new ChaseScene());
+            Game.SwitchScene(new ChaseScene(ReturnToMe));
+        }
+
+        public void ReturnToMe()
+        {
+            //Do we still have our data?
+            
+            Game.SwitchScene(this);
         }
     }
 }

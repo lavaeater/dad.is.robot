@@ -19,17 +19,22 @@ namespace robot.dad.game
 
         public override void Update()
         {
-            base.Update();
             if (!_tileEvent.Visible) return;
 
             //We're visible, time to find the player! How?
             //Through the scene!
-            var mainScene = (_tileEvent.Scene as MainScene);
-            var curPos = mainScene.BackGround.CurrentPosition;
-            if (_areaAround.Contains(curPos))
+            if (!Done)
             {
-                mainScene.StartChase();
+                var mainScene = (_tileEvent.Scene as MainScene);
+                var curPos = mainScene.BackGround.CurrentPosition;
+                if (_areaAround.Contains(curPos))
+                {
+                    Done = true;
+                    mainScene.StartChase();
+                }
             }
         }
+
+        public bool Done;
     }
 }
