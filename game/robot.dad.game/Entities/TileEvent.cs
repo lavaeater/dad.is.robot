@@ -1,16 +1,14 @@
 using ca.axoninteractive.Geometry.Hex;
 using Otter;
+using robot.dad.game.Components;
 using robot.dad.game.Sprites;
-using robot.dad.graphics;
 
-namespace robot.dad.game
+namespace robot.dad.game.Entities
 {
     public class TileEvent : Entity
     {
         public CubicHexCoord Hex { get; set; }
         public string EventType;
-        private int _xDiff;
-        private int _yDiff;
 
         public TileEvent(string eventType, CubicHexCoord hex)
         {

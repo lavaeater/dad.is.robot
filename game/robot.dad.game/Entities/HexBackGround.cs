@@ -1,21 +1,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters;
 using ca.axoninteractive.Geometry.Hex;
 using Otter;
+using robot.dad.game.World;
 using robot.dad.graphics;
 
-namespace robot.dad.game
+namespace robot.dad.game.Entities
 {
     public class HexBackGround : Entity
     {
         private readonly int _boundRadius;
-        private readonly int _viewPortRadius;
-        private HexTileMap _hexMap;
+        private readonly HexTileMap _hexMap;
         private CubicHexCoord _previousPosition;
         private CubicHexCoord[] _previousArea;
-        private EventEngine _eventEngine;
+        private readonly EventEngine _eventEngine;
         public Dictionary<CubicHexCoord, List<TileEvent>> MapEntities;
 
         public override void Added()
@@ -38,11 +37,10 @@ namespace robot.dad.game
         public HexBackGround(string atlasFile, string terrainData, int boundRadius, int viewPortRadius)
         {
             _boundRadius = boundRadius;
-            _viewPortRadius = viewPortRadius;
             _eventEngine = new EventEngine();
-            _hexMap = new HexTileMap(_viewPortRadius, 1f, new HexAtlas(atlasFile),
+            _hexMap = new HexTileMap(viewPortRadius, 1f, new HexAtlas(atlasFile),
 //                new TerrainEngine(12, 0.05f, 0.07f, terrainData));
-                new TerrainEngine(568, 0.01f, 0.1f, terrainData));
+                new TerrainEngine(568, 0.01f, 0.01f, terrainData));
 
             MapEntities = new Dictionary<CubicHexCoord, List<TileEvent>>();
             Graphic = _hexMap;

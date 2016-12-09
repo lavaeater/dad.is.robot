@@ -1,16 +1,14 @@
 using Otter;
+using robot.dad.game.Entities;
 
-namespace robot.dad.game
+namespace robot.dad.game.Scenes
 {
     public class MainScene : Scene
     {
-        private readonly Player _player;
-
         public MainScene(Player player)
         {
-            _player = player;
             Add(player);
-            CameraFocus = _player;
+            CameraFocus = player;
         }
 
         public void AddBackGround(HexBackGround background)
@@ -28,8 +26,6 @@ namespace robot.dad.game
 
         public void ReturnToMe()
         {
-            //Do we still have our data?
-            
             Game.SwitchScene(this);
         }
     }

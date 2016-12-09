@@ -1,20 +1,20 @@
 using System.Linq;
 using ca.axoninteractive.Geometry.Hex;
 using Otter;
+using robot.dad.game.Entities;
+using robot.dad.game.Scenes;
 
-namespace robot.dad.game
+namespace robot.dad.game.Components
 {
     public class AggressorComponent : Component
     {
         private readonly TileEvent _tileEvent;
-        private readonly int _sightRadius;
-        private CubicHexCoord[] _areaAround;
+        private readonly CubicHexCoord[] _areaAround;
 
         public AggressorComponent(TileEvent tileEvent, int sightRadius)
         {
             _tileEvent = tileEvent;
-            _sightRadius = sightRadius;
-            _areaAround = _tileEvent.Hex.AreaAround(_sightRadius);
+            _areaAround = _tileEvent.Hex.AreaAround(sightRadius);
         }
 
         public override void Update()

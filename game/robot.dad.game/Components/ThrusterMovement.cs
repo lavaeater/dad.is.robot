@@ -2,7 +2,7 @@
 using Otter;
 using robot.dad.game.Sprites;
 
-namespace robot.dad.game
+namespace robot.dad.game.Components
 {
     public class ThrusterMovement : Movement
     {

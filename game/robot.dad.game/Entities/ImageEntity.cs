@@ -1,6 +1,6 @@
 ﻿using Otter;
 
-namespace robot.dad.game
+namespace robot.dad.game.Entities
 {
     public class ImageEntity : Entity
     {

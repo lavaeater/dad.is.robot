@@ -1,15 +1,15 @@
-﻿using System;
-using Otter;
+﻿using Otter;
+using robot.dad.game.Components;
 using robot.dad.game.Sprites;
-using robot.dad.graphics;
 
-namespace robot.dad.game
+namespace robot.dad.game.Entities
 {
     public class Player : Entity
     {
+        private readonly float _scale;
         public readonly Session Session;
      
-        public Player(float x, float y, Session session)
+        public Player(float scale, float x, float y, Session session)
         {
             //_yOrigin = 200f;//173f;
             //_xOrigin = 50f;
@@ -20,6 +20,7 @@ namespace robot.dad.game
             var movement = new ThrusterMovement(3, 5, axis, 90f, 200f, 500f, true);
             AddComponents(axis, movement);
 
+            _scale = scale;
             Session = session;
             X = x;
             Y = y;
@@ -30,7 +31,7 @@ namespace robot.dad.game
             // Create an Image using the path passed in with the constructor
             AddGraphics(SpritePipe.Ship);
             Graphic.CenterOrigin();
-            Graphic.Scale = 0.5f;
+            Graphic.Scale = _scale;
         }
 
         public override void Update()
