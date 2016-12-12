@@ -19,6 +19,7 @@ namespace robot.dad.combat.EffectAppliers
         public int Max { get; set; }
         public int LastRound { get; set; }
         public EffectType EffectType { get; set; }
+        public int RecentRound { get; set; }
         public abstract void ApplyEffects(Combattant target);
 
         public virtual void EffectsEnded(Combattant target)

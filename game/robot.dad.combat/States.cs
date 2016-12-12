@@ -4,7 +4,7 @@ namespace robot.dad.combat
     {
         BeforeCombat,
         PlayerPicking,
-        ResolveCombat,
+        ResolveMove,
         CombatOver
     }
 }

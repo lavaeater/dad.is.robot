@@ -40,6 +40,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReferenceAssemblies", "Refe
 		ReferenceAssemblies\sfmlnet-window-2.dll.config = ReferenceAssemblies\sfmlnet-window-2.dll.config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CombatTester", "CombatTester\CombatTester.csproj", "{F0600D81-B0C6-436C-BF94-68AFB5A472C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -156,6 +158,18 @@ Global
 		{236485C2-A7BA-4DCD-808A-B3A634764402}.Release|Any CPU.ActiveCfg = Release|x86
 		{236485C2-A7BA-4DCD-808A-B3A634764402}.Release|x86.ActiveCfg = Release|x86
 		{236485C2-A7BA-4DCD-808A-B3A634764402}.Release|x86.Build.0 = Release|x86
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.Debug|x86.Build.0 = Debug|Any CPU
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.NuGet|Any CPU.ActiveCfg = Release|Any CPU
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.NuGet|Any CPU.Build.0 = Release|Any CPU
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.NuGet|x86.ActiveCfg = Release|Any CPU
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.NuGet|x86.Build.0 = Release|Any CPU
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.Release|x86.ActiveCfg = Release|Any CPU
+		{F0600D81-B0C6-436C-BF94-68AFB5A472C5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

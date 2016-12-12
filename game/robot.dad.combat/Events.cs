@@ -4,7 +4,7 @@ namespace robot.dad.combat
     {
         Start,
         PlayerPicked,
-        CombatRoundResolved,
+        MoveResolved,
         CombatOver
     }
 }

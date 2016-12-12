@@ -28,28 +28,32 @@ namespace robot.dad.combat
             StateMachine = new PassiveStateMachine<States, Events>();
             StateMachine
                 .In(States.BeforeCombat)
-                .ExecuteOnExit(SetAliveParticipantsForRound)
+                .ExecuteOnExit(SetNextCombattant)
                 .On(Events.Start)
                 .Goto(States.PlayerPicking);
 
             StateMachine
                 .In(States.PlayerPicking)
-                .ExecuteOnEntry(ApplyCombatEffects)
                 .ExecuteOnEntry(PickMove)
                 .On(Events.PlayerPicked)
-                .If(() => AllPlayersHavePicked).Goto(States.ResolveCombat)
-                .If(() => !AllPlayersHavePicked).Goto(States.PlayerPicking);
+                .Goto(States.ResolveMove);
+                //.In(States.PlayerPicking)
+                //.ExecuteOnEntry(PickMove)
+                //.On(Events.PlayerPicked)
+                //.If(() => AllPlayersHavePicked).Goto(States.ResolveMove)
+                //.If(() => !AllPlayersHavePicked).Goto(States.PlayerPicking);
 
             StateMachine
-                .In(States.ResolveCombat)
-                .ExecuteOnEntry(ResolveCombatRound)
-                .ExecuteOnExit(ResetPicks)
-                .ExecuteOnExit(SetAliveParticipantsForRound)
-                .On(Events.CombatRoundResolved)
+                .In(States.ResolveMove)
+                .ExecuteOnEntry(ResolveMove)
+                .ExecuteOnExit(ApplyCombatEffects)
+                .ExecuteOnExit(SetNextCombattant)
+                //.ExecuteOnExit(SetAliveParticipantsForRound)
+                .On(Events.MoveResolved)
                 .Goto(States.PlayerPicking);
 
             StateMachine
-                .In(States.ResolveCombat)
+                .In(States.ResolveMove)
                 .On(Events.CombatOver)
                 .Goto(States.CombatOver);
 
@@ -68,7 +72,7 @@ namespace robot.dad.combat
              */
 
             //Also fear 
-            foreach (var target in AliveParticipants.Where(t => t.CombatEffects.Any()))
+            foreach (var target in AliveByInitiative.Where(t => t.CombatEffects.Any()))
             {
                 foreach (var effect in target.CombatEffects)
                 {
@@ -82,12 +86,20 @@ namespace robot.dad.combat
             }
         }
 
-        private void ResetPicks()
+        private int _currentIndex = -1;
+        private void SetNextCombattant()
         {
-            foreach (var participant in Participants)
+            _currentIndex++;
+
+            //TODO: Watch out, one player or two might be jumped if someone before or after dies and the number of items in AliveByInitiative changes.
+            if (_currentIndex > AliveByInitiative.Count - 1)
             {
-                participant.ClearMove();
+                _currentIndex = 0;
+                Round++; //Normally, if we have gone full circle, it is a "round", useful for combat effects... for now. This is shit. ;-)
             }
+
+            CurrentCombattant = AliveByInitiative[_currentIndex];
+            CurrentCombattant.ClearMove();
         }
 
         public void StartCombat()
@@ -103,32 +115,28 @@ namespace robot.dad.combat
             Console.WriteLine("Striden över");
         }
 
+        /// <summary>
+        /// Lets the next alive Participant with the highest initiative pick a move
+        /// </summary>
         public void PickMove()
         {
             PrintCombatBoard();
-            var playerToPickFor = AliveParticipants.First(p => !p.HasPicked);
-            playerToPickFor.PickMove(AliveParticipants);
+//            CurrentCombattant = AliveByInitiative.First(p => !p.HasPicked);
+            CurrentCombattant.PickMove(AliveByInitiative);
 
             StateMachine.Fire(Events.PlayerPicked);
         }
 
-        private void SetAliveParticipantsForRound()
-        {
-            AliveParticipants = ParticipantsThatCanFight.ToList();
-        }
+        public Combattant CurrentCombattant { get; set; }
 
-        public void ResolveCombatRound()
+        public void ResolveMove()
         {
-            Round++;
             Console.WriteLine($"Runda {Round}!");
 
-            AliveParticipants.ForEach(ap => ap.ResolveMove());
-
-            Console.WriteLine("Rundan över!");
-            Console.ReadKey();
+            CurrentCombattant.ResolveMove();
 
             //This will be a doozy
-            StateMachine.Fire(CheckIfCombatIsOver() ? Events.CombatOver : Events.CombatRoundResolved);
+            StateMachine.Fire(CheckIfCombatIsOver() ? Events.CombatOver : Events.MoveResolved);
         }
 
         public void PrintCombatBoard()
@@ -163,14 +171,12 @@ namespace robot.dad.combat
 
         }
 
-        public List<Combattant> AliveParticipants { get; set; }
+        public List<Combattant> AliveByInitiative => Participants.Where(c => !c.Dead).OrderByDescending(c => c.Initiative).ToList();
 
         private bool CheckIfCombatIsOver()
         {
             //Fight is over if all participants on either team is dead!
             return Protagonists.TrueForAll(c => c.Dead) || Antagonists.TrueForAll(c => c.Dead);
         }
-
-        public bool AllPlayersHavePicked => AliveParticipants.TrueForAll(p => p.HasPicked);
     }
 }

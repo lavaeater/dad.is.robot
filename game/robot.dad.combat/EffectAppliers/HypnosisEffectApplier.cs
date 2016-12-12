@@ -23,7 +23,7 @@ namespace robot.dad.combat.EffectAppliers
             }
         }
 
-        public Action<Combattant, List<Combattant>, List<CombatMove>> OriginalPicker { get; set; }
+        public Action<Combattant, IEnumerable<Combattant>, List<CombatMove>> OriginalPicker { get; set; }
 
         public override void EffectsEnded(Combattant target)
         {

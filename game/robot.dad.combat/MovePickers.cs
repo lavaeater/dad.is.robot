@@ -6,7 +6,7 @@ namespace robot.dad.combat
 {
     public static class MovePickers
     {
-        public static void RandomPicker(Combattant picker, List<Combattant> possibleTargets,
+        public static void RandomPicker(Combattant picker, IEnumerable<Combattant> possibleTargets,
             List<CombatMove> possibleMoves)
         {
             picker.CurrentMove = possibleMoves[DiceRoller.RollDice(0, possibleMoves.Count - 1)];
@@ -22,7 +22,7 @@ namespace robot.dad.combat
             }
         }
 
-        public static void RandomReversePicker(Combattant picker, List<Combattant> possibleTargets,
+        public static void RandomReversePicker(Combattant picker, IEnumerable<Combattant> possibleTargets,
     List<CombatMove> possibleMoves)
         {
             picker.CurrentMove = possibleMoves[DiceRoller.RollDice(0, possibleMoves.Count - 1)];
@@ -38,7 +38,7 @@ namespace robot.dad.combat
             }
         }
 
-        public static void ManualPicker(Combattant picker, List<Combattant> possibleTargets, List<CombatMove> possibleMoves)
+        public static void ManualPicker(Combattant picker, IEnumerable<Combattant> possibleTargets, List<CombatMove> possibleMoves)
         {
             //1. List targets and make player choose one!
             var pts = possibleTargets.Where(pt => pt.Team != picker.Team).ToList();

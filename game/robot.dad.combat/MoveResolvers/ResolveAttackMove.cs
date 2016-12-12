@@ -10,8 +10,8 @@ namespace robot.dad.combat.MoveResolvers
         {
             Console.WriteLine();
             int targetValue = attacker.AttackSkill + move.Modifier - target.DefenseSkill;
-            if (target.CurrentMove.MoveType == CombatMoveType.Defend ||
-                target.CurrentMove.MoveType == CombatMoveType.Runaway)
+            if (target.CurrentMove?.MoveType == CombatMoveType.Defend ||
+                target.CurrentMove?.MoveType == CombatMoveType.Runaway)
             {
                 targetValue += target.CurrentMove.Modifier;
             }
