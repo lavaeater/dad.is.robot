@@ -2,26 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using Appccelerate.StateMachine;
-using robot.dad.combat.EffectAppliers;
-using robot.dad.combat.Interfaces;
 
 namespace robot.dad.combat
 {
     public class CombatEngine
     {
-        public List<Combattant> Participants { get; set; } = new List<Combattant>();
+        public IEnumerable<Combattant> Participants => Protagonists.Union(Antagonists);
+        public List<Combattant> Protagonists { get; set; } = new List<Combattant>();
+        public List<Combattant> Antagonists { get; set; } = new List<Combattant>();
+
+
         public List<Combattant> ParticipantsThatFled { get; set; } = new List<Combattant>();
-        public List<Combattant> ParticipantsThatDied { get; set; } = new List<Combattant>();
         public IEnumerable<Combattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
         public PassiveStateMachine<States, Events> StateMachine { get; set; }
         public static int Round { get; set; }
 
-        public CombatEngine(List<Combattant> participants) : this()
+        public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists) : this()
         {
-            Participants.AddRange(participants);
+            Protagonists.AddRange(protagonists);
+            Antagonists.AddRange(antagonists);
         }
+
         public CombatEngine()
         {
             StateMachine = new PassiveStateMachine<States, Events>();
@@ -83,7 +85,10 @@ namespace robot.dad.combat
 
         private void ResetPicks()
         {
-            Participants.ForEach(p => p.ClearMove());
+            foreach (var participant in Participants)
+            {
+                participant.ClearMove();
+            }
         }
 
         public void StartCombat()
@@ -163,12 +168,8 @@ namespace robot.dad.combat
 
         private bool CheckIfCombatIsOver()
         {
-
-            ParticipantsThatDied = Participants.FindAll(p => p.Dead);
             //Fight is over if all participants on either team is dead!
-            var group = Participants.GroupBy(p => p.Team);
-            var groupingdead = group.Select(grouping => grouping.All(g => g.Dead));
-            return groupingdead.Any(b => b);
+            return Protagonists.TrueForAll(c => c.Dead) || Antagonists.TrueForAll(c => c.Dead);
         }
 
         public bool AllPlayersHavePicked => AliveParticipants.TrueForAll(p => p.HasPicked);

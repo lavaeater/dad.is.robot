@@ -7,7 +7,7 @@ namespace robot.dad.combat
 {
     public class Combattant
     {
-        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, string team, List<CombatMove> combatMoves, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker)
+        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, int initiative, string team, List<CombatMove> combatMoves, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker)
         {
             Name = name;
             Health = health;
@@ -15,6 +15,7 @@ namespace robot.dad.combat
             AttackSkill = attackSkill;
             DefenseSkill = defenseSkill;
             Armor = armor;
+            Initiative = initiative;
             Team = team;
             CombatMoves = combatMoves;
             MovePicker = movePicker;
@@ -82,6 +83,7 @@ namespace robot.dad.combat
         public int CurrentHealth { get; set; }
         public int DefenseSkill { get; set; }
         public int Armor { get; set; }
+        public int Initiative { get; set; }
         public int AttackSkill { get; set; }
 
         public bool Npc { get; set; }

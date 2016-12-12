@@ -1,5 +1,6 @@
 using System;
 using Otter;
+using robot.dad.combat;
 
 namespace robot.dad.game.Scenes
 {
@@ -7,6 +8,7 @@ namespace robot.dad.game.Scenes
     {
         private readonly Action _returnAction;
         private long _tick = 0;
+        private CombatEngine _combatEngine;
 
         public CombatScene(Action returnAction)
         {
@@ -20,6 +22,8 @@ namespace robot.dad.game.Scenes
              * 
              * BUUUT start with drawing cards with all players. See your notebook.
              */
+             _combatEngine = new CombatEngine();
+            _combatEngine.StartCombat();
 
         }
 
