@@ -11,16 +11,13 @@ namespace robot.dad.game.Entities
      
         public Player(float scale, float x, float y, Session session)
         {
-            //_yOrigin = 200f;//173f;
-            //_xOrigin = 50f;
+            _scale = scale;
             Init();
-            //hmmm
             var axis = Axis.CreateArrowKeys();
 
             var movement = new ThrusterMovement(3, 5, axis, 90f, 200f, 500f, true);
             AddComponents(axis, movement);
 
-            _scale = scale;
             Session = session;
             X = x;
             Y = y;
