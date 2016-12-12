@@ -28,8 +28,7 @@ namespace robot.dad.game.Entities
 
         private void Init()
         {
-            // Create an Image using the path passed in with the constructor
-            AddGraphics(SpritePipe.Ship);
+            AddGraphics(SpritePipe.Player);
             Graphic.CenterOrigin();
             Graphic.Scale = _scale;
         }

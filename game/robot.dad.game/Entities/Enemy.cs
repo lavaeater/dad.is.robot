@@ -1,3 +1,4 @@
+using System;
 using Otter;
 using robot.dad.game.Sprites;
 
@@ -9,8 +10,8 @@ namespace robot.dad.game.Entities
         {
             X = x;
             Y = y;
-            this.Graphic = SpritePipe.Ship;
-            this.Graphic.Scale = 0.5f;
+            Graphic = SpritePipe.Enemy;
+            Graphic.Scale = 0.5f;
         }
     }
 }
