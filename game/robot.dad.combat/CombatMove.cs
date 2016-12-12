@@ -17,7 +17,7 @@ namespace robot.dad.combat
             MoveResolver = moveResolver;
         }
 
-        public CombatMove(string name, CombatMoveType moveType, int modifier, string verbified, ResolveMoveBase moveResolver)
+        public CombatMove(string name, CombatMoveType moveType, int modifier, string verbified, IResolveMove moveResolver)
         {
             Name = name;
             MoveType = moveType;
@@ -38,6 +38,6 @@ namespace robot.dad.combat
         public int MinDamage { get; set; }
         public string Verbified { get; set; }
         public IResolveMove MoveResolver { get; set; }
-        public IApplyMoveEffects EffectApplier { get; set; }
+        public IApplyEffects EffectApplier { get; set; }
     }
 }

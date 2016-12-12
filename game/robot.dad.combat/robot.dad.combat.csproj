@@ -57,7 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EffectAppliers\ApplyMoveEffectsBase.cs" />
+    <Compile Include="CombatStatus.cs" />
+    <Compile Include="EffectAppliers\ApplyEffectsBase.cs" />
     <Compile Include="CombatEngine.cs" />
     <Compile Include="CombatMove.cs" />
     <Compile Include="CombatMoveType.cs" />
@@ -67,8 +68,10 @@
     <Compile Include="Events.cs" />
     <Compile Include="EffectAppliers\HealingEffectApplier.cs" />
     <Compile Include="EffectAppliers\HypnosisEffectApplier.cs" />
-    <Compile Include="Interfaces\IApplyMoveEffects.cs" />
+    <Compile Include="Human.cs" />
+    <Compile Include="Interfaces\IApplyEffects.cs" />
     <Compile Include="Interfaces\IResolveMove.cs" />
+    <Compile Include="Monster.cs" />
     <Compile Include="MovePickers.cs" />
     <Compile Include="EffectAppliers\NormalDamageEffectApplier.cs" />
     <Compile Include="MoveResolvers\ResolveDefendMove.cs" />

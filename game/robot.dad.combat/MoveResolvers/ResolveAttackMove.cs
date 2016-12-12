@@ -23,7 +23,7 @@ namespace robot.dad.combat.MoveResolvers
             {
                 //1 == perfekt slag!
                 Console.Write($"slår {diceRoll}");
-                IApplyMoveEffects applier = diceRoll <= perfectRollValue ? new NormalDamageEffectApplier(move.MaxDamage, move.MaxDamage) : new NormalDamageEffectApplier(move.MinDamage, move.MaxDamage);
+                IApplyEffects applier = diceRoll <= perfectRollValue ? new NormalDamageEffectApplier(move.MaxDamage, move.MaxDamage) : new NormalDamageEffectApplier(move.MinDamage, move.MaxDamage);
                 applier.ApplyEffects(target);
             }
             else

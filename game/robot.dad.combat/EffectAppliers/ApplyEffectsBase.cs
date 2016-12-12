@@ -3,9 +3,9 @@ using robot.dad.combat.Interfaces;
 
 namespace robot.dad.combat.EffectAppliers
 {
-    public abstract class ApplyMoveEffectsBase: IApplyMoveEffects
+    public abstract class ApplyEffectsBase: IApplyEffects
     {
-        protected ApplyMoveEffectsBase(int min, int max, int lastRound, EffectType effectType)
+        protected ApplyEffectsBase(int min, int max, int lastRound, EffectType effectType)
         {
             Min = min;
             Max = max;

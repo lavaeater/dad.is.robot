@@ -2,36 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using robot.dad.combat.Interfaces;
-using robot.dad.combat.MoveResolvers;
 
 namespace robot.dad.combat
 {
-    public class Human : Combattant
-    {
-        public Human(string name, string team, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker, List<CombatMove> extraMoves = null) : base(name, 50, 75, 15, 5, team, HumanCombatMoves, movePicker)
-        {
-            if (extraMoves != null)
-            {
-                CombatMoves.AddRange(extraMoves);
-            }
-        }
-
-        public static List<CombatMove> HumanCombatMoves => new List<CombatMove>()
-        {
-            new CombatMove("Slag", CombatMoveType.Attack, 10, 6, 12, "slå", Resolvers.AttackResolver),
-            new CombatMove("Spark", CombatMoveType.Attack, -5, 10, 16, "sparka", Resolvers.AttackResolver),
-            new CombatMove("Undvik", CombatMoveType.Defend, 20, "undvika", Resolvers.DefendResolver),
-            new CombatMove("Fly", CombatMoveType.Runaway, -25, "fly", Resolvers.RunawayResolver)
-        };
-    }
-
-    public class Monster : Combattant
-    {
-        public Monster(string name, int health, int attackSkill, int defenseSkill, int armor, string team, List<CombatMove> combatMoves, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker) : base(name, health, attackSkill, defenseSkill, armor, team, combatMoves, movePicker)
-        {
-        }
-    }
-
     public class Combattant
     {
         public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, string team, List<CombatMove> combatMoves, Action<Combattant, List<Combattant>, List<CombatMove>> movePicker)
@@ -53,10 +26,15 @@ namespace robot.dad.combat
             CurrentMove.Apply(this, CurrentTarget);
         }
 
+        public void AddCombatMove(CombatMove move)
+        {
+            CombatMoves.Add(move);
+        }
+
         public string Team { get; set; }
         public List<CombatMove> CombatMoves { get; set; }
         public Action<Combattant, List<Combattant>, List<CombatMove>> MovePicker { get; set; }
-        public List<IApplyMoveEffects> CombatEffects { get; set; } = new List<IApplyMoveEffects>();
+        public List<IApplyEffects> CombatEffects { get; set; } = new List<IApplyEffects>();
 
         public int ApplyDamage(int damage)
         {
@@ -116,13 +94,5 @@ namespace robot.dad.combat
             sb.AppendLine($"Status: {Status}");
             return sb.ToString();
         }
-    }
-
-    public enum CombatStatus
-    {
-        Active,
-        Fled,
-        Dead,
-        Inactive
     }
 }

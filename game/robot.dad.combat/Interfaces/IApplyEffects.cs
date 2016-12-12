@@ -2,7 +2,7 @@ using robot.dad.combat.EffectAppliers;
 
 namespace robot.dad.combat.Interfaces
 {
-    public interface IApplyMoveEffects
+    public interface IApplyEffects
     {
         string EffectName { get; set; }
         int Min { get; set; }

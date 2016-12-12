@@ -2,7 +2,7 @@ using System;
 
 namespace robot.dad.combat.EffectAppliers
 {
-    public class HealingEffectApplier : ApplyMoveEffectsBase
+    public class HealingEffectApplier : ApplyEffectsBase
     {
         public HealingEffectApplier(int min, int max) : base(min, max, 0, EffectType.Immediate)
         {
