@@ -104,15 +104,13 @@ namespace robot.dad.combat
 
         public void StartCombat()
         {
-            Console.WriteLine("Starta fajten - tryck på en knapp");
-            Console.ReadKey();
             StateMachine.Start();
             StateMachine.Fire(Events.Start);
         }
 
         private void CombatOver()
         {
-            Console.WriteLine("Striden över");
+            //TODO: SOmething
         }
 
         /// <summary>
@@ -121,7 +119,6 @@ namespace robot.dad.combat
         public void PickMove()
         {
             PrintCombatBoard();
-//            CurrentCombattant = AliveByInitiative.First(p => !p.HasPicked);
             CurrentCombattant.PickMove(AliveByInitiative);
 
             StateMachine.Fire(Events.PlayerPicked);
@@ -131,7 +128,7 @@ namespace robot.dad.combat
 
         public void ResolveMove()
         {
-            Console.WriteLine($"Runda {Round}!");
+            ////Console.WriteLine($"Runda {Round}!");
 
             CurrentCombattant.ResolveMove();
 
@@ -142,7 +139,6 @@ namespace robot.dad.combat
         public void PrintCombatBoard()
         {
             //Assume stuff!
-            Console.Clear();
             StringBuilder sb = new StringBuilder();
             var grouping = Participants.GroupBy(p => p.Team);
             int max = 0;
@@ -167,7 +163,7 @@ namespace robot.dad.combat
                     j++;
                 }
             }
-            Console.WriteLine(sb.ToString());
+            ////Console.WriteLine(sb.ToString());
 
         }
 

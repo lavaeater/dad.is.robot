@@ -10,9 +10,9 @@ namespace robot.dad.combat.MoveResolvers
     {
         public override void ResolveMove(CombatMove move, Combattant attacker, Combattant target)
         {
-            Console.WriteLine();
+            //Console.WriteLine();
 
-            Console.Write($"{attacker.Name} försvarar sig!");
+            //Console.Write($"{attacker.Name} försvarar sig!");
         }
     }
 }

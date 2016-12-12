@@ -40,13 +40,14 @@ namespace robot.dad.combat
 
         public static void ManualPicker(Combattant picker, IEnumerable<Combattant> possibleTargets, List<CombatMove> possibleMoves)
         {
+            Console.Clear();
             //1. List targets and make player choose one!
             var pts = possibleTargets.Where(pt => pt.Team != picker.Team).ToList();
             int index = 1;
-            Console.WriteLine("Välj vem du vill attackera genom att mata in siffran");
+            //Console.WriteLine("Välj vem du vill attackera genom att mata in siffran");
             foreach (var possibleTarget in pts)
             {
-                Console.WriteLine($"{index}. {possibleTarget.Name}");
+                //Console.WriteLine($"{index}. {possibleTarget.Name}");
                 index++;
             }
             var choice = Console.ReadKey();
@@ -59,10 +60,10 @@ namespace robot.dad.combat
 
             //2. Choose attack
             index = 1;
-            Console.WriteLine("Välj attack");
+            //Console.WriteLine("Välj attack");
             foreach (var possibleMove in possibleMoves)
             {
-                Console.WriteLine($"{index}. {possibleMove.Name}");
+                //Console.WriteLine($"{index}. {possibleMove.Name}");
                 index++;
             }
             choice = Console.ReadKey();

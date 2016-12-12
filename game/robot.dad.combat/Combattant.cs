@@ -46,7 +46,6 @@ namespace robot.dad.combat
             if (CurrentHealth < 1)
             {
                 Die();
-                Console.WriteLine($"{Name} dog!");
             }
             return actualDamage;
         }
