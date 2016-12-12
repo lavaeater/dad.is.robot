@@ -12,7 +12,6 @@ namespace robot.dad.combat
         public List<Combattant> Protagonists { get; set; } = new List<Combattant>();
         public List<Combattant> Antagonists { get; set; } = new List<Combattant>();
 
-
         public List<Combattant> ParticipantsThatFled { get; set; } = new List<Combattant>();
         public IEnumerable<Combattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
         public PassiveStateMachine<States, Events> StateMachine { get; set; }
