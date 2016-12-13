@@ -19,8 +19,8 @@ namespace robot.dad.combat
         {
             new CombatMove("Skjuta", CombatMoveType.Attack, 10, 20, 40, "skjuta", Resolvers.AttackResolver),
             new CombatMove("Spark", CombatMoveType.Attack, 0, 10, 16, "sparka", Resolvers.AttackResolver),
-            new CombatMove("Undvik", CombatMoveType.Defend, 20, "undvika", Resolvers.DefendResolver),
-            new CombatMove("Fly", CombatMoveType.Runaway, -5, "fly", Resolvers.RunawayResolver)
+            new CombatMove("Undvik", CombatMoveType.Defend, 20,0,0, "undvika", Resolvers.DefendResolver),
+            new CombatMove("Fly", CombatMoveType.Runaway, -5,0,0, "fly", Resolvers.RunawayResolver)
         };
     }
 }

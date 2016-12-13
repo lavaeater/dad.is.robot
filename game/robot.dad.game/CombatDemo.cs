@@ -30,7 +30,7 @@ namespace robot.dad.game
             //}, MovePickers.GetRandomPicker()),
             new Monster("Fyrkantsmonster", 100, 40, 30, 10, 10, "gargelbarg", new List<CombatMove>()
             {
-                new CombatMove("Hypno", CombatMoveType.Special, 10, "hypnotisera", Resolvers.HypnosisResolver)
+                new CombatMove("Hypno", CombatMoveType.Special, 10, 2, 6, "hypnotisera", Resolvers.HypnosisResolver)
             }, MovePickers.GetRandomPicker())
         };
 

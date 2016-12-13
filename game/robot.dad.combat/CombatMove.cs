@@ -17,15 +17,6 @@ namespace robot.dad.combat
             MoveResolver = moveResolver;
         }
 
-        public CombatMove(string name, CombatMoveType moveType, int modifier, string verbified, IResolveMove moveResolver)
-        {
-            Name = name;
-            MoveType = moveType;
-            Modifier = modifier;
-            Verbified = verbified;
-            MoveResolver = moveResolver;
-        }
-
         public void Apply(Combattant attacker, Combattant target)
         {
             MoveResolver.ResolveMove(this, attacker, target);
