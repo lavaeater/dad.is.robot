@@ -55,9 +55,9 @@ namespace robot.dad.game.Scenes
 
         public override void Update()
         {
-            _tick++;
-            if (_tick > 100)
-                _returnAction();
+            //_tick++;
+            //if (_tick > 100)
+            //    _returnAction();
         }
     }
 
@@ -70,7 +70,24 @@ namespace robot.dad.game.Scenes
             Y = y;
             Width = width;
             Height = height;
+            Moves = new List<Entity>();
+
+            float moveX = X + Width;
+            float moveY = Y;
+            foreach (var combatMove in Combattant.CombatMoves)
+            {
+                Moves.Add(new MoveEntity(combatMove, moveX, moveY));
+                moveY += 50f; //should be some variable, height or something
+            }
         }
+
+        public override void Added()
+        {
+            //Add entities for all the attacks to the scene!
+            Scene.Add(Moves);
+        }
+
+        public List<Entity> Moves { get; set; }
 
         public Combattant Combattant { get; set; }
         public float Height { get; set; }
@@ -80,6 +97,26 @@ namespace robot.dad.game.Scenes
         public override void Render()
         {
             Draw.Rectangle(X, Y, Width, Height, Color.Blue, Color.Red, 0.2f);
+        }
+    }
+
+    public class MoveEntity : Entity
+    {
+        public float Width;
+        public float Height;
+        public CombatMove Move { get; set; }
+
+        public MoveEntity(CombatMove move, float x, float y) : base(x,y)
+        {
+            Move = move;
+            Width = 50;
+            Height = 50;
+        }
+
+        public override void Render()
+        {
+            Draw.Rectangle(X, Y, Width, Height, Color.Gray, Color.Green, 0.5f);
+            Draw.Text(Move.Name, 10, X +5, Y + 5);
         }
     }
 }

@@ -9,7 +9,27 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
-            //var terrainConfig = TerrainConfigBuilder.BuildTerrainConfig();
+            //StartGame();
+            StartCombat();
+        }
+
+        private static void StartCombat()
+        {
+            var game = new Game("CombatTest", 1600, 900, 60, false);
+            game.DrawInactiveScenes = false;
+            var scene = new CombatScene(() =>
+            {
+                string leif = "";
+            });
+
+            game.Start(scene);
+
+
+        }
+
+        private static void StartGame()
+        {
+//var terrainConfig = TerrainConfigBuilder.BuildTerrainConfig();
 
             //string json = terrainConfig.ToJson();
 
@@ -34,7 +54,7 @@ namespace robot.dad.game
 
             var terrainData = File.ReadAllText("Terrain\\TerrainConfig.json");
             var background = new HexBackGround(atlasFile, terrainData, 3, 12);
-            var player = new Player(0.5f, 800, 450,  Global.PlayerOne);
+            var player = new Player(0.5f, 800, 450, Global.PlayerOne);
             var scene = new MainScene(player);
             scene.AddBackGround(background);
             game.OnEnd = () => background.SaveMap("map.json");
