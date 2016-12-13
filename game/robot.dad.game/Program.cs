@@ -9,8 +9,8 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
-            //StartGame();
-            StartCombat();
+            StartGame();
+            //StartCombat();
         }
 
         private static void StartCombat()

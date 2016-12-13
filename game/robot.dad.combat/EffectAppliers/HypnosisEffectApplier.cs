@@ -13,8 +13,6 @@ namespace robot.dad.combat.EffectAppliers
 
         public override void ApplyEffects(Combattant target)
         {
-            //Switches movepickers!
-            ////Console.WriteLine($"{target.Name} är hypnotiserad!");
             if (!_hasBeenApplied)
             {
                 OriginalPicker = target.MovePicker;

@@ -20,25 +20,25 @@ namespace robot.dad.game
 
         public static readonly List<Combattant> Antagonists = new List<Combattant>
         {
-            new Monster("Snarfor", 30, 90, 10, 5, 10, "Pirates", new List<CombatMove>()
+            new Monster("Snarfor", 30, 90, 10, 5, 10, "gargelbarb", new List<CombatMove>()
             {
                 new CombatMove("Vattenförmåga", CombatMoveType.Attack, 0, 5, 10, "vattenspruta", Resolvers.AttackResolver)
             }, MovePickers.GetRandomPicker()),
             //new Monster("Gargelbarg", 200, 60, 0, 5, 10, "gargelbarg", new List<CombatMove>()
             //{
             //    new CombatMove("GargelBett", CombatMoveType.Attack, 15, 12, 25, "gargelbita", Resolvers.AttackResolver)
-            //}, MovePickers.RandomPicker),
-            //new Monster("Fyrkantsmonster", 100, 40, 30, 10, 10, "gargelbarg", new List<CombatMove>()
-            //{
-            //    new CombatMove("Hypno", CombatMoveType.Special, -10, "hypnotisera", Resolvers.HypnosisResolver)
-            //}, MovePickers.RandomPicker)
+            //}, MovePickers.GetRandomPicker()),
+            new Monster("Fyrkantsmonster", 100, 40, 30, 10, 10, "gargelbarg", new List<CombatMove>()
+            {
+                new CombatMove("Hypno", CombatMoveType.Special, -10, "hypnotisera", Resolvers.HypnosisResolver)
+            }, MovePickers.GetRandomPicker())
         };
 
         public void StartGame()
         {
-            var ce = new CombatEngine(Protagonists, Antagonists);
-            ce.StartCombat();
-            Console.ReadKey();
+            //var ce = new CombatEngine(Protagonists, Antagonists);
+            //ce.StartCombat();
+            //Console.ReadKey();
         }
     }
 }

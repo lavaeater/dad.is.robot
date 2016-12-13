@@ -12,11 +12,14 @@ namespace robot.dad.game.Scenes
         private readonly Action _returnAction;
         private long _tick = 0;
         private CombatEngine _combatEngine;
+        public List<CombattantCard> CombattantCards { get; set; } = new List<CombattantCard>();
 
         public CombatScene(Action returnAction)
         {
+            Game.Instance.MouseVisible = true;
+             
             _returnAction = returnAction;
-            BackGroundColor = Color.White;
+            BackGroundColor = Color.Grey;
 
             //Integrate with the combat system.
             /*
@@ -32,7 +35,7 @@ namespace robot.dad.game.Scenes
                 protagonist.MovePicker = new GraphicalPicker(CombatEngine.Picked, this);
             }
             Antagonists = CombatDemo.Antagonists;
-            _combatEngine = new CombatEngine(Protagonists, Antagonists);
+            _combatEngine = new CombatEngine(Protagonists, Antagonists, returnAction);
 
             //_combatEngine.StartCombat();
 
@@ -42,7 +45,7 @@ namespace robot.dad.game.Scenes
             float height = width * 1.25f;
             foreach (var protagonist in Protagonists)
             {
-                Add(new CombattantCard(protagonist, startX, startY, width, height));
+                Add(AddCombattantCard(protagonist, startX, startY, width,height));
                 startY += height + 30;
             }
 
@@ -50,9 +53,16 @@ namespace robot.dad.game.Scenes
             startX = 800;
             foreach (var antagonist in Antagonists)
             {
-                Add(new CombattantCard(antagonist, startX, startY, width, height));
+                Add(AddCombattantCard(antagonist, startX, startY, width, height));
                 startY += height + 30;
             }
+        }
+
+        public CombattantCard AddCombattantCard(Combattant combattant, float x, float y, float width, float height)
+        {
+            var card = new CombattantCard(combattant, x, y, width, height);
+            CombattantCards.Add(card);
+            return card;
         }
 
         public override void Begin()
@@ -66,12 +76,18 @@ namespace robot.dad.game.Scenes
 
         public override void Update()
         {
+
             //_tick++;
             //if (_tick > 100)
             //    _returnAction();
         }
 
-      
+        public override void Render()
+        {
+            base.Render();
+            Draw.Text(
+                $"{Input.MouseScreenX}:{Input.MouseScreenY}|{Input.GameMouseX}:{Input.GameMouseY}|{Input.MouseRawX}:{Input.MouseRawY}", 30, 10,10);
+        }
     }
 
     public class GraphicalPicker : MovePickerBase
@@ -83,19 +99,42 @@ namespace robot.dad.game.Scenes
             Scene = scene;
         }
 
+        public CombattantCard CurrentCard { get; set; }
+
         public override void PickMove(Combattant attacker, IEnumerable<Combattant> possibleTargets)
         {
             //1. Find card
-            CombattantCard card = Scene.GetEntities<CombattantCard>().Single(cc => cc.Combattant == attacker);
-            
+            CurrentCard = Scene.GetEntities<CombattantCard>().Single(cc => cc.Combattant == attacker);
+
             //2. Put it in "picking mode"
-            card.Mode = CardMode.Picking;
+            CurrentCard.SetInPickMoveMode(AMoveWasPicked);
 
             //3. Wait for input... like a click on something? Read on ze internet
 
+        }
+
+        public void AMoveWasPicked(CombatMove pickedMove)
+        {
+            CurrentCard.Combattant.CurrentMove = pickedMove;
+            CurrentCard.StopPicking();
+            foreach (var card in Scene.CombattantCards.Except(new []{ CurrentCard}))
+            {
+                card.MakePickable(ATargetWasPicked);
+            }
+        }
+
+        public void ATargetWasPicked(Combattant target)
+        {
+            foreach (var card in Scene.CombattantCards.Except(new[] { CurrentCard }))
+            {
+                card.StopBeingPickable();
+            }
+            CurrentCard.Combattant.CurrentTarget = target;
             DonePicking();
         }
     }
+
+
 
     public enum CardMode
     {
@@ -111,7 +150,9 @@ namespace robot.dad.game.Scenes
             Y = y;
             Width = width;
             Height = height;
-            Moves = new List<Entity>();
+
+            EntityArea = new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
+            Moves = new List<MoveEntity>();
 
             float moveX = X + Width;
             float moveY = Y;
@@ -120,15 +161,19 @@ namespace robot.dad.game.Scenes
                 Moves.Add(new MoveEntity(combatMove, moveX, moveY));
                 moveY += 50f; //should be some variable, height or something
             }
+
         }
+
+        public Rectangle EntityArea { get; set; }
 
         public override void Added()
         {
+
             //Add entities for all the attacks to the scene!
             Scene.Add(Moves);
         }
 
-        public List<Entity> Moves { get; set; }
+        public List<MoveEntity> Moves { get; set; }
 
         public Combattant Combattant { get; set; }
         public float Height { get; set; }
@@ -138,8 +183,49 @@ namespace robot.dad.game.Scenes
 
         public override void Render()
         {
-            Draw.Rectangle(X, Y, Width, Height, Color.Blue, Color.Red, 0.2f);
+            var foreColor = Picked != null ? EntityArea.Contains((int) Input.MouseRawX, (int) Input.MouseRawY) ? Color.Red : Color.Green : Color.Blue;
+            Draw.Rectangle(X, Y, Width, Height, foreColor, Color.Red, 0.2f);
             Draw.Text(Combattant.Name, 30, X + 5, Y + 5);
+            Draw.Text($"{Combattant.CurrentHealth} / {Combattant.Health}", 30, X + 5, Y + 35);
+        }
+
+        public void SetInPickMoveMode(Action<CombatMove> picked)
+        {
+            foreach (var move in Moves)
+            {
+                move.Picked = picked;
+            }
+        }
+
+        public void StopPicking()
+        {
+            foreach (var moveEntity in Moves)
+            {
+                moveEntity.Picked = null;
+            }
+        }
+
+        public void MakePickable(Action<Combattant> picked)
+        {
+            Picked = picked;
+        }
+
+        public override void Update()
+        {
+            if (Input.MouseButtonReleased(MouseButton.Left))
+            {
+                if (EntityArea.Contains((int)Input.MouseRawX, (int)Input.MouseRawY))
+                {
+                    Picked?.Invoke(Combattant);
+                }
+            }
+        }
+
+        public Action<Combattant> Picked { get; set; }
+
+        public void StopBeingPickable()
+        {
+            Picked = null;
         }
     }
 
@@ -148,18 +234,34 @@ namespace robot.dad.game.Scenes
         public float Width;
         public float Height;
         public CombatMove Move { get; set; }
+        public Action<CombatMove> Picked { get; set; }
+        public Rectangle EntityArea;
 
         public MoveEntity(CombatMove move, float x, float y) : base(x, y)
         {
             Move = move;
             Width = 200;
             Height = 50;
+            EntityArea = new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
         }
 
         public override void Render()
         {
-            Draw.Rectangle(X, Y, Width, Height, Color.Gray, Color.Green, 0.5f);
-            Draw.Text(Move.Name, 30, X + 5, Y + 5);
+            var foreColor = Picked != null ? EntityArea.Contains((int)Input.MouseRawX, (int)Input.MouseRawY) ? Color.Red : Color.Green : Color.Gray;
+            Draw.Rectangle(X, Y, Width, Height, foreColor, Color.Green, 0.5f);
+            Draw.Text(Move.Name, 15, X + 5, Y + 5);
+            Draw.Text($"Maxskada: {Move.MaxDamage}", 15, X + 5, Y + 35);
+        }
+
+        public override void Update()
+        {
+            if (Input.MouseButtonReleased(MouseButton.Left))
+            {
+                if (EntityArea.Contains((int)Input.MouseRawX, (int)Input.MouseRawY))
+                {
+                    Picked?.Invoke(Move);
+                }
+            }
         }
     }
 }

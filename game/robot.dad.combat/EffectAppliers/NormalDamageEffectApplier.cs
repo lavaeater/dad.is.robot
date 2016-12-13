@@ -10,9 +10,7 @@ namespace robot.dad.combat.EffectAppliers
 
         public override void ApplyEffects(Combattant target)
         {
-            int damageRoll = DiceRoller.RollDice(Min, Max);
-            //Console.WriteLine($", träffar och gör {target.ApplyDamage(damageRoll)} i skada!");
-            //Console.WriteLine($"{target.Name} har {target.CurrentHealth} kvar i hälsa.");
+            target.ApplyDamage(DiceRoller.RollDice(Min, Max));
         }
     }
 }

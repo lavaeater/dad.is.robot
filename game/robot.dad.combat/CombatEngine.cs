@@ -8,6 +8,7 @@ namespace robot.dad.combat
 {
     public class CombatEngine
     {
+        public Action CombatDone { get; set; }
         public IEnumerable<Combattant> Participants => Protagonists.Union(Antagonists);
         public List<Combattant> Protagonists { get; set; } = new List<Combattant>();
         public List<Combattant> Antagonists { get; set; } = new List<Combattant>();
@@ -17,8 +18,9 @@ namespace robot.dad.combat
         public static PassiveStateMachine<States, Events> StateMachine { get; set; }
         public static int Round { get; set; }
 
-        public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists) : this()
+        public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists, Action combatDone) : this()
         {
+            CombatDone = combatDone;
             Protagonists.AddRange(protagonists);
             Antagonists.AddRange(antagonists);
         }
@@ -110,7 +112,7 @@ namespace robot.dad.combat
 
         private void CombatOver()
         {
-            //TODO: SOmething
+            CombatDone();
         }
 
         /// <summary>
