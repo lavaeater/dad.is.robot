@@ -32,16 +32,16 @@ namespace robot.dad.game.Scenes
 
             float startX = 50;
             float startY = 50;
-            float width = 150;
+            float width = 250;
             float height = width*1.25f;
-            foreach (var antagonist in Antagonists)
+            foreach (var protagonist in Protagonists)
             {
-                Add(new CombattantCard(antagonist, startX, startY, width, height));
+                Add(new CombattantCard(protagonist, startX, startY, width, height));
                 startY += height + 30;
             }
 
             startY = 50;
-            startX = 300;
+            startX = 800;
             foreach (var antagonist in Antagonists)
             {
                 Add(new CombattantCard(antagonist, startX, startY, width, height));
@@ -97,6 +97,7 @@ namespace robot.dad.game.Scenes
         public override void Render()
         {
             Draw.Rectangle(X, Y, Width, Height, Color.Blue, Color.Red, 0.2f);
+            Draw.Text(Combattant.Name, 30, X + 5, Y + 5);
         }
     }
 
@@ -109,14 +110,14 @@ namespace robot.dad.game.Scenes
         public MoveEntity(CombatMove move, float x, float y) : base(x,y)
         {
             Move = move;
-            Width = 50;
+            Width = 200;
             Height = 50;
         }
 
         public override void Render()
         {
             Draw.Rectangle(X, Y, Width, Height, Color.Gray, Color.Green, 0.5f);
-            Draw.Text(Move.Name, 10, X +5, Y + 5);
+            Draw.Text(Move.Name, 30, X +5, Y + 5);
         }
     }
 }
