@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Otter;
 using robot.dad.combat;
@@ -25,15 +26,20 @@ namespace robot.dad.game.Scenes
              * BUUUT start with drawing cards with all players. See your notebook.
              */
             Protagonists = CombatDemo.Protagonists;
+
+            foreach (var protagonist in Protagonists)
+            {
+                protagonist.MovePicker = GraphicalPicker;
+            }
             Antagonists = CombatDemo.Antagonists;
-             _combatEngine = new CombatEngine(Protagonists, Antagonists);
+            _combatEngine = new CombatEngine(Protagonists, Antagonists);
 
             //_combatEngine.StartCombat();
 
             float startX = 50;
             float startY = 50;
             float width = 250;
-            float height = width*1.25f;
+            float height = width * 1.25f;
             foreach (var protagonist in Protagonists)
             {
                 Add(new CombattantCard(protagonist, startX, startY, width, height));
@@ -47,6 +53,7 @@ namespace robot.dad.game.Scenes
                 Add(new CombattantCard(antagonist, startX, startY, width, height));
                 startY += height + 30;
             }
+            _combatEngine.StartCombat();
         }
 
         public List<Combattant> Antagonists { get; set; }
@@ -59,9 +66,51 @@ namespace robot.dad.game.Scenes
             //if (_tick > 100)
             //    _returnAction();
         }
+
+        public void GraphicalPicker(Combattant picker, IEnumerable<Combattant> possibleTargets, List<CombatMove> possibleMoves, Action picked)
+        {
+            //1. Find card
+            CombattantCard card = GetEntities<CombattantCard>().Single(cc => cc.Combattant == picker);
+
+            //2. Put it in "picking mode"
+            card.Mode = CardMode.Picking;
+
+            //3. Wait for input... like a click on something? Read on ze internet
+            picked();
+        }
+
+
     }
 
-    public class CombattantCard:Entity
+    public class GraphicalPicker : MovePickerBase
+    {
+        public CombatScene Scene { get; set; }
+
+        public GraphicalPicker(Action donePicking, CombatScene scene) : base(donePicking)
+        {
+            Scene = scene;
+        }
+
+        public override void PickMove(Combattant attacker, IEnumerable<Combattant> possibleTargets)
+        {
+            //1. Find card
+            CombattantCard card = Scene.GetEntities<CombattantCard>().Single(cc => cc.Combattant == attacker);
+            
+            //2. Put it in "picking mode"
+            card.Mode = CardMode.Picking;
+
+            //3. Wait for input... like a click on something? Read on ze internet
+            
+            base.PickMove(attacker, possibleTargets);
+        }
+    }
+
+    public enum CardMode
+    {
+        Picking
+    }
+
+    public class CombattantCard : Entity
     {
         public CombattantCard(Combattant combattant, float x, float y, float width, float height)
         {
@@ -93,6 +142,7 @@ namespace robot.dad.game.Scenes
         public float Height { get; set; }
 
         public float Width { get; set; }
+        public CardMode Mode { get; set; }
 
         public override void Render()
         {
@@ -107,7 +157,7 @@ namespace robot.dad.game.Scenes
         public float Height;
         public CombatMove Move { get; set; }
 
-        public MoveEntity(CombatMove move, float x, float y) : base(x,y)
+        public MoveEntity(CombatMove move, float x, float y) : base(x, y)
         {
             Move = move;
             Width = 200;
@@ -117,7 +167,7 @@ namespace robot.dad.game.Scenes
         public override void Render()
         {
             Draw.Rectangle(X, Y, Width, Height, Color.Gray, Color.Green, 0.5f);
-            Draw.Text(Move.Name, 30, X +5, Y + 5);
+            Draw.Text(Move.Name, 30, X + 5, Y + 5);
         }
     }
 }

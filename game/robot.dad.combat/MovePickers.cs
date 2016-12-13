@@ -7,7 +7,7 @@ namespace robot.dad.combat
     public static class MovePickers
     {
         public static void RandomPicker(Combattant picker, IEnumerable<Combattant> possibleTargets,
-            List<CombatMove> possibleMoves)
+            List<CombatMove> possibleMoves, Action picked)
         {
             picker.CurrentMove = possibleMoves[DiceRoller.RollDice(0, possibleMoves.Count - 1)];
             if (picker.CurrentMove.MoveType == CombatMoveType.Healing)
@@ -20,10 +20,11 @@ namespace robot.dad.combat
                 var pts = possibleTargets.Where(pt => pt.Team != picker.Team).ToList();
                 picker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
             }
+            picked();
         }
 
         public static void RandomReversePicker(Combattant picker, IEnumerable<Combattant> possibleTargets,
-    List<CombatMove> possibleMoves)
+    List<CombatMove> possibleMoves, Action picked)
         {
             picker.CurrentMove = possibleMoves[DiceRoller.RollDice(0, possibleMoves.Count - 1)];
             if (picker.CurrentMove.MoveType == CombatMoveType.Healing)
@@ -36,9 +37,10 @@ namespace robot.dad.combat
                 var pts = possibleTargets.Where(pt => pt.Team == picker.Team).ToList();
                 picker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
             }
+            picked();
         }
 
-        public static void ManualPicker(Combattant picker, IEnumerable<Combattant> possibleTargets, List<CombatMove> possibleMoves)
+        public static void ManualPicker(Combattant picker, IEnumerable<Combattant> possibleTargets, List<CombatMove> possibleMoves, Action picked)
         {
             Console.Clear();
             //1. List targets and make player choose one!
@@ -63,7 +65,7 @@ namespace robot.dad.combat
             //Console.WriteLine("Välj attack");
             foreach (var possibleMove in possibleMoves)
             {
-                //Console.WriteLine($"{index}. {possibleMove.Name}");
+                Console.WriteLine($"{index}. {possibleMove.Name}");
                 index++;
             }
             choice = Console.ReadKey();
@@ -73,6 +75,8 @@ namespace robot.dad.combat
                 targetIndex = int.Parse(choice.KeyChar.ToString()) - 1;
             }
             picker.CurrentMove = possibleMoves[targetIndex];
+            picked();
         }
+
     }
 }

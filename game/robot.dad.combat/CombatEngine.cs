@@ -119,8 +119,13 @@ namespace robot.dad.combat
         public void PickMove()
         {
             PrintCombatBoard();
-            CurrentCombattant.PickMove(AliveByInitiative);
+            CurrentCombattant.PickMove(AliveByInitiative, Picked);
 
+            //StateMachine.Fire(Events.PlayerPicked);
+        }
+
+        public void Picked()
+        {
             StateMachine.Fire(Events.PlayerPicked);
         }
 
