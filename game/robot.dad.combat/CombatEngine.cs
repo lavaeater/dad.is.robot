@@ -8,7 +8,8 @@ namespace robot.dad.combat
 {
     public class CombatEngine
     {
-        public Action CombatDone { get; set; }
+        public Action ProtagonistsWin { get; set; }
+        public Action AntagonistsWin { get; set; }
         public IEnumerable<Combattant> Participants => Protagonists.Union(Antagonists);
         public List<Combattant> Protagonists { get; set; } = new List<Combattant>();
         public List<Combattant> Antagonists { get; set; } = new List<Combattant>();
@@ -18,9 +19,10 @@ namespace robot.dad.combat
         public static PassiveStateMachine<States, Events> StateMachine { get; set; }
         public static int Round { get; set; }
 
-        public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists, Action combatDone) : this()
+        public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists, Action protagonistsWin, Action antagonistsWin) : this()
         {
-            CombatDone = combatDone;
+            ProtagonistsWin = protagonistsWin;
+            AntagonistsWin = antagonistsWin;
             Protagonists.AddRange(protagonists);
             Antagonists.AddRange(antagonists);
         }
@@ -80,11 +82,12 @@ namespace robot.dad.combat
                 {
                     effect.ApplyEffects(target);
                 }
-                target.CombatEffects.Where(
+                var doneEffects = target.CombatEffects.Where(
                     e =>
                         (e.LastRound > Round))
-                    .ToList()
-                    .ForEach(e => e.EffectsEnded(target));
+                    .ToList();
+
+                    doneEffects.ForEach(e => e.EffectsEnded(target));
             }
         }
 
@@ -112,7 +115,7 @@ namespace robot.dad.combat
 
         private void CombatOver()
         {
-            CombatDone();
+            ProtagonistsWin();
         }
 
         /// <summary>
@@ -179,7 +182,7 @@ namespace robot.dad.combat
         private bool CheckIfCombatIsOver()
         {
             //Fight is over if all participants on either team is dead!
-            return Protagonists.TrueForAll(c => c.Dead) || Antagonists.TrueForAll(c => c.Dead);
+            return Protagonists.TrueForAll(c => c.Dead || c.Status == CombatStatus.Fled) || Antagonists.TrueForAll(c => c.Dead || c.Status == CombatStatus.Fled);
         }
     }
 }

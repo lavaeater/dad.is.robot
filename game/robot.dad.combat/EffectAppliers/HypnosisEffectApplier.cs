@@ -9,6 +9,7 @@ namespace robot.dad.combat.EffectAppliers
         private bool _hasBeenApplied = false;
         public HypnosisEffectApplier(int lastRound) : base(0, 0, lastRound)
         {
+            EffectName = "Hypnotiserad";
         }
 
         public override void ApplyEffects(Combattant target)

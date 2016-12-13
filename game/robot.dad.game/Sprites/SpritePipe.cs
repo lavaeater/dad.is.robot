@@ -16,5 +16,10 @@ namespace robot.dad.game.Sprites
         public static Image ThrustThree => new Image("Sprites\\thrust3.png");
         public static Image Ruin => new Image("Sprites\\ruinsCorner.png");
         public static Image UnknownTile => new Image("Sprites\\dome.png");
+
+        public static Image Frame => new Image("Sprites\\combat\\frame.png");
+        public static Image FrameSelectable => new Image("Sprites\\combat\\frameselected.png");
+        public static Image FrameHover => new Image("Sprites\\combat\\frameselector.png");
+        public static Image TorsoAndHead => new Image("Sprites\\combat\\torsoandhead.png");
     }
 }

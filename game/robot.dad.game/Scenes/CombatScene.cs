@@ -9,16 +9,16 @@ namespace robot.dad.game.Scenes
 {
     public class CombatScene : Scene
     {
-        private readonly Action _returnAction;
+        private readonly Action _winAction;
         private long _tick = 0;
         private CombatEngine _combatEngine;
         public List<CombattantCard> CombattantCards { get; set; } = new List<CombattantCard>();
 
-        public CombatScene(Action returnAction)
+        public CombatScene(Action winAction)
         {
             Game.Instance.MouseVisible = true;
              
-            _returnAction = returnAction;
+            _winAction = winAction;
             BackGroundColor = Color.Grey;
 
             //Integrate with the combat system.
@@ -35,7 +35,7 @@ namespace robot.dad.game.Scenes
                 protagonist.MovePicker = new GraphicalPicker(CombatEngine.Picked, this);
             }
             Antagonists = CombatDemo.Antagonists;
-            _combatEngine = new CombatEngine(Protagonists, Antagonists, returnAction);
+            _combatEngine = new CombatEngine(Protagonists, Antagonists, winAction, LoseAction);
 
             //_combatEngine.StartCombat();
 
@@ -56,6 +56,11 @@ namespace robot.dad.game.Scenes
                 Add(AddCombattantCard(antagonist, startX, startY, width, height));
                 startY += height + 30;
             }
+        }
+
+        public void LoseAction()
+        {
+            string leif = "Leif";
         }
 
         public CombattantCard AddCombattantCard(Combattant combattant, float x, float y, float width, float height)
@@ -79,7 +84,7 @@ namespace robot.dad.game.Scenes
 
             //_tick++;
             //if (_tick > 100)
-            //    _returnAction();
+            //    _winAction();
         }
 
         public override void Render()
@@ -134,100 +139,6 @@ namespace robot.dad.game.Scenes
         }
     }
 
-
-
-    public enum CardMode
-    {
-        Picking
-    }
-
-    public class CombattantCard : Entity
-    {
-        public CombattantCard(Combattant combattant, float x, float y, float width, float height)
-        {
-            Combattant = combattant;
-            X = x;
-            Y = y;
-            Width = width;
-            Height = height;
-
-            EntityArea = new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
-            Moves = new List<MoveEntity>();
-
-            float moveX = X + Width;
-            float moveY = Y;
-            foreach (var combatMove in Combattant.CombatMoves)
-            {
-                Moves.Add(new MoveEntity(combatMove, moveX, moveY));
-                moveY += 50f; //should be some variable, height or something
-            }
-
-        }
-
-        public Rectangle EntityArea { get; set; }
-
-        public override void Added()
-        {
-
-            //Add entities for all the attacks to the scene!
-            Scene.Add(Moves);
-        }
-
-        public List<MoveEntity> Moves { get; set; }
-
-        public Combattant Combattant { get; set; }
-        public float Height { get; set; }
-
-        public float Width { get; set; }
-        public CardMode Mode { get; set; }
-
-        public override void Render()
-        {
-            var foreColor = Picked != null ? EntityArea.Contains((int) Input.MouseRawX, (int) Input.MouseRawY) ? Color.Red : Color.Green : Color.Blue;
-            Draw.Rectangle(X, Y, Width, Height, foreColor, Color.Red, 0.2f);
-            Draw.Text(Combattant.Name, 30, X + 5, Y + 5);
-            Draw.Text($"{Combattant.CurrentHealth} / {Combattant.Health}", 30, X + 5, Y + 35);
-        }
-
-        public void SetInPickMoveMode(Action<CombatMove> picked)
-        {
-            foreach (var move in Moves)
-            {
-                move.Picked = picked;
-            }
-        }
-
-        public void StopPicking()
-        {
-            foreach (var moveEntity in Moves)
-            {
-                moveEntity.Picked = null;
-            }
-        }
-
-        public void MakePickable(Action<Combattant> picked)
-        {
-            Picked = picked;
-        }
-
-        public override void Update()
-        {
-            if (Input.MouseButtonReleased(MouseButton.Left))
-            {
-                if (EntityArea.Contains((int)Input.MouseRawX, (int)Input.MouseRawY))
-                {
-                    Picked?.Invoke(Combattant);
-                }
-            }
-        }
-
-        public Action<Combattant> Picked { get; set; }
-
-        public void StopBeingPickable()
-        {
-            Picked = null;
-        }
-    }
 
     public class MoveEntity : Entity
     {

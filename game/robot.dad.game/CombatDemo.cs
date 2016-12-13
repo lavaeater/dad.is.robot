@@ -20,7 +20,7 @@ namespace robot.dad.game
 
         public static readonly List<Combattant> Antagonists = new List<Combattant>
         {
-            new Monster("Snarfor", 30, 90, 10, 5, 10, "gargelbarb", new List<CombatMove>()
+            new Monster("Snarfor", 30, 90, 10, 5, 10, "gargelbarg", new List<CombatMove>()
             {
                 new CombatMove("Vattenförmåga", CombatMoveType.Attack, 0, 5, 10, "vattenspruta", Resolvers.AttackResolver)
             }, MovePickers.GetRandomPicker()),
@@ -30,7 +30,7 @@ namespace robot.dad.game
             //}, MovePickers.GetRandomPicker()),
             new Monster("Fyrkantsmonster", 100, 40, 30, 10, 10, "gargelbarg", new List<CombatMove>()
             {
-                new CombatMove("Hypno", CombatMoveType.Special, -10, "hypnotisera", Resolvers.HypnosisResolver)
+                new CombatMove("Hypno", CombatMoveType.Special, 10, "hypnotisera", Resolvers.HypnosisResolver)
             }, MovePickers.GetRandomPicker())
         };
 

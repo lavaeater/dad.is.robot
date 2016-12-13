@@ -45,10 +45,12 @@
   <ItemGroup>
     <Compile Include="Components\AggressorComponent.cs" />
     <Compile Include="Components\ChaseComponent.cs" />
+    <Compile Include="Scenes\CardMode.cs" />
     <Compile Include="Scenes\ChaseScene.cs" />
     <Compile Include="CombatDemo.cs" />
     <Compile Include="Scenes\CombatScene.cs" />
     <Compile Include="Entities\Enemy.cs" />
+    <Compile Include="Scenes\CombattantCard.cs" />
     <Compile Include="World\EventEngine.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Entities\HexBackGround.cs" />
@@ -63,6 +65,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="Sprites\combat\frame.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sprites\combat\frameselected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sprites\combat\frameselector.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sprites\combat\torsoandhead.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sprites\dome.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

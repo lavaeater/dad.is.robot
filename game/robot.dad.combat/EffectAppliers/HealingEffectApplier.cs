@@ -6,6 +6,7 @@ namespace robot.dad.combat.EffectAppliers
     {
         public HealingEffectApplier(int min, int max) : base(min, max, 0, EffectType.Immediate)
         {
+            EffectName = "Hela";
         }
 
         public override void ApplyEffects(Combattant target)

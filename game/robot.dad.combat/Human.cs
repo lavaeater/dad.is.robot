@@ -17,10 +17,10 @@ namespace robot.dad.combat
 
         public static List<CombatMove> HumanCombatMoves => new List<CombatMove>()
         {
-            new CombatMove("Slag", CombatMoveType.Attack, 10, 6, 12, "slå", Resolvers.AttackResolver),
-            new CombatMove("Spark", CombatMoveType.Attack, -5, 10, 16, "sparka", Resolvers.AttackResolver),
+            new CombatMove("Skjuta", CombatMoveType.Attack, 10, 20, 40, "skjuta", Resolvers.AttackResolver),
+            new CombatMove("Spark", CombatMoveType.Attack, 0, 10, 16, "sparka", Resolvers.AttackResolver),
             new CombatMove("Undvik", CombatMoveType.Defend, 20, "undvika", Resolvers.DefendResolver),
-            new CombatMove("Fly", CombatMoveType.Runaway, -25, "fly", Resolvers.RunawayResolver)
+            new CombatMove("Fly", CombatMoveType.Runaway, -5, "fly", Resolvers.RunawayResolver)
         };
     }
 }
