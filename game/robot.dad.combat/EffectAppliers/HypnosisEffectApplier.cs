@@ -18,12 +18,12 @@ namespace robot.dad.combat.EffectAppliers
             if (!_hasBeenApplied)
             {
                 OriginalPicker = target.MovePicker;
-                target.MovePicker = MovePickers.RandomReversePicker;
+                target.MovePicker = MovePickers.GetRandomReversePicker();
                 _hasBeenApplied = true;
             }
         }
 
-        public Action<Combattant, IEnumerable<Combattant>, List<CombatMove>, Action> OriginalPicker { get; set; }
+        public IPickMoves OriginalPicker { get; set; }
 
         public override void EffectsEnded(Combattant target)
         {

@@ -29,7 +29,7 @@ namespace robot.dad.game.Scenes
 
             foreach (var protagonist in Protagonists)
             {
-                protagonist.MovePicker = GraphicalPicker;
+                protagonist.MovePicker = new GraphicalPicker(CombatEngine.Picked, this);
             }
             Antagonists = CombatDemo.Antagonists;
             _combatEngine = new CombatEngine(Protagonists, Antagonists);
@@ -53,6 +53,10 @@ namespace robot.dad.game.Scenes
                 Add(new CombattantCard(antagonist, startX, startY, width, height));
                 startY += height + 30;
             }
+        }
+
+        public override void Begin()
+        {
             _combatEngine.StartCombat();
         }
 
@@ -67,19 +71,7 @@ namespace robot.dad.game.Scenes
             //    _returnAction();
         }
 
-        public void GraphicalPicker(Combattant picker, IEnumerable<Combattant> possibleTargets, List<CombatMove> possibleMoves, Action picked)
-        {
-            //1. Find card
-            CombattantCard card = GetEntities<CombattantCard>().Single(cc => cc.Combattant == picker);
-
-            //2. Put it in "picking mode"
-            card.Mode = CardMode.Picking;
-
-            //3. Wait for input... like a click on something? Read on ze internet
-            picked();
-        }
-
-
+      
     }
 
     public class GraphicalPicker : MovePickerBase
@@ -100,8 +92,8 @@ namespace robot.dad.game.Scenes
             card.Mode = CardMode.Picking;
 
             //3. Wait for input... like a click on something? Read on ze internet
-            
-            base.PickMove(attacker, possibleTargets);
+
+            DonePicking();
         }
     }
 

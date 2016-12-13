@@ -6,7 +6,7 @@ namespace robot.dad.combat
 {
     public class Human : Combattant
     {
-        public Human(string name, string team, Action<Combattant, IEnumerable<Combattant>, List<CombatMove>, Action> movePicker, List<CombatMove> extraMoves = null) 
+        public Human(string name, string team, IPickMoves movePicker, List<CombatMove> extraMoves = null) 
             : base(name, DiceRoller.RollDice(40,70), DiceRoller.RollDice(50,75), DiceRoller.RollDice(10,20), DiceRoller.RollDice(5,10), DiceRoller.RollDice(10,20), team, HumanCombatMoves, movePicker)
         {
             if (extraMoves != null)

@@ -14,7 +14,7 @@ namespace robot.dad.combat
 
         public List<Combattant> ParticipantsThatFled { get; set; } = new List<Combattant>();
         public IEnumerable<Combattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
-        public PassiveStateMachine<States, Events> StateMachine { get; set; }
+        public static PassiveStateMachine<States, Events> StateMachine { get; set; }
         public static int Round { get; set; }
 
         public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists) : this()
@@ -124,7 +124,7 @@ namespace robot.dad.combat
             //StateMachine.Fire(Events.PlayerPicked);
         }
 
-        public void Picked()
+        public static void Picked()
         {
             StateMachine.Fire(Events.PlayerPicked);
         }

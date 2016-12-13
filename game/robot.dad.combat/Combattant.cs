@@ -7,7 +7,7 @@ namespace robot.dad.combat
 {
     public class Combattant
     {
-        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, int initiative, string team, List<CombatMove> combatMoves, Action<Combattant, IEnumerable<Combattant>, List<CombatMove>, Action> movePicker)
+        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, int initiative, string team, List<CombatMove> combatMoves, IPickMoves movePicker)
         {
             Name = name;
             Health = health;
@@ -34,7 +34,7 @@ namespace robot.dad.combat
 
         public string Team { get; set; }
         public List<CombatMove> CombatMoves { get; set; }
-        public Action<Combattant, IEnumerable<Combattant>, List<CombatMove>, Action> MovePicker { get; set; }
+        public IPickMoves MovePicker { get; set; }
         public List<IApplyEffects> CombatEffects { get; set; } = new List<IApplyEffects>();
         public int CurrentRound { get; set; }
 
@@ -64,9 +64,9 @@ namespace robot.dad.combat
 
         public CombatMove CurrentMove { get; set; }
         //Choose a target as well!
-        public void PickMove(IEnumerable<Combattant> otherTeam, Action picked)
+        public void PickMove(IEnumerable<Combattant> possibleTargets, Action picked)
         {
-            MovePicker?.Invoke(this, otherTeam, CombatMoves, picked);
+            MovePicker?.PickMove(this, possibleTargets);
         }
 
         public Combattant CurrentTarget { get; set; }

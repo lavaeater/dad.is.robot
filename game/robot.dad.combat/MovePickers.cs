@@ -6,6 +6,16 @@ namespace robot.dad.combat
 {
     public static class MovePickers
     {
+        public static IPickMoves GetRandomPicker()
+        {
+            return new RandomPicker(CombatEngine.Picked);
+        }
+
+        public static IPickMoves GetRandomReversePicker()
+        {
+            return new RandomReversePicker(CombatEngine.Picked);
+        }
+
         public static void RandomPicker(Combattant picker, IEnumerable<Combattant> possibleTargets,
             List<CombatMove> possibleMoves, Action picked)
         {
@@ -78,5 +88,51 @@ namespace robot.dad.combat
             picked();
         }
 
+    }
+
+    public class RandomPicker : MovePickerBase
+    {
+        public RandomPicker(Action donePicking) :base(donePicking)
+        {
+        }
+
+        public override void PickMove(Combattant attacker, IEnumerable<Combattant> possibleTargets)
+        {
+            attacker.CurrentMove = attacker.CombatMoves[DiceRoller.RollDice(0, attacker.CombatMoves.Count - 1)];
+            if (attacker.CurrentMove.MoveType == CombatMoveType.Healing)
+            {
+                var pts = possibleTargets.Where(pt => pt.Team == attacker.Team).ToList();
+                attacker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
+            }
+            else
+            {
+                var pts = possibleTargets.Where(pt => pt.Team != attacker.Team).ToList();
+                attacker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
+            }
+            DonePicking();
+        }
+    }
+
+    public class RandomReversePicker : MovePickerBase
+    {
+        public RandomReversePicker(Action donePicking) : base(donePicking)
+        {
+        }
+
+        public override void PickMove(Combattant attacker, IEnumerable<Combattant> possibleTargets)
+        {
+            attacker.CurrentMove = attacker.CombatMoves[DiceRoller.RollDice(0, attacker.CombatMoves.Count - 1)];
+            if (attacker.CurrentMove.MoveType == CombatMoveType.Healing)
+            {
+                var pts = possibleTargets.Where(pt => pt.Team != attacker.Team).ToList();
+                attacker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
+            }
+            else
+            {
+                var pts = possibleTargets.Where(pt => pt.Team == attacker.Team).ToList();
+                attacker.CurrentTarget = pts[DiceRoller.RollDice(0, pts.Count - 1)];
+            }
+            DonePicking();
+        }
     }
 }
