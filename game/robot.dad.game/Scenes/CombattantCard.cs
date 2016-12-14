@@ -22,13 +22,13 @@ namespace robot.dad.game.Scenes
             Height = Frame.Height;
 
             EntityArea = new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
-            Moves = new List<MoveEntity>();
+            Moves = new List<CombatMoveCard>();
 
             float moveX = X + Width;
             float moveY = Y;
             foreach (var combatMove in Combattant.CombatMoves)
             {
-                Moves.Add(new MoveEntity(combatMove, moveX, moveY));
+                Moves.Add(new CombatMoveCard(combatMove, moveX, moveY));
                 moveY += 50f; //should be some variable, height or something
             }
             SetCardMode(CardMode.Neutral);
@@ -41,7 +41,7 @@ namespace robot.dad.game.Scenes
             Scene.Add(Moves);
         }
 
-        public List<MoveEntity> Moves { get; set; }
+        public List<CombatMoveCard> Moves { get; set; }
 
         public Combattant Combattant { get; set; }
         public float Height { get; set; }

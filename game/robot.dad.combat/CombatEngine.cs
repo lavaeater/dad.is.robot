@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Appccelerate.StateMachine;
 
 namespace robot.dad.combat
@@ -18,6 +17,9 @@ namespace robot.dad.combat
         public IEnumerable<Combattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
         public static PassiveStateMachine<States, Events> StateMachine { get; set; }
         public static int Round { get; set; }
+        public Action<Combattant, Combattant> MoveSucceeded { get; set; }
+        public Action<Combattant> MoveFailed { get; set; }
+        public Action<Combattant, CombatMove> SomeoneIsDoingSomething { get; set; }
 
         public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists, Action protagonistsWin, Action antagonistsWin) : this()
         {
@@ -76,24 +78,19 @@ namespace robot.dad.combat
 
         private void ResolveSuccess()
         {
+            MoveSucceeded?.Invoke(CurrentCombattant, CurrentCombattant.CurrentTarget);
             StateMachine.Fire(Events.SucccesResolved);
         }
 
         private void ResolveFailure()
         {
-            //TODO: DO SOMETHING
+            MoveFailed?.Invoke(CurrentCombattant);
             StateMachine.Fire(Events.FailureResolved);
         }
 
         private void ApplyCombatEffects()
         {
-            //Time delayed effects, hypnosis, fire, cold, poison, everything should be done here
-            /*
-             * Here we could like call some method on every object that takes rounds ticking into account?
-             * Or how do we keep track of rounds and passing time when it comes to hypnosis?
-             */
-
-            //Also fear 
+            //What kind of indication to the game engine can be done here? Effects should be rendered by the card automatically, but damage being inflicted?
             foreach (var target in AliveByInitiative.Where(t => t.CombatEffects.Any()))
             {
                 foreach (var effect in target.CombatEffects)
@@ -142,10 +139,7 @@ namespace robot.dad.combat
         /// </summary>
         public void PickMove()
         {
-            PrintCombatBoard();
             CurrentCombattant.PickMove(AliveByInitiative, Picked);
-
-            //StateMachine.Fire(Events.PlayerPicked);
         }
 
         public static void Picked()
@@ -155,43 +149,15 @@ namespace robot.dad.combat
 
         public Combattant CurrentCombattant { get; set; }
 
+
         public void ResolveMove()
         {
+            SomeoneIsDoingSomething?.Invoke(CurrentCombattant, CurrentCombattant.CurrentMove);
+
             StateMachine.Fire(CurrentCombattant.ResolveMove() ? Events.MoveSuccesful : Events.MoveFailed);
         }
 
         public bool CurrentMoveWasSuccessful { get; set; }
-
-        public void PrintCombatBoard()
-        {
-            //Assume stuff!
-            StringBuilder sb = new StringBuilder();
-            var grouping = Participants.GroupBy(p => p.Team);
-            int max = 0;
-            foreach (var group in grouping)
-            {
-                if (group.Count() > max) max = group.Count();
-            }
-            for (int i = 0; i < max; i++)
-            {
-                int j = 0;
-                foreach (var group in grouping)
-                {
-                    Console.SetCursorPosition(i * 20, 0);
-                    var people = group.ToList();
-                    if (i < group.Count())
-                        sb.Append($"{people[i]}");
-                    if (j % 2 == 0)
-                        sb.Append("\t\t\t");
-                    if (j % 2 != 0)
-                        sb.AppendLine();
-
-                    j++;
-                }
-            }
-            ////Console.WriteLine(sb.ToString());
-
-        }
 
         public List<Combattant> AliveByInitiative => Participants.Where(c => !c.Dead).OrderByDescending(c => c.Initiative).ToList();
 

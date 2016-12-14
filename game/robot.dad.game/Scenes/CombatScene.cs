@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using Otter;
 using robot.dad.combat;
 
@@ -10,9 +8,12 @@ namespace robot.dad.game.Scenes
     public class CombatScene : Scene
     {
         private readonly Action _winAction;
-        private long _tick = 0;
+        private long _previousTick = DateTime.Now.Ticks;
         private CombatEngine _combatEngine;
+        private float _timeActive;
         public List<CombattantCard> CombattantCards { get; set; } = new List<CombattantCard>();
+
+        public Queue<string> MessageQueue { get; set; } = new Queue<string>();
 
         public CombatScene(Action winAction)
         {
@@ -37,6 +38,10 @@ namespace robot.dad.game.Scenes
             Antagonists = CombatDemo.Antagonists;
             _combatEngine = new CombatEngine(Protagonists, Antagonists, winAction, LoseAction);
 
+            _combatEngine.MoveFailed = MoveFailed; 
+            _combatEngine.MoveSucceeded = MoveSucceeded;
+            _combatEngine.SomeoneIsDoingSomething = SomeoneIsDoingSomething;
+
             //_combatEngine.StartCombat();
 
             float startX = 50;
@@ -56,6 +61,24 @@ namespace robot.dad.game.Scenes
                 Add(AddCombattantCard(antagonist, startX, startY, width, height));
                 startY += height + 30;
             }
+
+            Add(new MessageQueueDisplayer());
+
+        }
+
+        private void SomeoneIsDoingSomething(Combattant attacker, CombatMove combatMove)
+        {
+            MessageQueue.Enqueue($"{attacker.Name} {combatMove.Verbified} {attacker.CurrentTarget?.Name}");
+        }
+
+        private void MoveSucceeded(Combattant attacker, Combattant target)
+        {
+            MessageQueue.Enqueue($"och {attacker.Name} lyckas!");
+        }
+
+        private void MoveFailed(Combattant attacker)
+        {
+            MessageQueue.Enqueue($"och {attacker.Name} misslyckas!");
         }
 
         public void LoseAction()
@@ -81,10 +104,8 @@ namespace robot.dad.game.Scenes
 
         public override void Update()
         {
+            _timeActive += Game.RealDeltaTime;
 
-            //_tick++;
-            //if (_tick > 100)
-            //    _winAction();
         }
 
         public override void Render()
@@ -95,85 +116,26 @@ namespace robot.dad.game.Scenes
         }
     }
 
-    public class GraphicalPicker : MovePickerBase
+    public class MessageQueueDisplayer : Entity
     {
-        public CombatScene Scene { get; set; }
+        public readonly Queue<string> Queue;
+        public Queue<Text> MessageTextQueue;
 
-        public GraphicalPicker(Action donePicking, CombatScene scene) : base(donePicking)
+        public MessageQueueDisplayer(Queue<string> queue)
         {
-            Scene = scene;
+            Queue = queue;
+            MessageTextQueue = new Queue<Text>( new []{new Text("Message for you, sir!", 16)});
+            AddGraphic(MessageText, 300, 50);
+            Timmer = new AutoTimer(0, 0, 500, 1); 
+            Timmer.MaxReached = TimerReached;           
+            AddComponent(Timmer);
         }
 
-        public CombattantCard CurrentCard { get; set; }
-
-        public override void PickMove(Combattant attacker, IEnumerable<Combattant> possibleTargets)
+        private void TimerReached()
         {
-            //1. Find card
-            CurrentCard = Scene.GetEntities<CombattantCard>().Single(cc => cc.Combattant == attacker);
-
-            //2. Put it in "picking mode"
-            CurrentCard.SetInPickMoveMode(AMoveWasPicked);
-
-            //3. Wait for input... like a click on something? Read on ze internet
-
+            MessageText.Text
         }
 
-        public void AMoveWasPicked(CombatMove pickedMove)
-        {
-            CurrentCard.Combattant.CurrentMove = pickedMove;
-            CurrentCard.StopPicking();
-            foreach (var card in Scene.CombattantCards.Except(new []{ CurrentCard}))
-            {
-                if(card.Combattant.Status == CombatStatus.Active)
-                    card.MakePickable(ATargetWasPicked);
-            }
-        }
-
-        public void ATargetWasPicked(Combattant target)
-        {
-            foreach (var card in Scene.CombattantCards.Except(new[] { CurrentCard }))
-            {
-                card.StopBeingPickable();
-            }
-            CurrentCard.Combattant.CurrentTarget = target;
-            DonePicking();
-        }
-    }
-
-
-    public class MoveEntity : Entity
-    {
-        public float Width;
-        public float Height;
-        public CombatMove Move { get; set; }
-        public Action<CombatMove> Picked { get; set; }
-        public Rectangle EntityArea;
-
-        public MoveEntity(CombatMove move, float x, float y) : base(x, y)
-        {
-            Move = move;
-            Width = 200;
-            Height = 50;
-            EntityArea = new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
-        }
-
-        public override void Render()
-        {
-            var foreColor = Picked != null ? EntityArea.Contains((int)Input.MouseRawX, (int)Input.MouseRawY) ? Color.Red : Color.Green : Color.Gray;
-            Draw.Rectangle(X, Y, Width, Height, foreColor, Color.Green, 0.5f);
-            Draw.Text(Move.Name, 15, X + 5, Y + 5);
-            Draw.Text($"Maxskada: {Move.MaxDamage}", 15, X + 5, Y + 35);
-        }
-
-        public override void Update()
-        {
-            if (Input.MouseButtonReleased(MouseButton.Left))
-            {
-                if (EntityArea.Contains((int)Input.MouseRawX, (int)Input.MouseRawY))
-                {
-                    Picked?.Invoke(Move);
-                }
-            }
-        }
+        public AutoTimer Timmer { get; set; }
     }
 }

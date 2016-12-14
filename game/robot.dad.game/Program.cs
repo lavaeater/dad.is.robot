@@ -23,20 +23,17 @@ namespace robot.dad.game
             });
 
             game.Start(scene);
-
-
         }
 
         private static void StartGame()
         {
-//var terrainConfig = TerrainConfigBuilder.BuildTerrainConfig();
+            //var terrainConfig = TerrainConfigBuilder.BuildTerrainConfig();
 
             //string json = terrainConfig.ToJson();
 
             //File.WriteAllText("TerrainConfig.json", json);
 
             var game = new Game("Dad is a Robot", 1600, 900, 60, false);
-            game.DrawInactiveScenes = false;
 
             string atlasFile = "Terrain\\terrain.json";
 

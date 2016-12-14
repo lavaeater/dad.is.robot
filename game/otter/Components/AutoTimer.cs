@@ -1,4 +1,6 @@
-﻿namespace Otter {
+﻿using System;
+
+namespace Otter {
     /// <summary>
     /// A timer that automatically counts on an increment.  Useful for handling things like cooldowns.
     /// </summary>
@@ -89,7 +91,11 @@
                 Value += Increment;
             }
             Value = Util.Clamp(Value, Min, Max);
+            if (AtMax)
+                MaxReached?.Invoke();
         }
+
+        public Action MaxReached { get; set; }
 
         /// <summary>
         /// Reset the timer to 0.
