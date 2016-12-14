@@ -8,11 +8,9 @@ namespace robot.dad.combat.MoveResolvers
 {
     public class ResolveDefendMove : ResolveMoveBase
     {
-        public override void ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        public override bool ResolveMove(CombatMove move, Combattant attacker, Combattant target)
         {
-            //Console.WriteLine();
-
-            //Console.Write($"{attacker.Name} försvarar sig!");
+            return true;
         }
     }
 }

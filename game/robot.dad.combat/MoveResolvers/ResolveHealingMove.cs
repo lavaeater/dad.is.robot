@@ -5,10 +5,10 @@ namespace robot.dad.combat.MoveResolvers
 {
     public class ResolveHealingMove : ResolveMoveBase
     {
-        public override void ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        public override bool ResolveMove(CombatMove move, Combattant attacker, Combattant target)
         {
             //Console.WriteLine();
-
+            bool result = false;
             int targetValue = attacker.AttackSkill + move.Modifier;
             int diceRoll = DiceRoller.RollHundredSided();
             //Console.Write($"{attacker.Name} måste slå under {targetValue} för att {move.Verbified} {target.Name} - ");
@@ -18,12 +18,9 @@ namespace robot.dad.combat.MoveResolvers
                 //Console.Write($"slår {diceRoll}");
                 var applier = diceRoll <= 5 ? new HealingEffectApplier(move.MaxDamage, move.MaxDamage) : new HealingEffectApplier(move.MinDamage, move.MaxDamage);
                 applier.ApplyEffects(target);
+                result = true;
             }
-            else
-            {
-                //100 == perfekt fail! Vad händer? Nåt kul!
-                //Console.WriteLine($"men slår {diceRoll} och missar!");
-            }
+            return result;
         }
     }
 }

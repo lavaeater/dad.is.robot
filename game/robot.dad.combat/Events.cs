@@ -4,7 +4,11 @@ namespace robot.dad.combat
     {
         Start,
         PlayerPicked,
-        MoveResolved,
-        CombatOver
+        MoveSuccesful,
+        MoveFailed,
+        CombatOver,
+        FailureResolved,
+        SucccesResolved,
+        EffectsApplied
     }
 }

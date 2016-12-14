@@ -5,6 +5,9 @@ namespace robot.dad.combat
         BeforeCombat,
         PlayerPicking,
         ResolveMove,
-        CombatOver
+        CombatOver,
+        SuccessfulMove,
+        FailedMove,
+        ApplyCombatEffects
     }
 }

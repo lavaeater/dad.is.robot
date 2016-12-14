@@ -22,9 +22,9 @@ namespace robot.dad.combat
             Status = CombatStatus.Active;
         }
 
-        public void ResolveMove()
+        public bool ResolveMove()
         {
-            CurrentMove.Apply(this, CurrentTarget);
+            return CurrentMove.Apply(this, CurrentTarget);
         }
 
         public void AddCombatMove(CombatMove move)

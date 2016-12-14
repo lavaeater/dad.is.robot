@@ -32,32 +32,39 @@ namespace robot.dad.combat
             StateMachine = new PassiveStateMachine<States, Events>();
             StateMachine
                 .In(States.BeforeCombat)
-                .ExecuteOnExit(SetNextCombattant)
                 .On(Events.Start)
                 .Goto(States.PlayerPicking);
 
             StateMachine
                 .In(States.PlayerPicking)
+                .ExecuteOnEntry(SetNextCombattant)
                 .ExecuteOnEntry(PickMove)
                 .On(Events.PlayerPicked)
                 .Goto(States.ResolveMove);
-                //.In(States.PlayerPicking)
-                //.ExecuteOnEntry(PickMove)
-                //.On(Events.PlayerPicked)
-                //.If(() => AllPlayersHavePicked).Goto(States.ResolveMove)
-                //.If(() => !AllPlayersHavePicked).Goto(States.PlayerPicking);
 
             StateMachine
                 .In(States.ResolveMove)
                 .ExecuteOnEntry(ResolveMove)
-                .ExecuteOnExit(ApplyCombatEffects)
-                .ExecuteOnExit(SetNextCombattant)
-                //.ExecuteOnExit(SetAliveParticipantsForRound)
-                .On(Events.MoveResolved)
-                .Goto(States.PlayerPicking);
+                .On(Events.MoveSuccesful)
+                .Goto(States.SuccessfulMove)
+                .On(Events.MoveFailed)
+                .Goto(States.FailedMove);
 
             StateMachine
-                .In(States.ResolveMove)
+                .In(States.FailedMove)
+                .ExecuteOnEntry(ResolveFailure)
+                .On(Events.FailureResolved)
+                .Goto(States.ApplyCombatEffects);
+            StateMachine
+                .In(States.SuccessfulMove)
+                .ExecuteOnEntry(ResolveSuccess)
+                .On(Events.SucccesResolved)
+                .Goto(States.ApplyCombatEffects);
+
+            StateMachine.In(States.ApplyCombatEffects)
+                .ExecuteOnEntry(ApplyCombatEffects)
+                .On(Events.EffectsApplied)
+                .Goto(States.PlayerPicking)
                 .On(Events.CombatOver)
                 .Goto(States.CombatOver);
 
@@ -65,6 +72,17 @@ namespace robot.dad.combat
                 .In(States.CombatOver)
                 .ExecuteOnEntry(CombatOver);
             StateMachine.Initialize(States.BeforeCombat);
+        }
+
+        private void ResolveSuccess()
+        {
+            StateMachine.Fire(Events.SucccesResolved);
+        }
+
+        private void ResolveFailure()
+        {
+            //TODO: DO SOMETHING
+            StateMachine.Fire(Events.FailureResolved);
         }
 
         private void ApplyCombatEffects()
@@ -87,8 +105,9 @@ namespace robot.dad.combat
                         (e.LastRound > Round))
                     .ToList();
 
-                    doneEffects.ForEach(e => e.EffectsEnded(target));
+                doneEffects.ForEach(e => e.EffectsEnded(target));
             }
+            StateMachine.Fire(CheckIfCombatIsOver() ? Events.CombatOver : Events.EffectsApplied);
         }
 
         private int _currentIndex = -1;
@@ -138,13 +157,10 @@ namespace robot.dad.combat
 
         public void ResolveMove()
         {
-            ////Console.WriteLine($"Runda {Round}!");
-
-            CurrentCombattant.ResolveMove();
-
-            //This will be a doozy
-            StateMachine.Fire(CheckIfCombatIsOver() ? Events.CombatOver : Events.MoveResolved);
+            StateMachine.Fire(CurrentCombattant.ResolveMove() ? Events.MoveSuccesful : Events.MoveFailed);
         }
+
+        public bool CurrentMoveWasSuccessful { get; set; }
 
         public void PrintCombatBoard()
         {
@@ -165,9 +181,9 @@ namespace robot.dad.combat
                     var people = group.ToList();
                     if (i < group.Count())
                         sb.Append($"{people[i]}");
-                    if (j%2 == 0)
+                    if (j % 2 == 0)
                         sb.Append("\t\t\t");
-                    if (j%2 != 0)
+                    if (j % 2 != 0)
                         sb.AppendLine();
 
                     j++;

@@ -124,7 +124,8 @@ namespace robot.dad.game.Scenes
             CurrentCard.StopPicking();
             foreach (var card in Scene.CombattantCards.Except(new []{ CurrentCard}))
             {
-                card.MakePickable(ATargetWasPicked);
+                if(card.Combattant.Status == CombatStatus.Active)
+                    card.MakePickable(ATargetWasPicked);
             }
         }
 

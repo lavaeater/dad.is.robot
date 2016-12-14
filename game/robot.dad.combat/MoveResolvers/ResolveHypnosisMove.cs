@@ -6,17 +6,14 @@ namespace robot.dad.combat.MoveResolvers
 {
     public class ResolveHypnosisMove : ResolveMoveBase
     {
-        public override void ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        public override bool ResolveMove(CombatMove move, Combattant attacker, Combattant target)
         {
-            //Console.WriteLine();
-
+            bool result = false;
             int targetValue = attacker.AttackSkill + move.Modifier - target.DefenseSkill;
             int diceRoll = DiceRoller.RollHundredSided();
-            //Console.Write($"{attacker.Name} måste slå under {targetValue} för att {move.Verbified} {target.Name} - ");
             if (diceRoll <= targetValue)
             {
-                //1 == perfekt slag!
-                //Console.Write($"och slår {diceRoll}");
+                result = true;
                 int perfectRoll = targetValue/10;
                 var applier = new HypnosisEffectApplier(diceRoll <= perfectRoll ? CombatEngine.Round + move.MaxDamage : CombatEngine.Round + DiceRoller.RollDice(move.MinDamage, move.MaxDamage));
                 if (target.CombatEffects.Any(item => item.GetType() == typeof(HypnosisEffectApplier)))
@@ -29,11 +26,7 @@ namespace robot.dad.combat.MoveResolvers
                     target.CombatEffects.Add(applier);
                 }
             }
-            else
-            {
-                //100 == perfekt fail! Vad händer? Nåt kul!
-                //Console.WriteLine($"men slår {diceRoll} och missar!");
-            }
+            return result;
         }
     }
 }

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace robot.dad.combat.EffectAppliers
 {
     public class HypnosisEffectApplier: RecurringEffectApplierBase

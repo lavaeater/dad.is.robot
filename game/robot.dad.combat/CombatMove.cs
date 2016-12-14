@@ -17,9 +17,9 @@ namespace robot.dad.combat
             MoveResolver = moveResolver;
         }
 
-        public void Apply(Combattant attacker, Combattant target)
+        public bool Apply(Combattant attacker, Combattant target)
         {
-            MoveResolver.ResolveMove(this, attacker, target);
+            return MoveResolver.ResolveMove(this, attacker, target);
         }
 
         public string Name { get; set; }
