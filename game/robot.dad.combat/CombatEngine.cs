@@ -12,7 +12,7 @@ namespace robot.dad.combat
         public IEnumerable<Combattant> Participants => Protagonists.Union(Antagonists);
         public List<Combattant> Protagonists { get; set; } = new List<Combattant>();
         public List<Combattant> Antagonists { get; set; } = new List<Combattant>();
-
+        public Combattant CurrentCombattant { get; set; }
         public List<Combattant> ParticipantsThatFled { get; set; } = new List<Combattant>();
         public IEnumerable<Combattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
         public static PassiveStateMachine<States, Events> StateMachine { get; set; }
@@ -20,6 +20,10 @@ namespace robot.dad.combat
         public Action<Combattant, Combattant> MoveSucceeded { get; set; }
         public Action<Combattant> MoveFailed { get; set; }
         public Action<Combattant, CombatMove> SomeoneIsDoingSomething { get; set; }
+        public Action<Combattant> SomeoneDied { get; set; }
+        public bool CurrentMoveWasSuccessful { get; set; }
+        public List<Combattant> AliveByInitiative => Participants.Where(c => !c.Dead).OrderByDescending(c => c.Initiative).ToList();
+        public Action<Combattant, int> SomeoneTookDamage { get; set; }
 
         public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists, Action protagonistsWin, Action antagonistsWin) : this()
         {
@@ -112,6 +116,7 @@ namespace robot.dad.combat
         private int _currentIndex = -1;
         private void SetNextCombattant()
         {
+            SetupCombattantActions();
             _currentIndex++;
 
             //TODO: Watch out, one player or two might be jumped if someone before or after dies and the number of items in AliveByInitiative changes.
@@ -123,6 +128,25 @@ namespace robot.dad.combat
 
             CurrentCombattant = AliveByInitiative[_currentIndex];
             CurrentCombattant.ClearMove();
+        }
+
+        private void SetupCombattantActions()
+        {
+            if (SomeoneDied != null)
+            {
+                foreach (var combattant in Participants)
+                {
+                    combattant.IJustDied = SomeoneDied;
+                }
+            }
+
+            if (SomeoneTookDamage != null)
+            {
+                foreach (var combattant in Participants)
+                {
+                    combattant.TookDamage = SomeoneTookDamage;
+                }
+            }
         }
 
         public void StartCombat()
@@ -149,19 +173,12 @@ namespace robot.dad.combat
             StateMachine.Fire(Events.PlayerPicked);
         }
 
-        public Combattant CurrentCombattant { get; set; }
-
-
         public void ResolveMove()
         {
             SomeoneIsDoingSomething?.Invoke(CurrentCombattant, CurrentCombattant.CurrentMove);
 
             StateMachine.Fire(CurrentCombattant.ResolveMove() ? Events.MoveSuccesful : Events.MoveFailed);
         }
-
-        public bool CurrentMoveWasSuccessful { get; set; }
-
-        public List<Combattant> AliveByInitiative => Participants.Where(c => !c.Dead).OrderByDescending(c => c.Initiative).ToList();
 
         private bool CheckIfCombatIsOver()
         {

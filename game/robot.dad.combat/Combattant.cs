@@ -37,12 +37,13 @@ namespace robot.dad.combat
         public IPickMoves MovePicker { get; set; }
         public List<IApplyEffects> CombatEffects { get; set; } = new List<IApplyEffects>();
         public int CurrentRound { get; set; }
-
+        public Action<Combattant, int> TookDamage { get; set; }
         public int ApplyDamage(int damage)
         {
             int actualDamage = damage - Armor;
             actualDamage = actualDamage < 0 ? 0 : actualDamage;
             CurrentHealth -= actualDamage;
+            TookDamage?.Invoke(this, actualDamage);
             if (CurrentHealth < 1)
             {
                 Die();
@@ -54,6 +55,7 @@ namespace robot.dad.combat
 
         public void Die()
         {
+            IJustDied?.Invoke(this);
             Status = CombatStatus.Dead;
         }
 
@@ -88,6 +90,8 @@ namespace robot.dad.combat
 
         public bool Npc { get; set; }
         public string Name { get; set; }
+        public Action<Combattant> IJustDied { get; set; }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

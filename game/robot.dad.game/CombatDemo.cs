@@ -22,15 +22,15 @@ namespace robot.dad.game
         {
             new Monster("Snarfor", 30, 90, 10, 5, 10, "gargelbarg", new List<CombatMove>()
             {
-                new CombatMove("Vattenförmåga", CombatMoveType.Attack, 0, 5, 10, "vattenspruta", Resolvers.AttackResolver)
+                new CombatMove("Vattenförmåga", CombatMoveType.Attack, 0, 5, 10, "sprutar vatten på", Resolvers.AttackResolver)
             }, MovePickers.GetRandomPicker()),
             //new Monster("Gargelbarg", 200, 60, 0, 5, 10, "gargelbarg", new List<CombatMove>()
             //{
             //    new CombatMove("GargelBett", CombatMoveType.Attack, 15, 12, 25, "gargelbita", Resolvers.AttackResolver)
             //}, MovePickers.GetRandomPicker()),
-            new Monster("Fyrkantsmonster", 100, 40, 30, 10, 10, "gargelbarg", new List<CombatMove>()
+            new Monster("Fyrkantsmonster", 100, 80, 30, 10, 10, "gargelbarg", new List<CombatMove>()
             {
-                new CombatMove("Hypno", CombatMoveType.Special, 10, 2, 6, "hypnotisera", Resolvers.HypnosisResolver)
+                new CombatMove("Hypno", CombatMoveType.Special, 0, 2, 6, "hypnotiserar", Resolvers.HypnosisResolver)
             }, MovePickers.GetRandomPicker())
         };
 

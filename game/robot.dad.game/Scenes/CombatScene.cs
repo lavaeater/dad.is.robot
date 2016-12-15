@@ -41,6 +41,8 @@ namespace robot.dad.game.Scenes
             _combatEngine.MoveFailed = MoveFailed; 
             _combatEngine.MoveSucceeded = MoveSucceeded;
             _combatEngine.SomeoneIsDoingSomething = SomeoneIsDoingSomething;
+            _combatEngine.SomeoneDied = SomeoneDied;
+            _combatEngine.SomeoneTookDamage = SomeoneTookDamage;
 
             //_combatEngine.StartCombat();
 
@@ -63,6 +65,16 @@ namespace robot.dad.game.Scenes
             }
 
             _messageQueue = new MessageQueueDisplayer(MessageQueue, this);
+        }
+
+        private void SomeoneTookDamage(Combattant combattant, int damage)
+        {
+            MessageQueue.Enqueue($"{combattant.Name} fick {damage} i skada.");
+        }
+
+        private void SomeoneDied(Combattant combattant)
+        {
+            MessageQueue.Enqueue($"{combattant.Name} dog!");
         }
 
         private void SomeoneIsDoingSomething(Combattant attacker, CombatMove combatMove)
