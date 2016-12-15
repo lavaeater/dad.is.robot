@@ -8,9 +8,8 @@ namespace robot.dad.game.Scenes
     public class CombatScene : Scene
     {
         private readonly Action _winAction;
-        private long _previousTick = DateTime.Now.Ticks;
         private CombatEngine _combatEngine;
-        private float _timeActive;
+        private MessageQueueDisplayer _messageQueue;
         public List<CombattantCard> CombattantCards { get; set; } = new List<CombattantCard>();
 
         public Queue<string> MessageQueue { get; set; } = new Queue<string>();
@@ -62,8 +61,7 @@ namespace robot.dad.game.Scenes
                 startY += height + 30;
             }
 
-            Add(new MessageQueueDisplayer());
-
+            _messageQueue = new MessageQueueDisplayer(MessageQueue, this);
         }
 
         private void SomeoneIsDoingSomething(Combattant attacker, CombatMove combatMove)
@@ -104,8 +102,7 @@ namespace robot.dad.game.Scenes
 
         public override void Update()
         {
-            _timeActive += Game.RealDeltaTime;
-
+            _messageQueue.Update();
         }
 
         public override void Render()
@@ -116,26 +113,60 @@ namespace robot.dad.game.Scenes
         }
     }
 
-    public class MessageQueueDisplayer : Entity
+    public class Message : Entity
+    {
+        private readonly Action<Message> _removeAction;
+
+        public Message(string message, Action<Message> removeAction, float x = 0, float y = 0) : base(x, y)
+        {
+            _removeAction = removeAction;
+            var textGraphic = new Text(message, 30);
+            AddGraphic(textGraphic);
+        }
+
+        public override void Update()
+        {
+            if (Y < 0)
+            {
+                _removeAction(this);
+            }
+            Y--;
+        }
+    }
+
+    public class MessageQueueDisplayer
     {
         public readonly Queue<string> Queue;
-        public Queue<Text> MessageTextQueue;
+        private List<Message> _messages;
 
-        public MessageQueueDisplayer(Queue<string> queue)
+        public MessageQueueDisplayer(Queue<string> queue, Scene scene)
         {
             Queue = queue;
-            MessageTextQueue = new Queue<Text>( new []{new Text("Message for you, sir!", 16)});
-            AddGraphic(MessageText, 300, 50);
-            Timmer = new AutoTimer(0, 0, 500, 1); 
-            Timmer.MaxReached = TimerReached;           
-            AddComponent(Timmer);
+            ContainingScene = scene;
+            _messages = new List<Message>();
         }
 
-        private void TimerReached()
+        public Scene ContainingScene { get; set; }
+        
+        public void Update()
         {
-            MessageText.Text
+            if (Queue.IsNotEmpty())
+            {
+                string message = Queue.Dequeue();
+                var messageEntity = new Message(message, RemoveAction, ContainingScene.HalfWidth, ContainingScene.Height);
+                if (_messages.IsNotEmpty())
+                {
+                    _messages.ForEach(m => m.Y -= 30);                    
+                }
+                _messages.Add(messageEntity);
+                ContainingScene.Add(messageEntity);
+            }
         }
 
-        public AutoTimer Timmer { get; set; }
+        private void RemoveAction(Message message)
+        {
+            _messages.Remove(message);
+            ContainingScene.Remove(message);
+        }
     }
 }
