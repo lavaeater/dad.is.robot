@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Otter;
 using robot.dad.combat;
 
@@ -54,7 +55,7 @@ namespace robot.dad.game.Scenes
             }
 
             startY = 50;
-            startX = 800;
+            startX = 600;
             foreach (var antagonist in Antagonists)
             {
                 Add(AddCombattantCard(antagonist, startX, startY, width, height));
@@ -153,8 +154,8 @@ namespace robot.dad.game.Scenes
             if (Queue.IsNotEmpty())
             {
                 string message = Queue.Dequeue();
-                var messageEntity = new Message(message, RemoveAction, ContainingScene.HalfWidth, ContainingScene.Height);
-                if (_messages.IsNotEmpty())
+                var messageEntity = new Message(message, RemoveAction, ContainingScene.Width -600, ContainingScene.Height);
+                if (_messages.Any(m => m.Y > ContainingScene.Height - 30))
                 {
                     _messages.ForEach(m => m.Y -= 30);                    
                 }

@@ -104,6 +104,8 @@ namespace robot.dad.combat
 
                 doneEffects.ForEach(e => e.EffectsEnded(target));
             }
+
+            //Fixa dödsmeddelande!
             StateMachine.Fire(CheckIfCombatIsOver() ? Events.CombatOver : Events.EffectsApplied);
         }
 
