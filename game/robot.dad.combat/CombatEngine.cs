@@ -103,7 +103,7 @@ namespace robot.dad.combat
                 }
                 var doneEffects = target.CombatEffects.Where(
                     e =>
-                        (e.LastRound > Round))
+                        (e.LastRound < Round))
                     .ToList();
 
                 doneEffects.ForEach(e => e.EffectsEnded(target));

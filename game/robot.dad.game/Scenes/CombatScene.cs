@@ -29,13 +29,14 @@ namespace robot.dad.game.Scenes
              * 
              * BUUUT start with drawing cards with all players. See your notebook.
              */
-            Protagonists = CombatDemo.Protagonists;
+            Protagonists = CombatDemo.GetProtagonists();
 
             foreach (var protagonist in Protagonists)
             {
                 protagonist.MovePicker = new GraphicalPicker(CombatEngine.Picked, this);
             }
-            Antagonists = CombatDemo.Antagonists;
+
+            Antagonists = CombatDemo.GetAntagonists(2).ToList();
             _combatEngine = new CombatEngine(Protagonists, Antagonists, winAction, LoseAction);
 
             _combatEngine.MoveFailed = MoveFailed; 

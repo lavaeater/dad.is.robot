@@ -14,7 +14,7 @@ namespace robot.dad.game.Scenes
             var enemy = new Enemy(Center.X - 500, Center.Y - 500);
             var axis = new Axis();
             var chase = new ChaseComponent(axis, player, 100, returnAction);
-            var thruster = new ThrusterMovement(2, 5, axis, 90, 200, 700, true);
+            var thruster = new ThrusterMovement(2, 5, axis, 90, 100, 350, true);
             enemy.AddComponents(axis, thruster, chase, new Alarm(returnAction, 1000));
             Add(enemy);
             CameraFocus = player;

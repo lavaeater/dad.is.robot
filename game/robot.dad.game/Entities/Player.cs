@@ -15,7 +15,7 @@ namespace robot.dad.game.Entities
             Init();
             var axis = Axis.CreateArrowKeys();
 
-            var movement = new ThrusterMovement(3, 5, axis, 90f, 200f, 500f, true);
+            var movement = new ThrusterMovement(3, 5, axis, 90f, 100f, 250f, true);
             AddComponents(axis, movement);
 
             Session = session;
