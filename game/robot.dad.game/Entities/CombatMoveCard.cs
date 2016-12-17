@@ -2,7 +2,7 @@ using System;
 using Otter;
 using robot.dad.combat;
 
-namespace robot.dad.game.Scenes
+namespace robot.dad.game.Entities
 {
     public class CombatMoveCard : Entity
     {

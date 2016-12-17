@@ -1,4 +1,4 @@
-namespace robot.dad.game.Scenes
+namespace robot.dad.game.Entities
 {
     public enum CardMode
     {

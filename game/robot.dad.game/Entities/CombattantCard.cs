@@ -4,7 +4,7 @@ using Otter;
 using robot.dad.combat;
 using robot.dad.game.Sprites;
 
-namespace robot.dad.game.Scenes
+namespace robot.dad.game.Entities
 {
     public class CombattantCard : Entity
     {

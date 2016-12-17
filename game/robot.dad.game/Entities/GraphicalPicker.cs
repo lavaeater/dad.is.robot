@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using robot.dad.combat;
+using robot.dad.game.Scenes;
 
-namespace robot.dad.game.Scenes
+namespace robot.dad.game.Entities
 {
     public class GraphicalPicker : MovePickerBase
     {

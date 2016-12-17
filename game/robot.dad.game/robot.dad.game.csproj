@@ -45,14 +45,15 @@
   <ItemGroup>
     <Compile Include="Components\AggressorComponent.cs" />
     <Compile Include="Components\ChaseComponent.cs" />
-    <Compile Include="Scenes\CardMode.cs" />
+    <Compile Include="Entities\CardMode.cs" />
     <Compile Include="Scenes\ChaseScene.cs" />
     <Compile Include="CombatDemo.cs" />
-    <Compile Include="Scenes\CombatMoveCard.cs" />
+    <Compile Include="Entities\CombatMoveCard.cs" />
     <Compile Include="Scenes\CombatScene.cs" />
     <Compile Include="Entities\Enemy.cs" />
-    <Compile Include="Scenes\CombattantCard.cs" />
-    <Compile Include="Scenes\GraphicalPicker.cs" />
+    <Compile Include="Entities\CombattantCard.cs" />
+    <Compile Include="Entities\GraphicalPicker.cs" />
+    <Compile Include="Scenes\CutScene.cs" />
     <Compile Include="World\EventEngine.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Entities\HexBackGround.cs" />
