@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -12,17 +13,19 @@ namespace robot.dad.game.Scenes
         private readonly float _speed;
         private List<Message> _messages;
 
-        public MessageQueueDisplayer(Queue<string> queue, Scene scene, int offset, float speed)
+        public MessageQueueDisplayer(Queue<string> queue, Scene scene, int offset, float speed, Action allDone = null)
         {
             Queue = queue;
             _offset = offset;
             _speed = speed;
             ContainingScene = scene;
+            AllDone = allDone;
             _messages = new List<Message>();
         }
 
         public Scene ContainingScene { get; set; }
-        
+        public Action AllDone { get; set; }
+
         public void Update()
         {
             if (Queue.IsNotEmpty())
@@ -43,6 +46,10 @@ namespace robot.dad.game.Scenes
         {
             _messages.Remove(message);
             ContainingScene.Remove(message);
+            if (_messages.IsEmpty())
+            {
+                AllDone?.Invoke();
+            }
         }
     }
 }

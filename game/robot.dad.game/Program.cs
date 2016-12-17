@@ -17,7 +17,7 @@ namespace robot.dad.game
 
         private static void StartIntro()
         {
-            var game = new Game("CutScene", 1600, 900, 60, true);
+            var game = new Game("CutScene", 1600, 900, 60, false);
             game.DrawInactiveScenes = false;
             var scene = new CutScene();
 

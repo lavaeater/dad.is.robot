@@ -15,14 +15,16 @@ namespace robot.dad.game.Scenes
     /// </summary>
     public class CutScene : Scene
     {
+        public Action<Scene> SceneDone { get; set; }
         //or, a queue of text AND images?
         public Queue<Dictionary<string, Image>> CutSceneData = new Queue<Dictionary<string, Image>>();
 
         public Queue<string> CrawlData = new Queue<string>();
         private MessageQueueDisplayer MQD;
 
-        public CutScene()
+        public CutScene(Action<Scene> sceneDone)
         {
+            SceneDone = sceneDone;
             //Hardcoded data for now.
             //Start with crawl only untill we can get some images up in this biatch.
 
@@ -32,7 +34,7 @@ namespace robot.dad.game.Scenes
 
             var lines = paragraphs.Select(p => p.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries));
 
-            MQD = new MessageQueueDisplayer(CrawlData, this, -1400, 0.5f); 
+            MQD = new MessageQueueDisplayer(CrawlData, this, -1400, 0.5f, () => SceneDone?.Invoke(this)); 
 
             /*
              * How do we figure this out? 
