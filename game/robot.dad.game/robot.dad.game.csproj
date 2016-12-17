@@ -54,6 +54,8 @@
     <Compile Include="Entities\CombattantCard.cs" />
     <Compile Include="Entities\GraphicalPicker.cs" />
     <Compile Include="Scenes\CutScene.cs" />
+    <Compile Include="Scenes\Message.cs" />
+    <Compile Include="Scenes\MessageQueueDisplayer.cs" />
     <Compile Include="World\EventEngine.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Entities\HexBackGround.cs" />
@@ -68,6 +70,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="Scenes\intro.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sprites\combat\frame.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

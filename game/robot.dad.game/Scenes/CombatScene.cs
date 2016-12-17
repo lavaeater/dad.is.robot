@@ -19,7 +19,7 @@ namespace robot.dad.game.Scenes
         public CombatScene(Action winAction)
         {
             Game.Instance.MouseVisible = true;
-             
+
             _winAction = winAction;
             BackGroundColor = Color.Grey;
 
@@ -40,7 +40,7 @@ namespace robot.dad.game.Scenes
             Antagonists = CombatDemo.GetAntagonists(2).ToList();
             _combatEngine = new CombatEngine(Protagonists, Antagonists, winAction, LoseAction);
 
-            _combatEngine.MoveFailed = MoveFailed; 
+            _combatEngine.MoveFailed = MoveFailed;
             _combatEngine.MoveSucceeded = MoveSucceeded;
             _combatEngine.SomeoneIsDoingSomething = SomeoneIsDoingSomething;
             _combatEngine.SomeoneDied = SomeoneDied;
@@ -54,7 +54,7 @@ namespace robot.dad.game.Scenes
             float height = width * 1.25f;
             foreach (var protagonist in Protagonists)
             {
-                Add(AddCombattantCard(protagonist, startX, startY, width,height));
+                Add(AddCombattantCard(protagonist, startX, startY, width, height));
                 startY += height + 30;
             }
 
@@ -66,7 +66,7 @@ namespace robot.dad.game.Scenes
                 startY += height + 30;
             }
 
-            _messageQueue = new MessageQueueDisplayer(MessageQueue, this);
+            _messageQueue = new MessageQueueDisplayer(MessageQueue, this, - 600);
         }
 
         private void SomeoneTookDamage(Combattant combattant, int damage)
@@ -124,64 +124,7 @@ namespace robot.dad.game.Scenes
         {
             base.Render();
             Draw.Text(
-                $"{Input.MouseScreenX}:{Input.MouseScreenY}|{Input.GameMouseX}:{Input.GameMouseY}|{Input.MouseRawX}:{Input.MouseRawY}", 30, 10,10);
-        }
-    }
-
-    public class Message : Entity
-    {
-        private readonly Action<Message> _removeAction;
-
-        public Message(string message, Action<Message> removeAction, float x = 0, float y = 0) : base(x, y)
-        {
-            _removeAction = removeAction;
-            var textGraphic = new Text(message, 30);
-            AddGraphic(textGraphic);
-        }
-
-        public override void Update()
-        {
-            if (Y < 0)
-            {
-                _removeAction(this);
-            }
-            Y--;
-        }
-    }
-
-    public class MessageQueueDisplayer
-    {
-        public readonly Queue<string> Queue;
-        private List<Message> _messages;
-
-        public MessageQueueDisplayer(Queue<string> queue, Scene scene)
-        {
-            Queue = queue;
-            ContainingScene = scene;
-            _messages = new List<Message>();
-        }
-
-        public Scene ContainingScene { get; set; }
-        
-        public void Update()
-        {
-            if (Queue.IsNotEmpty())
-            {
-                string message = Queue.Dequeue();
-                var messageEntity = new Message(message, RemoveAction, ContainingScene.Width -600, ContainingScene.Height);
-                if (_messages.Any(m => m.Y > ContainingScene.Height - 30))
-                {
-                    _messages.ForEach(m => m.Y -= 30);                    
-                }
-                _messages.Add(messageEntity);
-                ContainingScene.Add(messageEntity);
-            }
-        }
-
-        private void RemoveAction(Message message)
-        {
-            _messages.Remove(message);
-            ContainingScene.Remove(message);
+                $"{Input.MouseScreenX}:{Input.MouseScreenY}|{Input.GameMouseX}:{Input.GameMouseY}|{Input.MouseRawX}:{Input.MouseRawY}", 30, 10, 10);
         }
     }
 }

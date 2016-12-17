@@ -9,8 +9,19 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
-            StartGame();
+            //StartGame();
             //StartCombat();
+
+            StartIntro();
+        }
+
+        private static void StartIntro()
+        {
+            var game = new Game("CutScene", 1600, 900, 60, true);
+            game.DrawInactiveScenes = false;
+            var scene = new CutScene();
+
+            game.Start(scene);
         }
 
         private static void StartCombat()
