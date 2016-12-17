@@ -32,7 +32,7 @@ namespace robot.dad.game.Scenes
 
             var lines = paragraphs.Select(p => p.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries));
 
-            MQD = new MessageQueueDisplayer(CrawlData, this, -1400); 
+            MQD = new MessageQueueDisplayer(CrawlData, this, -1400, 0.5f); 
 
             /*
              * How do we figure this out? 

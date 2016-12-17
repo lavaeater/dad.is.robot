@@ -9,12 +9,14 @@ namespace robot.dad.game.Scenes
     {
         public readonly Queue<string> Queue;
         private readonly int _offset;
+        private readonly float _speed;
         private List<Message> _messages;
 
-        public MessageQueueDisplayer(Queue<string> queue, Scene scene, int offset)
+        public MessageQueueDisplayer(Queue<string> queue, Scene scene, int offset, float speed)
         {
             Queue = queue;
             _offset = offset;
+            _speed = speed;
             ContainingScene = scene;
             _messages = new List<Message>();
         }
@@ -26,7 +28,7 @@ namespace robot.dad.game.Scenes
             if (Queue.IsNotEmpty())
             {
                 string message = Queue.Dequeue();
-                var messageEntity = new Message(message, RemoveAction, ContainingScene.Width + _offset, ContainingScene.Height);
+                var messageEntity = new Message(message, RemoveAction, _speed, ContainingScene.Width + _offset, ContainingScene.Height);
                 if (_messages.Any())
                 {
                     var biggestY = _messages.Max(m => m.Y);

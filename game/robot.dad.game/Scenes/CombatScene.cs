@@ -66,7 +66,7 @@ namespace robot.dad.game.Scenes
                 startY += height + 30;
             }
 
-            _messageQueue = new MessageQueueDisplayer(MessageQueue, this, - 600);
+            _messageQueue = new MessageQueueDisplayer(MessageQueue, this, - 600, 1);
         }
 
         private void SomeoneTookDamage(Combattant combattant, int damage)
