@@ -13,18 +13,16 @@ namespace robot.dad.game.Scenes
         private readonly float _speed;
         private List<Message> _messages;
 
-        public MessageQueueDisplayer(Queue<string> queue, Scene scene, int offset, float speed, Action allDone = null)
+        public MessageQueueDisplayer(Queue<string> queue, Scene scene, int offset, float speed)
         {
             Queue = queue;
             _offset = offset;
             _speed = speed;
             ContainingScene = scene;
-            AllDone = allDone;
             _messages = new List<Message>();
         }
 
         public Scene ContainingScene { get; set; }
-        public Action AllDone { get; set; }
 
         public void Update()
         {
@@ -32,7 +30,7 @@ namespace robot.dad.game.Scenes
             {
                 string message = Queue.Dequeue();
                 var messageEntity = new Message(message, RemoveAction, _speed, ContainingScene.Width + _offset, ContainingScene.Height);
-                if (_messages.Any())
+                if (_messages.Any(m => m.Y > ContainingScene.Height - 30))
                 {
                     var biggestY = _messages.Max(m => m.Y);
                     messageEntity.Y = biggestY + 30;
@@ -48,8 +46,10 @@ namespace robot.dad.game.Scenes
             ContainingScene.Remove(message);
             if (_messages.IsEmpty())
             {
-                AllDone?.Invoke();
+                MessagesListIsEmpty = true;
             }
         }
+
+        public bool MessagesListIsEmpty { get; set; }
     }
 }

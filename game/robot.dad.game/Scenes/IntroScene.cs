@@ -13,16 +13,16 @@ namespace robot.dad.game.Scenes
     /// 
     /// Lets go with text + images + music to start, to make it reaal easy
     /// </summary>
-    public class CutScene : Scene
+    public class IntroScene : Scene
     {
-        public Action<Scene> SceneDone { get; set; }
+        public Action SceneDone { get; set; }
         //or, a queue of text AND images?
         public Queue<Dictionary<string, Image>> CutSceneData = new Queue<Dictionary<string, Image>>();
 
         public Queue<string> CrawlData = new Queue<string>();
         private MessageQueueDisplayer MQD;
 
-        public CutScene(Action<Scene> sceneDone)
+        public IntroScene(Action sceneDone)
         {
             SceneDone = sceneDone;
             //Hardcoded data for now.
@@ -34,7 +34,7 @@ namespace robot.dad.game.Scenes
 
             var lines = paragraphs.Select(p => p.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries));
 
-            MQD = new MessageQueueDisplayer(CrawlData, this, -1400, 0.5f, () => SceneDone?.Invoke(this)); 
+            MQD = new MessageQueueDisplayer(CrawlData, this, -1400, 0.5f); 
 
             /*
              * How do we figure this out? 
@@ -52,8 +52,17 @@ namespace robot.dad.game.Scenes
 
         public override void Update()
         {
-            base.Update();
             MQD.Update();
+            if (MQD.MessagesListIsEmpty)
+            {
+                SceneDone?.Invoke();
+            }
+        }
+
+        public override void End()
+        {
+            base.End();
+            string doWeGetHere = "No";
         }
     }
 }

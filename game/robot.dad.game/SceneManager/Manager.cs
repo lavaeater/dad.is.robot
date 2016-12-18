@@ -11,7 +11,7 @@ namespace robot.dad.game.SceneManager
     /// <summary>
     /// My own custom class for managing scenes and transitions.
     /// </summary>
-    public class Manager
+    public class Manager : Game
     {
         public Scene CurrentScene { get; set; }
         public MainScene MainScene { get; set; }
@@ -25,9 +25,11 @@ namespace robot.dad.game.SceneManager
             MainScene = CreateMainScene();
 
             CreateStateMachine();
+        }
 
+        public void StartGame()
+        {
             StateMachine.Start();
-
             StateMachine.Fire(GameEvent.StartIntro);
         }
 
@@ -48,7 +50,14 @@ namespace robot.dad.game.SceneManager
 
             StateMachine
                 .In(GameState.ExploringTheWorld)
-                .ExecuteOnEntry(ExploreTheWorld);
+                .ExecuteOnEntry(ExploringTheWorld);
+
+            StateMachine.Initialize(GameState.BeforeStart);
+        }
+
+        private void ExploringTheWorld()
+        {
+            string here = "there";
         }
 
         private void StartGameInstance()
@@ -56,15 +65,22 @@ namespace robot.dad.game.SceneManager
             throw new NotImplementedException();
         }
 
-        private void ExploreTheWorld()
+        private void SetCurrentScene(Scene scene)
         {
-            throw new NotImplementedException();
+            CurrentScene = scene;
+            GameInstance.SwitchScene(CurrentScene);
         }
 
         private void ShowIntro()
         {
-            CurrentScene = new CutScene(scene => StateMachine.Fire(GameEvent.IntroFinished));
+            CurrentScene = new IntroScene(IntroFinished);
             GameInstance.Start(CurrentScene);
+        }
+        
+        private void IntroFinished()
+        {
+            SetCurrentScene(MainScene);
+            StateMachine.Fire(GameEvent.IntroFinished);
         }
 
         private MainScene CreateMainScene()
@@ -87,7 +103,6 @@ namespace robot.dad.game.SceneManager
             var player = new Player(0.5f, 800, 450, Global.PlayerOne);
             var scene = new MainScene(player);
             scene.AddBackGround(background);
-            GameInstance.OnEnd = () => background.SaveMap("map.json");
             return scene;
         }
     }
