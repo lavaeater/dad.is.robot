@@ -40,7 +40,7 @@ namespace robot.dad.game.Scenes
 
             var lines = paragraphs.Select(p => p.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries));
 
-            MQD = new MessageQueueDisplayer(CrawlData, this, -1400, 0.5f); 
+            MQD = new MessageQueueDisplayer(CrawlData, this, -1400, 0.4f); 
 
             /*
              * How do we figure this out? 
@@ -67,8 +67,7 @@ namespace robot.dad.game.Scenes
 
         public override void End()
         {
-            base.End();
-            string doWeGetHere = "No";
+            IntroMusic.Stop();
         }
     }
 }
