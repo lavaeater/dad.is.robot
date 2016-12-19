@@ -21,6 +21,12 @@ namespace robot.dad.game.Scenes
 
         public Queue<string> CrawlData = new Queue<string>();
         private MessageQueueDisplayer MQD;
+        public Music IntroMusic = new Music("Music\\bensound-deepblue.ogg");
+
+        public override void Begin()
+        {
+            IntroMusic.Play();
+        }
 
         public IntroScene(Action sceneDone)
         {

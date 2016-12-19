@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.IO;
 using Appccelerate.StateMachine;
 using Otter;
@@ -11,7 +10,7 @@ namespace robot.dad.game.SceneManager
     /// <summary>
     /// My own custom class for managing scenes and transitions.
     /// </summary>
-    public class Manager : Game
+    public class Manager
     {
         public Scene CurrentScene { get; set; }
         public MainScene MainScene { get; set; }

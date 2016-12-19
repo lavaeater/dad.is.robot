@@ -136,6 +136,12 @@
     <Content Include="Terrain\TerrainConfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Music\bensound-deepblue.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Music\bensound-scifi.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Terrain\TerrainConfig.json.orig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
