@@ -4,12 +4,14 @@ using robot.dad.game.Sprites;
 
 namespace robot.dad.game.Entities
 {
-    public class Player : Entity
+    public class PlayerEntity : Entity
     {
         private readonly float _scale;
         public readonly Session Session;
+        public Graphic PlayerSprite = SpritePipe.PlayerSprite;
+        public Graphic PlayerShadowSprite = SpritePipe.PlayerShadowSprite;
      
-        public Player(float scale, float x, float y, Session session)
+        public PlayerEntity(float scale, float x, float y, Session session)
         {
             _scale = scale;
             Init();
@@ -25,9 +27,12 @@ namespace robot.dad.game.Entities
 
         private void Init()
         {
-            AddGraphics(SpritePipe.Player);
-            Graphic.CenterOrigin();
-            Graphic.Scale = _scale;
+            AddGraphics(PlayerShadowSprite);
+            AddGraphics(PlayerSprite);
+            PlayerSprite.CenterOrigin();
+            PlayerSprite.Scale = _scale;
+            PlayerShadowSprite.CenterOrigin();
+            PlayerShadowSprite.Scale = _scale/2;
         }
 
         public override void Update()

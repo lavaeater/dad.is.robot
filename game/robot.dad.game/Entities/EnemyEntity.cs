@@ -4,13 +4,13 @@ using robot.dad.game.Sprites;
 
 namespace robot.dad.game.Entities
 {
-    public class Enemy : Entity
+    public class EnemyEntity : Entity
     {
-        public Enemy(float x, float y)
+        public EnemyEntity(float x, float y)
         {
             X = x;
             Y = y;
-            Graphic = SpritePipe.Enemy;
+            Graphic = SpritePipe.EnemySprite;
             Graphic.Scale = 0.5f;
         }
     }

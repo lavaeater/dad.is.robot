@@ -5,10 +5,10 @@ namespace robot.dad.game.Scenes
 {
     public class MainScene : Scene
     {
-        public MainScene(Player player)
+        public MainScene(PlayerEntity playerEntity)
         {
-            Add(player);
-            CameraFocus = player;
+            Add(playerEntity);
+            CameraFocus = playerEntity;
         }
 
         public void AddBackGround(HexBackGround background)

@@ -9,9 +9,9 @@ namespace robot.dad.game.Scenes
     {
         public ChaseScene(Action returnAction)
         {
-            var player = new Player(0.5f, Center.X, Center.Y, Global.PlayerOne);
+            var player = new PlayerEntity(0.5f, Center.X, Center.Y, Global.PlayerOne);
             Add(player);
-            var enemy = new Enemy(Center.X - 500, Center.Y - 500);
+            var enemy = new EnemyEntity(Center.X - 500, Center.Y - 500);
             var axis = new Axis();
             var chase = new ChaseComponent(axis, player, 100, returnAction);
             var thruster = new ThrusterMovement(2, 5, axis, 90, 100, 350, true);
