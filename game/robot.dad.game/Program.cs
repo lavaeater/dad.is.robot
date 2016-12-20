@@ -44,7 +44,7 @@ namespace robot.dad.game
 
             var terrainData = File.ReadAllText("Terrain\\TerrainConfig.json");
             var background = new HexBackGround(atlasFile, terrainData, 3, 12);
-            var player = new PlayerEntity(0.5f, 800, 450, Global.PlayerOne);
+            var player = new PlayerEntity(0.5f, 800, 450, true);
             var scene = new MainScene(player);
             scene.AddBackGround(background);
             game.OnEnd = () => background.SaveMap("map.json");

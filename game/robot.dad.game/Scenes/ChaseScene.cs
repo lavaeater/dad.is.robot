@@ -9,7 +9,7 @@ namespace robot.dad.game.Scenes
     {
         public ChaseScene(Action returnAction)
         {
-            var player = new PlayerEntity(0.5f, Center.X, Center.Y, Global.PlayerOne);
+            var player = new PlayerEntity(0.5f, Center.X, Center.Y, false);
             Add(player);
             var enemy = new EnemyEntity(Center.X - 500, Center.Y - 500);
             var axis = new Axis();
