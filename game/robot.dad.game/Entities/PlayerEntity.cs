@@ -6,19 +6,19 @@ namespace robot.dad.game.Entities
 {
     public class PlayerEntity : Entity
     {
-        private readonly float _scale;
+        public readonly float Scale;
         public readonly Session Session;
         public Graphic PlayerSprite = SpritePipe.PlayerSprite;
-        public Graphic PlayerShadowSprite = SpritePipe.PlayerShadowSprite;
-     
+        
         public PlayerEntity(float scale, float x, float y, Session session)
         {
-            _scale = scale;
+            Scale = scale;
             Init();
             var axis = Axis.CreateArrowKeys();
 
             var movement = new ThrusterMovement(3, 5, axis, 90f, 100f, 250f, true);
-            AddComponents(axis, movement);
+            var shadowComponent = new ShadowComponent(this);
+            AddComponents(axis, movement, shadowComponent);
 
             Session = session;
             X = x;
@@ -27,18 +27,39 @@ namespace robot.dad.game.Entities
 
         private void Init()
         {
-            AddGraphics(PlayerShadowSprite);
             AddGraphics(PlayerSprite);
             PlayerSprite.CenterOrigin();
-            PlayerSprite.Scale = _scale;
-            PlayerShadowSprite.CenterOrigin();
-            PlayerShadowSprite.Scale = _scale/2;
+            PlayerSprite.Scale = Scale;
         }
 
         public override void Update()
         {
             base.Update();
             Scene.BringToFront(this);
+        }
+    }
+
+    public class ShadowComponent : Component
+    {
+        private readonly PlayerEntity _player;
+        public Graphic PlayerShadowSprite = SpritePipe.PlayerShadowSprite;
+
+        public ShadowComponent(PlayerEntity player)
+        {
+            _player = player;
+        }
+
+        public override void Added()
+        {
+            PlayerShadowSprite.CenterOrigin();
+            PlayerShadowSprite.Scale = _player.Scale / 2;
+            Graphics.Add(PlayerShadowSprite);
+        }
+
+        public override void Update()
+        {
+            PlayerShadowSprite.X = _player.PlayerSprite.X + 100;
+            PlayerShadowSprite.Y = _player.PlayerSprite.Y + 100;
         }
     }
 }
