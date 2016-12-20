@@ -16,7 +16,6 @@ namespace robot.dad.game.Scenes
     public class IntroScene : Scene
     {
         public Action SceneDone { get; set; }
-        public Session Session { get; set; }
         //or, a queue of text AND images?
         public Queue<Dictionary<string, Image>> CutSceneData = new Queue<Dictionary<string, Image>>();
 
@@ -29,10 +28,9 @@ namespace robot.dad.game.Scenes
             IntroMusic.Play();
         }
 
-        public IntroScene(Action sceneDone, Session session)
+        public IntroScene(Action sceneDone)
         {
             SceneDone = sceneDone;
-            Session = session;
             //Hardcoded data for now.
             //Start with crawl only untill we can get some images up in this biatch.
 
