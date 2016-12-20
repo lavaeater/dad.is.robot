@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Otter;
 using robot.dad.game.Entities;
+using robot.dad.game.GameSession;
 using robot.dad.game.SceneManager;
 using robot.dad.game.Scenes;
 
@@ -31,7 +32,8 @@ namespace robot.dad.game
 
             string atlasFile = "Terrain\\terrain.json";
 
-            Global.PlayerOne = game.AddSession("playerone");
+            Global.PlayerOne = CustomSession.AddSession(game, "playerone");
+            game.Sessions.Add(Global.PlayerOne);
             Global.PlayerOne.Controller.AddButton(Controls.Up);
             Global.PlayerOne.Controller.AddButton(Controls.Down);
             Global.PlayerOne.Controller.AddButton(Controls.Left);

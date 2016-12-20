@@ -10,13 +10,13 @@ namespace Otter {
     
     public class Session {
 
-        static private int nextSessionId = 0;
+        private static int nextSessionId = 0;
 
         /// <summary>
         /// Create a new Session using the current Game.Instance.
         /// </summary>
         /// <returns></returns>
-        static public Session Create(string name) {
+        public static Session Create(string name) {
             return new Session(Game.Instance, name);
         }
 

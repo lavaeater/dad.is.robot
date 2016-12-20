@@ -55,6 +55,8 @@
     <Compile Include="Components\ChaseComponent.cs" />
     <Compile Include="Entities\CardMode.cs" />
     <Compile Include="Components\ShadowComponent.cs" />
+    <Compile Include="GameSession\CustomSession.cs" />
+    <Compile Include="GameSession\Player.cs" />
     <Compile Include="SceneManager\GameEvent.cs" />
     <Compile Include="SceneManager\GameState.cs" />
     <Compile Include="SceneManager\Manager.cs" />
