@@ -56,7 +56,14 @@
     <Compile Include="Entities\CardMode.cs" />
     <Compile Include="Components\ShadowComponent.cs" />
     <Compile Include="GameSession\CustomSession.cs" />
-    <Compile Include="GameSession\Player.cs" />
+    <Compile Include="GameSession\Character.cs" />
+    <Compile Include="GameSession\ICharacter.cs" />
+    <Compile Include="GameSession\ICharacterComponent.cs" />
+    <Compile Include="GameSession\IITem.cs" />
+    <Compile Include="GameSession\IShip.cs" />
+    <Compile Include="GameSession\IShipComponent.cs" />
+    <Compile Include="GameSession\Ship.cs" />
+    <Compile Include="GameSession\ShipComponent.cs" />
     <Compile Include="SceneManager\GameEvent.cs" />
     <Compile Include="SceneManager\GameState.cs" />
     <Compile Include="SceneManager\Manager.cs" />
