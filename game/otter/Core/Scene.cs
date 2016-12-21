@@ -436,8 +436,17 @@ namespace Otter {
         /// <typeparam name="T">The type of Entity.</typeparam>
         /// <param name="entities">The list of Entities.</param>
         /// <returns>The list of Entities.</returns>
-        public List<T> Add<T>(List<T> entities) where T : Entity {
+        public IEnumerable<T> Add<T>(IEnumerable<T> entities) where T : Entity {
             foreach (var e in entities) {
+                Add(e);
+            }
+            return entities;
+        }
+
+        public List<T> Add<T>(List<T> entities) where T : Entity
+        {
+            foreach (var e in entities)
+            {
                 Add(e);
             }
             return entities;

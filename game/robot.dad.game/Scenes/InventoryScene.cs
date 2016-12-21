@@ -22,11 +22,15 @@ namespace robot.dad.game.Scenes
         public Dictionary<string, InventoryItem> PrimaryItems { get; set; }
         public Dictionary<string, InventoryItem> SecondaryItems { get; set; }
         public bool SecondaryItemsVisible => SecondaryItems != null;
+        public bool PrimarySelected { get; set; } = true;
+        public int SelectedItemIndex { get; set; } = 0;
 
         public InventoryScene(Dictionary<string, InventoryItem> primaryItems, Dictionary<string, InventoryItem> secondaryItems = null)
         {
             PrimaryItems = primaryItems;
+            PrimaryEntities = new SelectableList<ItemEntity>();
             SecondaryItems = secondaryItems ?? new Dictionary<string, InventoryItem>();
+            SecondaryEntities = new SelectableList<ItemEntity>();
             NeedUpdate = true;
             //Start with primary items only? Or both?
         }
@@ -55,6 +59,7 @@ namespace robot.dad.game.Scenes
             Dictionary<string, InventoryItem> toList)
         {
             if (!fromList.ContainsKey(itemKey)) return;
+
             var item = fromList[itemKey];
             if (item.Count == 1)
             {
@@ -64,6 +69,7 @@ namespace robot.dad.game.Scenes
             {
                 item.Count--;
             }
+
             if (!toList.ContainsKey(itemKey))
             {
                 toList.Add(itemKey, item);
@@ -74,14 +80,116 @@ namespace robot.dad.game.Scenes
             }
         }
 
+        private SelectableList<ItemEntity> PrimaryEntities { get; set; }
+        private SelectableList<ItemEntity> SecondaryEntities { get; set; }
+
         public override void Update()
         {
             if (NeedUpdate)
             {
-                /*
-                 * Redraw both lists. What to do with entities? Just throw them away? If they have
-                 * references to actions etc, does that work? Do it stupidly 
-                 */   
+                RemoveAll();
+                PrimaryEntities.Clear();
+                SecondaryEntities.Clear();
+                int y = 50;
+                int x = 100;
+                foreach (var inventoryItem in PrimaryItems)
+                {
+                    var entity = new ItemEntity(inventoryItem.Value, true, ItemClicked, MoveItemClicked, x, y);
+                    PrimaryEntities.Add(entity);
+                    y += 20;
+                }
+                x = 800;
+                y = 50;
+                foreach (var inventoryItem in SecondaryItems)
+                {
+                    var entity = new ItemEntity(inventoryItem.Value, false, ItemClicked, MoveItemClicked, x, y);
+                    SecondaryEntities.Add(entity);
+                    y += 20;
+                }
+                Add(PrimaryEntities.AsEnumerable<Entity>());
+                Add(SecondaryEntities.AsEnumerable<Entity>());
+                NeedUpdate = false;
+                if (PrimarySelected)
+                {
+                    PrimaryEntities.ActivateList();
+                    SecondaryEntities.DeactivateList();
+                }
+                else
+                {
+                    PrimaryEntities.ActivateList();
+                    SecondaryEntities.DeactivateList();
+                }
+            }
+
+            if (Input.KeyPressed(Key.Down))
+            {
+                MoveIndexUp();
+            }
+            if (Input.KeyPressed(Key.Up))
+            {
+                MoveIndexDown();
+            }
+            if (Input.KeyPressed(Key.Left) || Input.KeyPressed(Key.Right))
+            {
+                SwitchItemList();
+            }
+            if (Input.KeyPressed(Key.Return))
+            {
+                MoveItem();
+            }
+
+        }
+
+        private void MoveItem()
+        {
+            if (PrimarySelected)
+            {
+                MoveItemClicked(PrimaryEntities.SelectedItem.InventoryItem.ItemKey, true);
+            }
+            else
+            {
+                MoveItemClicked(SecondaryEntities.SelectedItem.InventoryItem.ItemKey, false);
+            }
+        }
+
+        private void MoveIndexDown()
+        {
+            if (PrimarySelected)
+            {
+                PrimaryEntities.MoveIndexDown();
+            }
+            else
+            {
+                SecondaryEntities.MoveIndexDown();
+            }
+
+        }
+
+        private void SwitchItemList()
+        {
+            if (PrimarySelected && SecondaryEntities.CanActivate)
+            {
+                PrimaryEntities.DeactivateList();
+                SecondaryEntities.ActivateList();
+                PrimarySelected = false;
+            }
+            else if(!PrimarySelected && PrimaryEntities.CanActivate) 
+            {
+                SecondaryEntities.DeactivateList();
+                PrimaryEntities.ActivateList();
+                PrimarySelected = true;
+            }
+        }
+
+        private void MoveIndexUp()
+        {
+            if (PrimarySelected)
+            {
+                PrimaryEntities.MoveIndexUp();
+            }
+            else
+            {
+                SecondaryEntities.MoveIndexUp();
             }
         }
     }
@@ -91,26 +199,119 @@ namespace robot.dad.game.Scenes
         public string ItemKey { get; set; }
         public int Count { get; set; }
         public IITem Item { get; set; }
+
+        public InventoryItem()
+        {
+
+        }
+        public InventoryItem(string itemKey, int count, IITem item)
+        {
+            ItemKey = itemKey;
+            Count = count;
+            Item = item;
+        }
     }
 
-    public class ItemEntity : Entity
+    public class ItemEntity : Entity, ISelectableEntity
     {
         public InventoryItem InventoryItem { get; set; }
         public bool Primary { get; set; }
+        public string InventoryText => $"{InventoryItem.Item.Name}, {InventoryItem.Count}";
 
-        public ItemEntity(InventoryItem inventoryItem, bool primary, Action<string, bool> clicked, Action<string, bool> removeClicked)
+        public ItemEntity(InventoryItem inventoryItem, bool primary, Action<string, bool> clicked, Action<string, bool> removeClicked, float x, float y) : base(x, y)
         {
             InventoryItem = inventoryItem;
             Primary = primary;
-            Text itemText = new Text($"{InventoryItem.Item.Name}, {InventoryItem.Count}", 20);
+            RichText itemText = new RichText(InventoryText, new RichTextConfig()
+            {
+                CharColor = Color.White,
+                FontSize = 16
+            });
             AddGraphics(itemText);
-            AddComponent(new ClickableComponent());
+         //   AddComponent(new ClickableComponent());
         }
 
 
+        public void Unselect()
+        {
+            Graphics.Clear();
+            Graphics.Add(new RichText(InventoryText, new RichTextConfig() { CharColor = Color.White, FontSize = 16 }));
+        }
+
+        public void Select()
+        {
+            Graphics.Clear();
+            Graphics.Add(new RichText(InventoryText, new RichTextConfig() {CharColor = Color.Green, FontSize = 20}));
+        }
     }
 
     public class ClickableComponent : Component
     {
+    }
+
+    public class SelectableList<T> : List<T> where T: ISelectableEntity
+    {
+        public int SelectedIndex { get; set; }
+        public T SelectedItem { get; set; }
+        public bool CanActivate => this.IsNotEmpty();
+
+        public void RemoveSelectedItem()
+        {
+            Remove(SelectedItem);
+            SetSelectedItem();
+        }
+
+        public void DeactivateList()
+        {
+            SelectedItem?.Unselect();
+        }
+
+        public void ActivateList()
+        {
+            SetSelectedItem();
+        }
+
+        private void SetSelectedItem()
+        {
+            FixIndex();
+            if(this.IsNotEmpty())
+                SelectedItem = this[SelectedIndex];
+
+            SelectedItem?.Select();
+        }
+
+        private void FixIndex()
+        {
+            if (SelectedIndex >= Count)
+                SelectedIndex = 0;
+
+            if (SelectedIndex < 0)
+                SelectedIndex = Count - 1;
+        }
+
+        public void MoveIndexUp()
+        {
+            int previousIndex = SelectedIndex;
+            SelectedIndex++;
+            if(this.IsNotEmpty())
+                this[previousIndex]?.Unselect();
+
+            SetSelectedItem();
+        }
+
+        public void MoveIndexDown()
+        {
+            int previousIndex = SelectedIndex;
+            SelectedIndex--;
+            if (this.IsNotEmpty())
+                this[previousIndex]?.Unselect();
+            SetSelectedItem();
+        }
+    }
+
+    public interface ISelectableEntity
+    {
+        void Select();
+        void Unselect();
     }
 }

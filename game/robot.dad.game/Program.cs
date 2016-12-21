@@ -1,4 +1,8 @@
-﻿using robot.dad.game.SceneManager;
+﻿using System.Collections.Generic;
+using Otter;
+using robot.dad.game.GameSession;
+using robot.dad.game.SceneManager;
+using robot.dad.game.Scenes;
 
 namespace robot.dad.game
 {
@@ -6,7 +10,23 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
-            StartManager();
+            StartInventory();
+            //StartManager();
+        }
+
+        private static void StartInventory()
+        {
+            var game = new Game("Inventory", 1800, 900, 60, false);
+
+            var inventory = new Dictionary<string, InventoryItem>()
+            {
+                { "ExoSkeleton", new InventoryItem("ExoSkeleton", 2, new BasicItem("ExoSkeleton", "Exoskelett", "Styrkeskelett")) },
+                {"RayGun", new InventoryItem("RayGun", 1, new BasicItem("RayGun", "Strålpistol", "En pistol som skjuter strålar")) }
+            };
+
+            var scene = new InventoryScene(inventory);
+
+            game.Start(scene);
         }
 
         private static void StartManager()
