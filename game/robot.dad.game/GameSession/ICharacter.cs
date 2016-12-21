@@ -16,7 +16,7 @@ namespace robot.dad.game.GameSession
         int CurrentAttack { get; }
         int CurrentDefense { get; }
         int CurrentArmor { get; }
-        List<IITem> Inventory { get; set; }
+        Dictionary<IITem, int> Inventory { get; set; }
         IEnumerable<ICharacterComponent> PlayerComponents { get; }
         IEnumerable<ICharacterComponent> ActiveComponents { get; }
     }

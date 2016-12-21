@@ -38,7 +38,7 @@ namespace robot.dad.game.GameSession
             get { return Armor + ActiveComponents.Sum(pc => pc.Armor); }
         }
 
-        public List<IITem> Inventory { get; set; }
+        public Dictionary<IITem, int> Inventory { get; set; }
         public IEnumerable<ICharacterComponent> PlayerComponents => Inventory.OfType<ICharacterComponent>();
         public IEnumerable<ICharacterComponent> ActiveComponents => PlayerComponents.Where(pc => pc.Active);
     }
