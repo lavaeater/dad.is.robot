@@ -72,11 +72,11 @@ namespace robot.dad.game.Scenes
 
             if (!toList.ContainsKey(itemKey))
             {
-                toList.Add(itemKey, item);
+                toList.Add(itemKey, item.Copy());
             }
             else
             {
-                fromList[itemKey].Count++;
+                toList[itemKey].Count++;
             }
         }
 
@@ -137,7 +137,28 @@ namespace robot.dad.game.Scenes
             {
                 MoveItem();
             }
+            if (Input.KeyPressed(Key.A))
+            {
+                TakeAllItems();
+            }
 
+        }
+
+        private void TakeAllItems()
+        {
+            foreach (var item in SecondaryItems)
+            {
+                if (PrimaryItems.ContainsKey(item.Key))
+                {
+                    PrimaryItems[item.Key].Count += item.Value.Count;
+                }
+                else
+                {
+                    PrimaryItems.Add(item.Key, item.Value);
+                }
+            }
+            SecondaryItems.Clear();
+            NeedUpdate = true;
         }
 
         private void MoveItem()
@@ -145,10 +166,14 @@ namespace robot.dad.game.Scenes
             if (PrimarySelected)
             {
                 MoveItemClicked(PrimaryEntities.SelectedItem.InventoryItem.ItemKey, true);
+                if(PrimaryItems.IsEmpty())
+                    SwitchItemList();
             }
             else
             {
                 MoveItemClicked(SecondaryEntities.SelectedItem.InventoryItem.ItemKey, false);
+                if(SecondaryItems.IsEmpty())
+                    SwitchItemList();
             }
         }
 
@@ -200,6 +225,14 @@ namespace robot.dad.game.Scenes
         public int Count { get; set; }
         public IITem Item { get; set; }
 
+        public InventoryItem Copy()
+        {
+            var item = MemberwiseClone() as InventoryItem;
+            item.Count = 1;
+            return item;
+        }
+
+
         public InventoryItem()
         {
 
@@ -228,7 +261,6 @@ namespace robot.dad.game.Scenes
                 FontSize = 16
             });
             AddGraphics(itemText);
-         //   AddComponent(new ClickableComponent());
         }
 
 
@@ -278,6 +310,9 @@ namespace robot.dad.game.Scenes
                 SelectedItem = this[SelectedIndex];
 
             SelectedItem?.Select();
+
+            if (PreviousIndex != -1 && this.IsNotEmpty() && PreviousIndex != SelectedIndex)
+                this[PreviousIndex]?.Unselect();
         }
 
         private void FixIndex()
@@ -287,24 +322,24 @@ namespace robot.dad.game.Scenes
 
             if (SelectedIndex < 0)
                 SelectedIndex = Count - 1;
+
+            if (PreviousIndex >= Count)
+                PreviousIndex = 0;
         }
 
         public void MoveIndexUp()
         {
-            int previousIndex = SelectedIndex;
+            PreviousIndex = SelectedIndex;
             SelectedIndex++;
-            if(this.IsNotEmpty())
-                this[previousIndex]?.Unselect();
-
             SetSelectedItem();
         }
 
+        public int PreviousIndex { get; set; } = -1;
+
         public void MoveIndexDown()
         {
-            int previousIndex = SelectedIndex;
+            PreviousIndex = SelectedIndex;
             SelectedIndex--;
-            if (this.IsNotEmpty())
-                this[previousIndex]?.Unselect();
             SetSelectedItem();
         }
     }
