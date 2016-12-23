@@ -156,6 +156,9 @@
     <None Include="Music\bensound-scifi.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Music\intro.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Terrain\TerrainConfig.json.orig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

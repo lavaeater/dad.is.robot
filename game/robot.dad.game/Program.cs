@@ -10,13 +10,13 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
-            StartInventory();
-            //StartManager();
+            //StartInventory();
+            StartManager();
         }
 
         private static void StartInventory()
         {
-            var game = new Game("Inventory", 1800, 900, 60, false);
+            var game = new Game("Inventory", 1800, 900, 60, true);
 
             var inventory = new Dictionary<string, InventoryItem>()
             {
@@ -27,6 +27,11 @@ namespace robot.dad.game
             var scene = new InventoryScene(inventory);
 
             game.Start(scene);
+        }
+
+        private static void StartLoot()
+        {
+            
         }
 
         private static void StartManager()
