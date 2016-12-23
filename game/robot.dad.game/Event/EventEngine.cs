@@ -44,7 +44,13 @@ namespace robot.dad.game.Event
 
     public class Lootables
     {
-        //Basic table for ruin scavengers - they are not always there, the scavengers, in the ruins        
+        //Basic table for ruin scavengers - they are not always there, the scavengers, in the ruins
+        //First, a table for encounters - what is found on the ground?
+        
+        //Two, dependending on the encounter, what does that encounter actually consist of?
+        
+        /*
+         */        
     }
 
     public class CreatableCharacter : CreatableLootObject, ICharacter
