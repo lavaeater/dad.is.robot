@@ -79,7 +79,6 @@
     <Compile Include="Scenes\InventoryScene.cs" />
     <Compile Include="Scenes\Message.cs" />
     <Compile Include="Scenes\MessageQueueDisplayer.cs" />
-    <Compile Include="World\EventEngine.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Entities\HexBackGround.cs" />
     <Compile Include="Entities\ImageEntity.cs" />
@@ -90,6 +89,7 @@
     <Compile Include="Sprites\SpritePipe.cs" />
     <Compile Include="Components\ThrusterMovement.cs" />
     <Compile Include="Entities\TileEvent.cs" />
+    <Compile Include="Event\EventEngine.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -180,6 +180,10 @@
     <ProjectReference Include="..\robot.dad.graphics\robot.dad.graphics.csproj">
       <Project>{d5b98c37-3714-4935-a61c-b467011e25da}</Project>
       <Name>robot.dad.graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\robot.dad.world\robot.dad.world.csproj">
+      <Project>{87b1482d-62bc-4524-bd81-8de6f9f44fae}</Project>
+      <Name>robot.dad.world</Name>
     </ProjectReference>
     <ProjectReference Include="..\SimplexNoise\SimplexNoise.csproj">
       <Project>{733B3143-822A-41B7-A021-9BF7AE84C2D5}</Project>

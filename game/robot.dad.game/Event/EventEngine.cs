@@ -4,7 +4,7 @@ using robot.dad.game.Entities;
 using robot.dad.graphics;
 using Simplex;
 
-namespace robot.dad.game.World
+namespace robot.dad.game.Event
 {
     public class EventEngine
     {

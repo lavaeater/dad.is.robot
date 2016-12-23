@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using ca.axoninteractive.Geometry.Hex;
 using Otter;
-using robot.dad.game.World;
+using robot.dad.game.Event;
 using robot.dad.graphics;
 
 namespace robot.dad.game.Entities
