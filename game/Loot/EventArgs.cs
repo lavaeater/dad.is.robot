@@ -15,7 +15,7 @@ namespace rds
 		/// Initializes a new instance of the <see cref="ResultEventArgs"/> class.
 		/// </summary>
 		/// <param name="result">The result.</param>
-		public ResultEventArgs(IEnumerable<ILootObject> result)
+		public ResultEventArgs(IEnumerable<IThing> result)
 		{
 			Result = result;
 		}
@@ -23,7 +23,7 @@ namespace rds
 		/// <summary>
 		/// Gets the result.
 		/// </summary>
-		public IEnumerable<ILootObject> Result { get; private set; }
+		public IEnumerable<IThing> Result { get; private set; }
 	}
 
 	/// <summary>

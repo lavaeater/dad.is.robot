@@ -69,12 +69,12 @@
     <Compile Include="EventArgs.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CreatableLootObject.cs" />
-    <Compile Include="LootNullValue.cs" />
-    <Compile Include="LootObject.cs" />
+    <Compile Include="CreatableThing.cs" />
+    <Compile Include="ThingNullValue.cs" />
+    <Compile Include="Thing.cs" />
     <Compile Include="LootRandom.cs" />
-    <Compile Include="LootTable.cs" />
-    <Compile Include="LootValue.cs" />
+    <Compile Include="ThingTable.cs" />
+    <Compile Include="ThingValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Diagrams\Model.cd" />

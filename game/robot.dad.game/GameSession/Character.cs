@@ -5,6 +5,11 @@ namespace robot.dad.game.GameSession
 {
     public class Character : ICharacter
     {
+        public override string ToString()
+        {
+            return $"Name: {Name}, Description: {Description}, Strength: {Strength}, MaxHealth: {MaxHealth}, Attack: {Attack}, Defense: {Defense}, Armor: {Armor}, CurrentStrength: {CurrentStrength}, CurrentMaxHealth: {CurrentMaxHealth}, CurrentAttack: {CurrentAttack}, CurrentDefense: {CurrentDefense}, CurrentArmor: {CurrentArmor}, Inventory: {Inventory}, PlayerComponents: {PlayerComponents}, ActiveComponents: {ActiveComponents}";
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public int Strength { get; set; }

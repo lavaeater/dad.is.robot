@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Otter;
+using robot.dad.game.Event;
 using robot.dad.game.GameSession;
 using robot.dad.game.SceneManager;
 using robot.dad.game.Scenes;
@@ -11,7 +13,8 @@ namespace robot.dad.game
         static void Main(string[] args)
         {
             //StartInventory();
-            StartManager();
+            //StartManager();
+            StartLoot();
         }
 
         private static void StartInventory()
@@ -31,7 +34,19 @@ namespace robot.dad.game
 
         private static void StartLoot()
         {
-            
+            for (int i = 0; i < 20; i++)
+            {
+                var table = new TileEventTable();
+                Console.WriteLine($"Iteration {i}");
+                foreach (var thing in table.Result)
+                {
+                    Console.WriteLine(thing);
+                }
+                Console.WriteLine($"Iteration {i} done!");
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.ReadKey();
+            }
         }
 
         private static void StartManager()

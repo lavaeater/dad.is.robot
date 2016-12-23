@@ -3,39 +3,37 @@
 namespace rds
 {
 	/// <summary>
-	/// Base implementation of the ILootObject interface.
-	/// This class only implements the interface and provides all events required.
-	/// Most methods are virtual and ready to be overwritten. Unless there is a good reason,
-	/// do not implement ILootObject for yourself, instead derive your base classes that shall interact
-	/// in *any* thinkable way as a result source with any LootTable from this class.
+	/// This class holds a single RDS value.
+	/// It's a generic class to allow the developer to add any type to a ThingTable.
+	/// T can of course be either a value type or a reference type, so it's possible,
+	/// to add ThingValue objects that contain a reference type, too.
 	/// </summary>
-	public class LootObject : ILootObject
+	/// <typeparam name="T">The type of the value</typeparam>
+	public class ThingValue<T> : IThingValue<T>
 	{
-		#region CONSTRUCTORS
+		
+		#region CONSTRUCTOR
 		/// <summary>
-		/// Initializes a new instance of the <see cref="LootObject"/> class.
+		/// Initializes a new instance of the <see cref="ThingValue{T}"/> class.
+		/// The Unique and Always flags are set to (default) false with this constructor, and Enabled is set to true.
 		/// </summary>
-		public LootObject()
-			: this(0)
+		/// <param name="value">The value.</param>
+		/// <param name="probability">The probability.</param>
+		public ThingValue(T value, double probability)
+			: this(value, probability, false, false, true)
 		{ }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="LootObject"/> class.
+		/// Initializes a new instance of the <see cref="ThingValue{T}"/> class.
 		/// </summary>
+		/// <param name="value">The value.</param>
 		/// <param name="probability">The probability.</param>
-		public LootObject(double probability)
-			: this(probability, false, false, true) 
-		{ }
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="LootObject"/> class.
-		/// </summary>
-		/// <param name="probability">The probability.</param>
-		/// <param name="unique">if set to <c>true</c> this object can only occur once per result.</param>
-		/// <param name="always">if set to <c>true</c> [always] this object will appear always in the result.</param>
-		/// <param name="enabled">if set to <c>false</c> [enabled] this object will never be part of the result (even if it is set to always=true!).</param>
-		public LootObject(double probability, bool unique, bool always, bool enabled)
+		/// <param name="unique">if set to <c>true</c> [unique].</param>
+		/// <param name="always">if set to <c>true</c> [always].</param>
+		/// <param name="enabled">if set to <c>true</c> [enabled].</param>
+		public ThingValue(T value, double probability, bool unique, bool always, bool enabled)
 		{
+			mvalue = value;
 			Probability = probability;
 			Unique = unique;
 			Always = always;
@@ -46,18 +44,18 @@ namespace rds
 
 		#region EVENTS
 		/// <summary>
-		/// Occurs before all the probabilities of all items of the current LootTable are summed up together.
+		/// Occurs before all the probabilities of all items of the current ThingTable are summed up together.
 		/// This is the moment to modify any settings immediately before a result is calculated.
 		/// </summary>
 		public event EventHandler rdsPreResultEvaluation;
 		/// <summary>
-		/// Occurs when this LootObject has been hit by the Result procedure.
+		/// Occurs when this Thing has been hit by the Result procedure.
 		/// (This means, this object will be part of the result set).
 		/// </summary>
 		public event EventHandler rdsHit;
 		/// <summary>
 		/// Occurs after the result has been calculated and the result set is complete, but before
-		/// the LootTable's Result method exits.
+		/// the ThingTable's Result method exits.
 		/// </summary>
 		public event ResultEventHandler rdsPostResultEvaluation;
 
@@ -87,7 +85,19 @@ namespace rds
 		}
 		#endregion
 
-		#region ILootObject Members
+		#region IThingValue<T> Members
+		/// <summary>
+		/// The value of this object
+		/// </summary>
+		public virtual T Value 
+		{
+			get { return mvalue; }
+			set { mvalue = value; }
+		}
+		private T mvalue;
+		#endregion
+
+		#region IThing Members
 		/// <summary>
 		/// Gets or sets the probability for this object to be (part of) the result
 		/// </summary>
@@ -102,8 +112,8 @@ namespace rds
 		/// </summary>
 		public bool Always { get; set; }
 		/// <summary>
-		/// Gets or sets a value indicating whether this <see cref="ILootObject"/> is enabled.
-		/// Only enabled entries can be part of the result of a LootTable.
+		/// Gets or sets a value indicating whether this <see cref="IThing"/> is enabled.
+		/// Only enabled entries can be part of the result of a ThingTable.
 		/// </summary>
 		/// <value>
 		///   <c>true</c> if enabled; otherwise, <c>false</c>.
@@ -113,7 +123,7 @@ namespace rds
 		/// Gets or sets the table this Object belongs to.
 		/// Note to inheritors: This property has to be auto-set when an item is added to a table via the AddEntry method.
 		/// </summary>
-		public LootTable Table { get; set; }
+		public ThingTable Table { get; set; }
 		#endregion
 
 		#region TOSTRING
@@ -137,10 +147,13 @@ namespace rds
 		public string ToString(int indentationlevel)
 		{
 			string indent = "".PadRight(4 * indentationlevel, ' ');
-
-			return string.Format(indent + "(LootObject){0} Prob:{1},UAE:{2}{3}{4}",
-				this.GetType().Name, Probability,
-				(Unique ? "1" : "0"), (Always ? "1" : "0"), (Enabled ? "1" : "0"));
+			
+			string valstr = "(null)";
+			if (Value != null)
+				valstr = Value.ToString();
+				return string.Format(indent + "(ThingValue){0} \"{1}\",Prob:{2},UAE:{3}{4}{5}", 
+					this.GetType().Name, valstr, Probability,
+					(Unique ? "1" : "0"), (Always ? "1" : "0"), (Enabled ? "1" : "0"));
 		}
 		#endregion
 	}

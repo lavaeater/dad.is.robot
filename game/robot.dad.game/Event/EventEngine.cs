@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using ca.axoninteractive.Geometry.Hex;
-using rds;
 using robot.dad.game.Entities;
-using robot.dad.game.GameSession;
 using robot.dad.graphics;
 using Simplex;
 
@@ -40,46 +37,5 @@ namespace robot.dad.game.Event
 
             return null;
         }
-    }
-
-    public class Lootables
-    {
-        //Basic table for ruin scavengers - they are not always there, the scavengers, in the ruins
-        //First, a table for encounters - what is found on the ground?
-        
-        //Two, dependending on the encounter, what does that encounter actually consist of?
-        
-        /*
-         */        
-    }
-
-    public class CreatableCharacter : CreatableLootObject, ICharacter
-    {
-        public CreatableCharacter(int currentStrength, int currentMaxHealth, int currentAttack, int currentDefense, int currentArmor, IEnumerable<ICharacterComponent> playerComponents, IEnumerable<ICharacterComponent> activeComponents)
-        {
-            CurrentStrength = currentStrength;
-            CurrentMaxHealth = currentMaxHealth;
-            CurrentAttack = currentAttack;
-            CurrentDefense = currentDefense;
-            CurrentArmor = currentArmor;
-            PlayerComponents = playerComponents;
-            ActiveComponents = activeComponents;
-        }
-
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Strength { get; set; }
-        public int MaxHealth { get; set; }
-        public int Attack { get; set; }
-        public int Defense { get; set; }
-        public int Armor { get; set; }
-        public int CurrentStrength { get; }
-        public int CurrentMaxHealth { get; }
-        public int CurrentAttack { get; }
-        public int CurrentDefense { get; }
-        public int CurrentArmor { get; }
-        public Dictionary<IITem, int> Inventory { get; set; } = new Dictionary<IITem, int>();
-        public IEnumerable<ICharacterComponent> PlayerComponents { get; }
-        public IEnumerable<ICharacterComponent> ActiveComponents { get; }
     }
 }

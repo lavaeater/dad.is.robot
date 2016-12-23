@@ -55,6 +55,13 @@
     <Compile Include="Components\ChaseComponent.cs" />
     <Compile Include="Entities\CardMode.cs" />
     <Compile Include="Components\ShadowComponent.cs" />
+    <Compile Include="Event\CreatableCharacter.cs" />
+    <Compile Include="Event\FlyingMonster.cs" />
+    <Compile Include="Event\FlyingMonsterTable.cs" />
+    <Compile Include="Event\Lootables.cs" />
+    <Compile Include="Event\Scavenger.cs" />
+    <Compile Include="Event\ScavengerTable.cs" />
+    <Compile Include="Event\TileEventTable.cs" />
     <Compile Include="GameSession\CustomSession.cs" />
     <Compile Include="GameSession\Character.cs" />
     <Compile Include="GameSession\ICharacter.cs" />
@@ -168,6 +175,10 @@
     <ProjectReference Include="..\HexGrid\HexGrid.csproj">
       <Project>{730CE1A8-6F93-424D-AAF1-057182BC21EF}</Project>
       <Name>HexGrid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Loot\rds.csproj">
+      <Project>{3364A51B-ACE9-44A9-9ECD-9CA5EB2248DF}</Project>
+      <Name>rds</Name>
     </ProjectReference>
     <ProjectReference Include="..\otter\Otter.csproj">
       <Project>{236485c2-a7ba-4dcd-808a-b3a634764402}</Project>

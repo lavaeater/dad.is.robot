@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace rds
 {
-	#region ILootObject
+	#region IThing
 	/// <summary>
 	/// This interface contains the properties an object must have to be a valid rds result object.
 	/// </summary>
-	public interface ILootObject
+	public interface IThing
 	{
 		#region FIELDS
 		/// <summary>
@@ -27,8 +27,8 @@ namespace rds
 		bool Always { get; set; }
 
 		/// <summary>
-		/// Gets or sets a value indicating whether this <see cref="ILootObject"/> is enabled.
-		/// Only enabled entries can be part of the result of a LootTable.
+		/// Gets or sets a value indicating whether this <see cref="IThing"/> is enabled.
+		/// Only enabled entries can be part of the result of a ThingTable.
 		/// </summary>
 		/// <value>
 		///   <c>true</c> if enabled; otherwise, <c>false</c>.
@@ -39,23 +39,23 @@ namespace rds
 		/// Gets or sets the table this Object belongs to.
 		/// Note to inheritors: This property has to be auto-set when an item is added to a table via the AddEntry method.
 		/// </summary>
-		LootTable Table { get; set; }
+		ThingTable Table { get; set; }
 		#endregion
 
 		#region EVENTS
 		/// <summary>
-		/// Occurs before all the probabilities of all items of the current LootTable are summed up together.
+		/// Occurs before all the probabilities of all items of the current ThingTable are summed up together.
 		/// This is the moment to modify any settings immediately before a result is calculated.
 		/// </summary>
 		event EventHandler rdsPreResultEvaluation;
 		/// <summary>
-		/// Occurs when this LootObject has been hit by the Result procedure.
+		/// Occurs when this Thing has been hit by the Result procedure.
 		/// (This means, this object will be part of the result set).
 		/// </summary>
 		event EventHandler rdsHit;
 		/// <summary>
 		/// Occurs after the result has been calculated and the result set is complete, but before
-		/// the LootTable's Result method exits.
+		/// the ThingTable's Result method exits.
 		/// </summary>
 		event ResultEventHandler rdsPostResultEvaluation;
 
@@ -89,13 +89,13 @@ namespace rds
 	}
 	#endregion
 
-	#region LootObjectCreator
+	#region IThingCreator
 	/// <summary>
 	/// This interface holds a method that creates an instance of an object where it is implemented.
 	/// If an object gets hit by RDS, it checks whether it is an ORDSObjectCreator. If yes, the result
 	/// of .CreateInstance() is added to the result; if not, the object itself is returned.
 	/// </summary>
-	public interface LootObjectCreator : ILootObject
+	public interface IThingCreator : IThing
 	{
 		/// <summary>
 		/// Creates an instance of the object where this method is implemented in.
@@ -103,33 +103,33 @@ namespace rds
 		/// Override (without calling base.CreateInstance()) to instanciate more complex constructors.
 		/// </summary>
 		/// <returns>A new instance of an object of the type where this method is implemented</returns>
-		ILootObject CreateInstance();
+		IThing CreateInstance();
 	}
 	#endregion
 
-	#region ILootTable
+	#region IThingTable
 	/// <summary>
 	/// This interface describes a table of IRDSObjects. One (or more) of them is/are picked as the result set.
 	/// </summary>
-	public interface ILootTable : ILootObject
+	public interface IThingTable : IThing
 	{
 		/// <summary>
 		/// The maximum number of entries expected in the Result. The final count of items in the result may be lower
 		/// if some of the entries may return a null result (no drop)
 		/// </summary>
-		int rdsCount { get; set; }
+		int Count { get; set; }
 
 		/// <summary>
 		/// Gets or sets the contents of this table
 		/// </summary>
-		IEnumerable<ILootObject> rdsContents { get; }
+		IEnumerable<IThing> Contents { get; }
 
 		/// <summary>
 		/// Gets the result. Calling this method will start the random pick process and generate the result.
 		/// This result remains constant for the lifetime of this table object.
 		/// Use the ResetResult method to clear the result and create a new one.
 		/// </summary>
-		IEnumerable<ILootObject> rdsResult { get; }
+		IEnumerable<IThing> Result { get; }
 	}
 	#endregion
 
@@ -138,7 +138,7 @@ namespace rds
 	/// Generic template for classes that return only one value, which will be good enough in most use cases.
 	/// </summary>
 	/// <typeparam name="T">The type of the value of this object</typeparam>
-	public interface ILootValue<T> : ILootObject
+	public interface IThingValue<T> : IThing
 	{
 		/// <summary>
 		/// The value of this object

@@ -7,14 +7,14 @@ using System.Text;
 namespace rds
 {
 	/// <summary>
-	/// This class is a special derived version of an LootObject.
-	/// It implements the LootObjectCreator interface, which can be used to create custom instances of classes 
+	/// This class is a special derived version of an Thing.
+	/// It implements the IThingCreator interface, which can be used to create custom instances of classes 
 	/// when they are hit by the random engine.
-	/// The LootTable class checks for this interface before a result is added to the result set.
+	/// The ThingTable class checks for this interface before a result is added to the result set.
 	/// If it is implemented, this object's CreateInstance method is called, and with this tweak it is possible
 	/// to enter completely new instances into the result set at the moment they are hit.
 	/// </summary>
-	public class CreatableLootObject : LootObject, LootObjectCreator
+	public class CreatableThing : Thing, IThingCreator
 	{
 		/// <summary>
 		/// Creates an instance of the object where this method is implemented in.
@@ -22,9 +22,9 @@ namespace rds
 		/// Override (without calling base.CreateInstance()) to instanciate more complex constructors.
 		/// </summary>
 		/// <returns>A new instance of an object of the type where this method is implemented</returns>
-		public virtual ILootObject CreateInstance()
+		public virtual IThing CreateInstance()
 		{
-			return (ILootObject)Activator.CreateInstance(this.GetType());
+			return (IThing)Activator.CreateInstance(this.GetType());
 		}
 	}
 }
