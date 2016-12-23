@@ -5,6 +5,21 @@ namespace robot.dad.game.GameSession
 {
     public class Character : ICharacter
     {
+        public Character()
+        {
+            
+        }
+        public Character(string name, string description, int strength, int maxHealth, int attack, int defense, int armor, Dictionary<IITem, int> inventory)
+        {
+            Name = name;
+            Description = description;
+            Strength = strength;
+            MaxHealth = maxHealth;
+            Attack = attack;
+            Defense = defense;
+            Armor = armor;
+            Inventory = inventory;
+        }
         public override string ToString()
         {
             return $"Name: {Name}, Description: {Description}, Strength: {Strength}, MaxHealth: {MaxHealth}, Attack: {Attack}, Defense: {Defense}, Armor: {Armor}, CurrentStrength: {CurrentStrength}, CurrentMaxHealth: {CurrentMaxHealth}, CurrentAttack: {CurrentAttack}, CurrentDefense: {CurrentDefense}, CurrentArmor: {CurrentArmor}, Inventory: {Inventory}, PlayerComponents: {PlayerComponents}, ActiveComponents: {ActiveComponents}";

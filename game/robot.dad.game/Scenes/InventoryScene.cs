@@ -19,14 +19,16 @@ namespace robot.dad.game.Scenes
     /// </summary>
     public class InventoryScene : Scene
     {
+        public Action Done { get; set; }
         public Dictionary<string, InventoryItem> PrimaryItems { get; set; }
         public Dictionary<string, InventoryItem> SecondaryItems { get; set; }
         public bool SecondaryItemsVisible => SecondaryItems != null;
         public bool PrimarySelected { get; set; } = true;
         public int SelectedItemIndex { get; set; } = 0;
 
-        public InventoryScene(Dictionary<string, InventoryItem> primaryItems, Dictionary<string, InventoryItem> secondaryItems = null)
+        public InventoryScene(Action done, Dictionary<string, InventoryItem> primaryItems, Dictionary<string, InventoryItem> secondaryItems = null)
         {
+            Done = done;
             PrimaryItems = primaryItems;
             PrimaryEntities = new SelectableList<ItemEntity>();
             SecondaryItems = secondaryItems ?? new Dictionary<string, InventoryItem>();
@@ -140,6 +142,11 @@ namespace robot.dad.game.Scenes
             if (Input.KeyPressed(Key.A))
             {
                 TakeAllItems();
+            }
+
+            if (Input.KeyPressed(Key.K))
+            {
+                Done?.Invoke();
             }
 
         }

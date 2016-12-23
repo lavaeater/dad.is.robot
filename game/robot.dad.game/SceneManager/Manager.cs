@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using Otter;
 using robot.dad.game.Entities;
 using robot.dad.game.GameSession;
@@ -24,7 +25,7 @@ namespace robot.dad.game.SceneManager
 
         private void CreateGame()
         {
-            var game = new Game("Dad is a Robot", 1600, 900, 60, true);
+            var game = new Game("Dad is a Robot", 1600, 900, 60, false);
 
             GameInstance = game;
         }
@@ -32,6 +33,7 @@ namespace robot.dad.game.SceneManager
         private void CreateSession()
         {
             Global.PlayerOne = CustomSession.AddSession(GameInstance, "playerone");
+
             Global.PlayerOne.Controller.AddButton(Controls.Up);
             Global.PlayerOne.Controller.AddButton(Controls.Down);
             Global.PlayerOne.Controller.AddButton(Controls.Left);
@@ -41,6 +43,8 @@ namespace robot.dad.game.SceneManager
             Global.PlayerOne.Controller.Button(Controls.Down).AddKey(Key.Down);
             Global.PlayerOne.Controller.Button(Controls.Left).AddKey(Key.Left);
             Global.PlayerOne.Controller.Button(Controls.Right).AddKey(Key.Right);
+
+            Global.PlayerOne.AddCharacter(new Character("Analusia", "", 10, 100, 70, 60, 10, new Dictionary<IITem, int>()));
         }
 
         public void StartGame()

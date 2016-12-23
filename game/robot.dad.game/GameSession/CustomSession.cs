@@ -14,5 +14,12 @@ namespace robot.dad.game.GameSession
             game.Sessions.Add(s);
             return s;
         }
+
+        public void AddCharacter(Character playerCharacter)
+        {
+            PlayerCharacter = playerCharacter;
+        }
+
+        public Character PlayerCharacter { get; set; }
     }
 }

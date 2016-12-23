@@ -13,8 +13,8 @@ namespace robot.dad.game
         static void Main(string[] args)
         {
             //StartInventory();
-            //StartManager();
-            StartLoot();
+            StartManager();
+            //StartLoot();
         }
 
         private static void StartInventory()
@@ -27,9 +27,9 @@ namespace robot.dad.game
                 {"RayGun", new InventoryItem("RayGun", 1, new BasicItem("RayGun", "Strålpistol", "En pistol som skjuter strålar")) }
             };
 
-            var scene = new InventoryScene(inventory);
+            //var scene = new InventoryScene(inventory);
 
-            game.Start(scene);
+            //game.Start(scene);
         }
 
         private static void StartLoot()

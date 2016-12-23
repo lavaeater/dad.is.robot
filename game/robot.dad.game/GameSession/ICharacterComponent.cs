@@ -8,5 +8,7 @@ namespace robot.dad.game.GameSession
         int Defense { get; set; }
         int Armor { get; set; }
         bool Active { get; set; }
+        int MaxDamage { get; set; }
+        int MinDamage { get; set; }
     }
 }
