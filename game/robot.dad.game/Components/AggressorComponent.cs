@@ -2,6 +2,7 @@ using System.Linq;
 using ca.axoninteractive.Geometry.Hex;
 using Otter;
 using robot.dad.game.Entities;
+using robot.dad.game.SceneManager;
 using robot.dad.game.Scenes;
 
 namespace robot.dad.game.Components
@@ -30,7 +31,8 @@ namespace robot.dad.game.Components
                 if (_areaAround.Contains(curPos))
                 {
                     Done = true;
-                    mainScene.StartChase();
+                    Manager.StartChaseScene(_tileEvent);
+                    //mainScene.StartChase(_tileEvent);
                 }
             }
         }

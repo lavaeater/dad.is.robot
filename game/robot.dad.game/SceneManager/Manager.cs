@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Otter;
 using robot.dad.game.Entities;
+using robot.dad.game.Event;
 using robot.dad.game.GameSession;
 using robot.dad.game.Scenes;
 
@@ -13,7 +15,7 @@ namespace robot.dad.game.SceneManager
     public class Manager
     {
         public Scene CurrentScene { get; set; }
-        public MainScene MainScene { get; set; }
+        public static MainScene MainScene { get; set; }
         public static Game GameInstance { get; set; }
  
         public Manager()
@@ -53,11 +55,25 @@ namespace robot.dad.game.SceneManager
             GameInstance.Start(intro);
         }
 
-        public void GotoMainScene()
+        public static void GotoMainScene()
         {
             GameInstance.SwitchScene(MainScene);
         }
 
+
+
+        public static void StartCombatSceneFromEvent(TileEvent tileEvent)
+        {
+            //Use tileevent-thingy
+            var table = new RuinEventTable();
+
+            GameInstance.SwitchScene(new CombatScene(GetLoot));
+        }
+
+        private static void GetLoot()
+        {
+            //GameInstance.SwitchScene(new InventoryScene());
+        }
 
         private void CreateMainScene()
         {
@@ -68,6 +84,11 @@ namespace robot.dad.game.SceneManager
             var scene = new MainScene(player);
             scene.AddBackGround(background);
             MainScene = scene;
+        }
+
+        public static void StartChaseScene(TileEvent tileEvent)
+        {
+            GameInstance.SwitchScene(new ChaseScene(GotoMainScene, () => StartCombatSceneFromEvent(tileEvent)));
         }
     }
 }

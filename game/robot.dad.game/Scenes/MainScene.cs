@@ -22,8 +22,9 @@ namespace robot.dad.game.Scenes
 
         public HexBackGround BackGround { get; set; }
 
-        public void StartChase()
+        public void StartChase(TileEvent tileEvent)
         {
+
             Game.SwitchScene(new ChaseScene(GetLoot));
         }
 

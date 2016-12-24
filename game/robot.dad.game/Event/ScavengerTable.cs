@@ -4,7 +4,7 @@ namespace robot.dad.game.Event
 {
     public sealed class ScavengerTable : ThingTable
     {
-        public ScavengerTable()
+        public ScavengerTable(int numberOfScavengers)
         {
             AddEntry(new Scavenger(1),300);
             AddEntry(new Scavenger(2),150);
@@ -12,7 +12,7 @@ namespace robot.dad.game.Event
             AddEntry(new Scavenger(4),30);
             AddEntry(new Scavenger(5),15);
 
-            Count = 3;
+            Count = numberOfScavengers;
         }
     }
 }
