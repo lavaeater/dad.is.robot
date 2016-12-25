@@ -24,8 +24,6 @@ namespace robot.dad.game.Scenes
 
         public void StartChase(TileEvent tileEvent)
         {
-
-            Game.SwitchScene(new ChaseScene(GetLoot));
         }
 
         public void GetLoot()

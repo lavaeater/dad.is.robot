@@ -26,13 +26,11 @@ namespace robot.dad.game.Components
             //Through the scene!
             if (!Done)
             {
-                var mainScene = (_tileEvent.Scene as MainScene);
-                var curPos = mainScene.BackGround.CurrentPosition;
+                var curPos = Manager.Instance.MainScene.BackGround.CurrentPosition;
                 if (_areaAround.Contains(curPos))
                 {
                     Done = true;
-                    Manager.StartChaseScene(_tileEvent);
-                    //mainScene.StartChase(_tileEvent);
+                    Manager.Instance.StartChaseScene(_tileEvent);
                 }
             }
         }

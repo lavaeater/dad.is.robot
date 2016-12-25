@@ -22,7 +22,7 @@ namespace robot.dad.game.Event
         //THis is obviously for a tile that yes, has an event
         public static IEnumerable<IThing> GetEventsForATile()
         {
-            var table = new TileEventTable();
+            var table = new RuinEventTable();
             return table.Result;
         }
 

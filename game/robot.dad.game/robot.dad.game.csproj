@@ -61,7 +61,7 @@
     <Compile Include="Event\Lootables.cs" />
     <Compile Include="Event\Scavenger.cs" />
     <Compile Include="Event\ScavengerTable.cs" />
-    <Compile Include="Event\TileEventTable.cs" />
+    <Compile Include="Event\RuinEventTable.cs" />
     <Compile Include="GameSession\CustomSession.cs" />
     <Compile Include="GameSession\Character.cs" />
     <Compile Include="GameSession\ICharacter.cs" />

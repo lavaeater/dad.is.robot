@@ -12,13 +12,18 @@ namespace robot.dad.game.SceneManager
     /// <summary>
     /// My own custom class for managing scenes and transitions.
     /// </summary>
-    public class Manager
+    public sealed class Manager
     {
         public Scene CurrentScene { get; set; }
-        public static MainScene MainScene { get; set; }
-        public static Game GameInstance { get; set; }
- 
-        public Manager()
+        public MainScene MainScene { get; set; }
+        public Game GameInstance { get; set; }
+
+        private static readonly Lazy<Manager> Lazy =
+            new Lazy<Manager>(() => new Manager());
+
+        public static Manager Instance => Lazy.Value;
+
+        private Manager()
         {
             CreateGame();
             CreateSession();
@@ -55,14 +60,12 @@ namespace robot.dad.game.SceneManager
             GameInstance.Start(intro);
         }
 
-        public static void GotoMainScene()
+        public void GotoMainScene()
         {
             GameInstance.SwitchScene(MainScene);
         }
-
-
-
-        public static void StartCombatSceneFromEvent(TileEvent tileEvent)
+        
+        public void StartCombatSceneFromEvent(TileEvent tileEvent)
         {
             //Use tileevent-thingy
             var table = new RuinEventTable();
@@ -70,7 +73,7 @@ namespace robot.dad.game.SceneManager
             GameInstance.SwitchScene(new CombatScene(GetLoot));
         }
 
-        private static void GetLoot()
+        private void GetLoot()
         {
             //GameInstance.SwitchScene(new InventoryScene());
         }
@@ -86,7 +89,7 @@ namespace robot.dad.game.SceneManager
             MainScene = scene;
         }
 
-        public static void StartChaseScene(TileEvent tileEvent)
+        public void StartChaseScene(TileEvent tileEvent)
         {
             GameInstance.SwitchScene(new ChaseScene(GotoMainScene, () => StartCombatSceneFromEvent(tileEvent)));
         }

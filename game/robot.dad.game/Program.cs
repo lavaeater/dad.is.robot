@@ -36,7 +36,7 @@ namespace robot.dad.game
         {
             for (int i = 0; i < 20; i++)
             {
-                var table = new TileEventTable();
+                var table = new RuinEventTable();
                 Console.WriteLine($"Iteration {i}");
                 foreach (var thing in table.Result)
                 {
@@ -51,8 +51,7 @@ namespace robot.dad.game
 
         private static void StartManager()
         {
-            var manager = new Manager();
-            manager.StartGame();
+            Manager.Instance.StartGame();
         }
     }
 }
