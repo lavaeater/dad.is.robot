@@ -21,5 +21,7 @@ namespace robot.dad.common
         Dictionary<IITem, int> Inventory { get; set; }
         IEnumerable<ICharacterComponent> PlayerComponents { get; }
         IEnumerable<ICharacterComponent> ActiveComponents { get; }
+        IEnumerable<IWeapon> Weapons { get; }
+        IEnumerable<IWeapon> ActiveWeapons { get; }
     }
 }

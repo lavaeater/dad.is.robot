@@ -1,12 +1,10 @@
-using System;
-using robot.dad.combat.EffectAppliers;
-using robot.dad.common;
-
-namespace robot.dad.combat.MoveResolvers
+﻿namespace robot.dad.common.MoveResolvers
 {
-    public class ResolveAttackMove : ResolveMoveBase
+    public class ResolveWeaponMove : IResolveMove
     {
-        public override bool ResolveMove(ICombatMove move, ICombattant attacker, ICombattant target)
+        public static IResolveMove WeaponeMoveResolver => new ResolveWeaponMove();
+
+        public bool ResolveMove(ICombatMove move, ICombattant attacker, ICombattant target)
         {
             int targetValue = attacker.CurrentAttack + move.Modifier - target.CurrentDefense;
             if (target.CurrentMove?.MoveType == CombatMoveType.Defend ||
@@ -25,8 +23,11 @@ namespace robot.dad.combat.MoveResolvers
 
                 //Effect applier comes from the attack, not from here, right?
 
-                IApplyEffects applier = diceRoll <= perfectRollValue ? new NormalDamageEffectApplier(move.MaxDamage, move.MaxDamage) : new NormalDamageEffectApplier(move.MinDamage, move.MaxDamage);
-                applier.ApplyEffects(target);
+                move.EffectApplier.UpdateMinAndMax(diceRoll <= perfectRollValue ? 
+                    move.MaxDamage : move.MinDamage,
+                    move.MaxDamage);
+
+                move.EffectApplier.ApplyEffects(target);
             }
             return result;
         }

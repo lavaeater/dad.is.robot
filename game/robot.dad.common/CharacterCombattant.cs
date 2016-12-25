@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace robot.dad.common
 {
@@ -24,10 +25,7 @@ namespace robot.dad.common
 
         public List<ICombatMove> CombatMoves
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return Character.ActiveWeapons.Select(aw => aw.CombatMove).ToList(); }
         }
 
         public ICombatMove CurrentMove { get; set; }
@@ -87,7 +85,7 @@ namespace robot.dad.common
         public bool ResolveMove()
         {
             HasPicked = false;
-            return CurrentMove.Apply(this, CurrentTarget);
+            return CurrentMove.Resolve(this, CurrentTarget);
         }
 
         public void Runaway()

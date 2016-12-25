@@ -46,8 +46,11 @@
     <Compile Include="Character.cs" />
     <Compile Include="CharacterCombattant.cs" />
     <Compile Include="CharacterComponent.cs" />
+    <Compile Include="CharacterWeapon.cs" />
     <Compile Include="CombatMoveType.cs" />
     <Compile Include="CombatStatus.cs" />
+    <Compile Include="WeaponCombatMove.cs" />
+    <Compile Include="DiceRoller.cs" />
     <Compile Include="EffectType.cs" />
     <Compile Include="IApplyEffects.cs" />
     <Compile Include="ICharacter.cs" />
@@ -59,6 +62,8 @@
     <Compile Include="IResolveMove.cs" />
     <Compile Include="IShip.cs" />
     <Compile Include="IShipComponent.cs" />
+    <Compile Include="IWeapon.cs" />
+    <Compile Include="MoveResolvers\ResolveWeaponMove.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="ShipComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

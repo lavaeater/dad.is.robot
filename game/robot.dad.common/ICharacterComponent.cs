@@ -8,8 +8,6 @@ namespace robot.dad.common
         int Defense { get; set; }
         int Armor { get; set; }
         bool Active { get; set; }
-        int MaxDamage { get; set; }
-        int MinDamage { get; set; }
         int Initiative { get; set; }
     }
 }

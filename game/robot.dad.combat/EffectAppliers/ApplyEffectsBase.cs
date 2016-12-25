@@ -26,5 +26,11 @@ namespace robot.dad.combat.EffectAppliers
         {
             target.CurrentCombatEffects.Remove(this);
         }
+
+        public void UpdateMinAndMax(int min, int max)
+        {
+            Min = min;
+            Max = max;
+        }
     }
 }

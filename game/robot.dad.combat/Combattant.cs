@@ -24,7 +24,7 @@ namespace robot.dad.combat
 
         public bool ResolveMove()
         {
-            return CurrentMove.Apply(this, CurrentTarget);
+            return CurrentMove.Resolve(this, CurrentTarget);
         }
 
         public Action<ICombattant> RanAway { get; set; }

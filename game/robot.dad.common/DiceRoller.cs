@@ -1,6 +1,6 @@
 using System;
 
-namespace robot.dad.combat
+namespace robot.dad.common
 {
     public static class DiceRoller
     {

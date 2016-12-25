@@ -9,5 +9,6 @@ namespace robot.dad.common
         EffectType EffectType { get; set; }
         void ApplyEffects(ICombattant target);
         void EffectsEnded(ICombattant target);
+        void UpdateMinAndMax(int min, int max);
     }
 }

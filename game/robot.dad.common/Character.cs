@@ -68,5 +68,7 @@ namespace robot.dad.common
         public Dictionary<IITem, int> Inventory { get; set; }
         public IEnumerable<ICharacterComponent> PlayerComponents => Inventory.OfType<ICharacterComponent>();
         public IEnumerable<ICharacterComponent> ActiveComponents => PlayerComponents.Where(pc => pc.Active);
+        public IEnumerable<IWeapon> Weapons => Inventory.OfType<IWeapon>();
+        public IEnumerable<IWeapon> ActiveWeapons => Weapons.Where(w => w.Active);
     }
 }

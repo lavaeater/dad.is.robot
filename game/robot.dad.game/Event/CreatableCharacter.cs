@@ -34,5 +34,7 @@ namespace robot.dad.game.Event
         public Dictionary<IITem, int> Inventory { get; set; } = new Dictionary<IITem, int>();
         public IEnumerable<ICharacterComponent> PlayerComponents => new List<ICharacterComponent>();
         public IEnumerable<ICharacterComponent> ActiveComponents => new List<ICharacterComponent>();
+        public IEnumerable<IWeapon> Weapons => new List<IWeapon>();
+        public IEnumerable<IWeapon> ActiveWeapons => new List<IWeapon>();
     }
 }

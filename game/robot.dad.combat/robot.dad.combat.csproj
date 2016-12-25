@@ -61,7 +61,6 @@
     <Compile Include="CombatEngine.cs" />
     <Compile Include="CombatMove.cs" />
     <Compile Include="Combattant.cs" />
-    <Compile Include="DiceRoller.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="EffectAppliers\HealingEffectApplier.cs" />
     <Compile Include="EffectAppliers\HypnosisEffectApplier.cs" />
