@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using ca.axoninteractive.Geometry.Hex;
+using rds;
 using robot.dad.game.Entities;
 using robot.dad.graphics;
 using Simplex;
@@ -23,9 +24,11 @@ namespace robot.dad.game.Event
             var table = new TileEventTable();
             //Add code for managing terrainbased-probabilities
             //If event occurs, then what?
-            if (table.Result.OfType<RuinEventTable>().Any())
+            if (table.Result.OfType<ThingValue<EventType>>().Any())
             {
-                return new TileEvent("Ruin", coord);
+                var result = table.Result.OfType<ThingValue<EventType>>().FirstOrDefault()?.Value;
+                if (result == EventType.Ruin)
+                    return new TileEvent("Ruin", coord);
             }
 
             //int diceRoll = _rand.Next(1, 1001);//

@@ -9,14 +9,14 @@ namespace robot.dad.game.Components
         private readonly Axis _axis;
         private readonly Entity _chasee;
         private readonly float _catchDistance;
-        private readonly Action _returnAction;
+        private readonly Action _caughtAction;
 
-        public ChaseComponent(Axis axis, Entity chasee, float catchDistance, Action returnAction)
+        public ChaseComponent(Axis axis, Entity chasee, float catchDistance, Action caughtAction)
         {
             _axis = axis;
             _chasee = chasee;
             _catchDistance = catchDistance;
-            _returnAction = returnAction;
+            _caughtAction = caughtAction;
         }
 
         public override void Update()
@@ -32,7 +32,7 @@ namespace robot.dad.game.Components
 
             if (Util.Distance(Entity, _chasee) < _catchDistance)
             {
-                Game.Instance.SwitchScene(new CombatScene(_returnAction));
+                _caughtAction();
             }
 
             //4. Pedal to the metal!

@@ -118,9 +118,9 @@ namespace robot.dad.game.Scenes
             _combatEngine.StartCombat();
         }
 
-        public List<ICombattant> Antagonists { get; set; }
+        public List<ICombattant> Antagonists { get; set; } = new List<ICombattant>();
 
-        public List<ICombattant> Protagonists { get; set; }
+        public List<ICombattant> Protagonists { get; set; } = new List<ICombattant>();
 
         public override void Update()
         {

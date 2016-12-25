@@ -36,7 +36,7 @@ namespace robot.dad.common
         public bool HasPicked { get; set; }
 
         public IPickMove MovePicker { get; set; }
-        public string Name { get; set; }
+        public string Name => Character.Name;
         public CombatStatus Status { get; set; }
         public string Team { get; set; }
 
@@ -77,9 +77,10 @@ namespace robot.dad.common
 
         public void PickMove(IEnumerable<ICombattant> possibleTargets, Action picked)
         {
-            MovePicker?.PickMove(this, possibleTargets);
             HasPicked = true;
-            picked?.Invoke();
+            MovePicker?.PickMove(this, possibleTargets);
+            //
+            //picked?.Invoke();
         }
 
         public bool ResolveMove()
