@@ -10,23 +10,23 @@ namespace robot.dad.combat
     {
         public Action ProtagonistsWin { get; set; }
         public Action AntagonistsWin { get; set; }
-        public IEnumerable<Combattant> Participants => Protagonists.Union(Antagonists);
-        public List<Combattant> Protagonists { get; set; } = new List<Combattant>();
-        public List<Combattant> Antagonists { get; set; } = new List<Combattant>();
-        public Combattant CurrentCombattant { get; set; }
-        public List<Combattant> ParticipantsThatFled { get; set; } = new List<Combattant>();
-        public IEnumerable<Combattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
+        public IEnumerable<ICombattant> Participants => Protagonists.Union(Antagonists);
+        public List<ICombattant> Protagonists { get; set; } = new List<ICombattant>();
+        public List<ICombattant> Antagonists { get; set; } = new List<ICombattant>();
+        public ICombattant CurrentCombattant { get; set; }
+        public List<ICombattant> ParticipantsThatFled { get; set; } = new List<ICombattant>();
+        public IEnumerable<ICombattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
         public static PassiveStateMachine<States, Events> StateMachine { get; set; }
         public static int Round { get; set; }
         public Action<ICombattant, ICombattant> MoveSucceeded { get; set; }
-        public Action<Combattant> MoveFailed { get; set; }
+        public Action<ICombattant> MoveFailed { get; set; }
         public Action<ICombattant, ICombatMove> SomeoneIsDoingSomething { get; set; }
         public Action<ICombattant> SomeoneDied { get; set; }
         public bool CurrentMoveWasSuccessful { get; set; }
-        public List<Combattant> AliveByInitiative => Participants.Where(c => !c.Dead).OrderByDescending(c => c.CurrentInitiative).ToList();
+        public List<ICombattant> AliveByInitiative => Participants.Where(c => !c.Dead).OrderByDescending(c => c.CurrentInitiative).ToList();
         public Action<ICombattant, int> SomeoneTookDamage { get; set; }
 
-        public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists, Action protagonistsWin, Action antagonistsWin) : this()
+        public CombatEngine(List<ICombattant> protagonists, List<ICombattant> antagonists, Action protagonistsWin, Action antagonistsWin) : this()
         {
             ProtagonistsWin = protagonistsWin;
             AntagonistsWin = antagonistsWin;

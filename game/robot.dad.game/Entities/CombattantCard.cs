@@ -14,7 +14,7 @@ namespace robot.dad.game.Entities
         private Image FrameHover => SpritePipe.FrameHover;
         private Image HeadTorso => SpritePipe.TorsoAndHead;
 
-        public CombattantCard(Combattant combattant, float x, float y, float width, float height)
+        public CombattantCard(ICombattant combattant, float x, float y, float width, float height)
         {
             Combattant = combattant;
             X = x;
@@ -44,7 +44,7 @@ namespace robot.dad.game.Entities
 
         public List<CombatMoveCard> Moves { get; set; }
 
-        public Combattant Combattant { get; set; }
+        public ICombattant Combattant { get; set; }
         public float Height { get; set; }
 
         public float Width { get; set; }
@@ -96,7 +96,7 @@ namespace robot.dad.game.Entities
             }
         }
 
-        public void MakePickable(Action<Combattant> picked)
+        public void MakePickable(Action<ICombattant> picked)
         {
             SetCardMode(CardMode.Pickable);
             Picked = picked;
@@ -134,7 +134,7 @@ namespace robot.dad.game.Entities
             Graphics.Add(HeadTorso);
         }
 
-        public Action<Combattant> Picked { get; set; }
+        public Action<ICombattant> Picked { get; set; }
 
         public void StopBeingPickable()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Otter;
 using robot.dad.common;
 using robot.dad.game.Entities;
@@ -69,8 +70,12 @@ namespace robot.dad.game.SceneManager
         {
             //Use tileevent-thingy
             var table = new RuinEventTable();
-
-            GameInstance.SwitchScene(new CombatScene(GetLoot));
+            if (table.Result.Any()) //Always true with current setup
+                GameInstance.SwitchScene(new CombatScene(GetLoot,
+                    new ICombattant[] {new CharacterCombattant(Global.PlayerOne.PlayerCharacter),},
+                    table.Result.OfType<ICharacter>().Select(c => new CharacterCombattant(c))));
+            else
+                GotoMainScene(); //This should instead go to ruin or whatever comes after the combat...
         }
 
         private void GetLoot()

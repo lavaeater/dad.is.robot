@@ -8,9 +8,9 @@ namespace robot.dad.game
 {
     public class CombatDemo
     {
-        public static List<Combattant> GetProtagonists()
+        public static List<ICombattant> GetProtagonists()
         {
-            return new List<Combattant>
+            return new List<ICombattant>
             {
                 new Human("Tommie", "nygren", MovePickers.GetRandomPicker()),
                 //new Human("Lisa", "nygren", MovePickers.RandomPicker),

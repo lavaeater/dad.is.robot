@@ -41,7 +41,7 @@ namespace robot.dad.game.Entities
             }
         }
 
-        public void ATargetWasPicked(Combattant target)
+        public void ATargetWasPicked(ICombattant target)
         {
             foreach (var card in Scene.CombattantCards.Except(new[] { CurrentCard }))
             {

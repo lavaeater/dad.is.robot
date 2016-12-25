@@ -17,7 +17,7 @@ namespace robot.dad.game.Scenes
 
         public Queue<string> MessageQueue { get; set; } = new Queue<string>();
 
-        public CombatScene(Action winAction)
+        public CombatScene(Action winAction, IEnumerable<ICombattant> protagonists = null, IEnumerable<ICombattant> antagonists = null)
         {
             Game.Instance.MouseVisible = true;
 
@@ -31,14 +31,21 @@ namespace robot.dad.game.Scenes
              * 
              * BUUUT start with drawing cards with all players. See your notebook.
              */
-            Protagonists = CombatDemo.GetProtagonists();
+            if (protagonists == null)
+                Protagonists = CombatDemo.GetProtagonists();
+            else
+                Protagonists.AddRange(protagonists);
 
             foreach (var protagonist in Protagonists)
             {
                 protagonist.MovePicker = new GraphicalPicker(CombatEngine.Picked, this);
             }
 
-            Antagonists = CombatDemo.GetAntagonists(2).ToList();
+            if(antagonists == null)
+                Antagonists.AddRange(CombatDemo.GetAntagonists(2));
+            else
+                Antagonists.AddRange(antagonists);
+
             _combatEngine = new CombatEngine(Protagonists, Antagonists, winAction, LoseAction);
 
             _combatEngine.MoveFailed = MoveFailed;
@@ -99,7 +106,7 @@ namespace robot.dad.game.Scenes
         {
         }
 
-        public CombattantCard AddCombattantCard(Combattant combattant, float x, float y, float width, float height)
+        public CombattantCard AddCombattantCard(ICombattant combattant, float x, float y, float width, float height)
         {
             var card = new CombattantCard(combattant, x, y, width, height);
             CombattantCards.Add(card);
@@ -111,9 +118,9 @@ namespace robot.dad.game.Scenes
             _combatEngine.StartCombat();
         }
 
-        public List<Combattant> Antagonists { get; set; }
+        public List<ICombattant> Antagonists { get; set; }
 
-        public List<Combattant> Protagonists { get; set; }
+        public List<ICombattant> Protagonists { get; set; }
 
         public override void Update()
         {
