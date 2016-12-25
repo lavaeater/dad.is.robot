@@ -2,6 +2,6 @@ namespace robot.dad.combat.Interfaces
 {
     public interface IResolveMove
     {
-        bool ResolveMove(CombatMove move, Combattant attacker, Combattant target);
+        bool ResolveMove(ICombatMove move, ICombattant attacker, ICombattant target);
     }
 }

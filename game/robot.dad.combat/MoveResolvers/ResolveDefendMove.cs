@@ -8,7 +8,7 @@ namespace robot.dad.combat.MoveResolvers
 {
     public class ResolveDefendMove : ResolveMoveBase
     {
-        public override bool ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        public override bool ResolveMove(ICombatMove move, ICombattant attacker, ICombattant target)
         {
             return true;
         }

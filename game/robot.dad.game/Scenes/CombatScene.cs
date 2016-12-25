@@ -69,27 +69,27 @@ namespace robot.dad.game.Scenes
             _messageQueue = new MessageQueueDisplayer(MessageQueue, this, - 600, 1);
         }
 
-        private void SomeoneTookDamage(Combattant combattant, int damage)
+        private void SomeoneTookDamage(ICombattant combattant, int damage)
         {
             MessageQueue.Enqueue($"{combattant.Name} fick {damage} i skada.");
         }
 
-        private void SomeoneDied(Combattant combattant)
+        private void SomeoneDied(ICombattant combattant)
         {
             MessageQueue.Enqueue($"{combattant.Name} dog!");
         }
 
-        private void SomeoneIsDoingSomething(Combattant attacker, CombatMove combatMove)
+        private void SomeoneIsDoingSomething(ICombattant attacker, ICombatMove combatMove)
         {
             MessageQueue.Enqueue($"{attacker.Name} {combatMove.Verbified} {attacker.CurrentTarget?.Name}");
         }
 
-        private void MoveSucceeded(Combattant attacker, Combattant target)
+        private void MoveSucceeded(ICombattant attacker, ICombattant target)
         {
             MessageQueue.Enqueue($"och {attacker.Name} lyckas!");
         }
 
-        private void MoveFailed(Combattant attacker)
+        private void MoveFailed(ICombattant attacker)
         {
             MessageQueue.Enqueue($"och {attacker.Name} misslyckas!");
         }

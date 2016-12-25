@@ -6,7 +6,7 @@ namespace robot.dad.combat.MoveResolvers
 {
     public class ResolveHypnosisMove : ResolveMoveBase
     {
-        public override bool ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        public override bool ResolveMove(ICombatMove move, ICombattant attacker, ICombattant target)
         {
             bool result = false;
             int targetValue = attacker.AttackSkill + move.Modifier - target.DefenseSkill;

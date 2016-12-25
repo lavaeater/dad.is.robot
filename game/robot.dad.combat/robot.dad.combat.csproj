@@ -69,6 +69,8 @@
     <Compile Include="EffectAppliers\HealingEffectApplier.cs" />
     <Compile Include="EffectAppliers\HypnosisEffectApplier.cs" />
     <Compile Include="Human.cs" />
+    <Compile Include="ICombatMove.cs" />
+    <Compile Include="ICombattant.cs" />
     <Compile Include="Interfaces\IApplyEffects.cs" />
     <Compile Include="Interfaces\IResolveMove.cs" />
     <Compile Include="Monster.cs" />

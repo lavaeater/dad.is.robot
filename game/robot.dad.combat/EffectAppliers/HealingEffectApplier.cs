@@ -9,7 +9,7 @@ namespace robot.dad.combat.EffectAppliers
             EffectName = "Hela";
         }
 
-        public override void ApplyEffects(Combattant target)
+        public override void ApplyEffects(ICombattant target)
         {
             int damageRoll = DiceRoller.RollDice(Min, Max);
             target.CurrentHealth += damageRoll;

@@ -4,7 +4,7 @@ namespace robot.dad.combat.MoveResolvers
 {
     public class ResolveRunawayMove : ResolveMoveBase
     {
-        public override bool ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        public override bool ResolveMove(ICombatMove move, ICombattant attacker, ICombattant target)
         {
             bool result = false;
             int targetValue = attacker.DefenseSkill + move.Modifier;

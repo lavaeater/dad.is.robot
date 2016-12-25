@@ -77,7 +77,7 @@ namespace robot.dad.game.Entities
             }
         }
 
-        public void SetInPickMoveMode(Action<CombatMove> picked)
+        public void SetInPickMoveMode(Action<ICombatMove> picked)
         {
             SetCardMode(CardMode.PickingMove);;    
             foreach (var move in Moves)

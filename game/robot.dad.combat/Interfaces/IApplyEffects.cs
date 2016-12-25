@@ -9,7 +9,7 @@ namespace robot.dad.combat.Interfaces
         int Max { get; set; }
         int LastRound { get; set; }
         EffectType EffectType { get; set; }
-        void ApplyEffects(Combattant target);
-        void EffectsEnded(Combattant target);
+        void ApplyEffects(ICombattant target);
+        void EffectsEnded(ICombattant target);
     }
 }

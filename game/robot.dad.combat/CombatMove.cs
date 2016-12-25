@@ -4,7 +4,7 @@ using robot.dad.combat.MoveResolvers;
 
 namespace robot.dad.combat
 {
-    public class CombatMove
+    public class CombatMove : ICombatMove
     {
         public CombatMove(string name, CombatMoveType moveType, int modifier, int minDamage, int maxDamage, string verbified, IResolveMove moveResolver)
         {
@@ -17,7 +17,7 @@ namespace robot.dad.combat
             MoveResolver = moveResolver;
         }
 
-        public bool Apply(Combattant attacker, Combattant target)
+        public bool Apply(ICombattant attacker, ICombattant target)
         {
             return MoveResolver.ResolveMove(this, attacker, target);
         }

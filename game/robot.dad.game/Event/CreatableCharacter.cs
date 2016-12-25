@@ -29,6 +29,8 @@ namespace robot.dad.game.Event
         public int CurrentAttack => Attack;
         public int CurrentDefense => Defense;
         public int CurrentArmor => Armor;
+        public int Initiative { get; set; }
+        public int CurrentInitiative => Initiative;
         public Dictionary<IITem, int> Inventory { get; set; } = new Dictionary<IITem, int>();
         public IEnumerable<ICharacterComponent> PlayerComponents => new List<ICharacterComponent>();
         public IEnumerable<ICharacterComponent> ActiveComponents => new List<ICharacterComponent>();

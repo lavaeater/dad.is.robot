@@ -5,9 +5,9 @@ using robot.dad.combat.Interfaces;
 
 namespace robot.dad.combat
 {
-    public class Combattant
+    public class Combattant : ICombattant
     {
-        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, int initiative, string team, List<CombatMove> combatMoves, IPickMoves movePicker)
+        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, int initiative, string team, List<ICombatMove> combatMoves, IPickMoves movePicker)
         {
             Name = name;
             Health = health;
@@ -27,17 +27,17 @@ namespace robot.dad.combat
             return CurrentMove.Apply(this, CurrentTarget);
         }
 
-        public void AddCombatMove(CombatMove move)
+        public void AddCombatMove(ICombatMove move)
         {
             CombatMoves.Add(move);
         }
 
         public string Team { get; set; }
-        public List<CombatMove> CombatMoves { get; set; }
+        public List<ICombatMove> CombatMoves { get; set; }
         public IPickMoves MovePicker { get; set; }
         public List<IApplyEffects> CombatEffects { get; set; } = new List<IApplyEffects>();
         public int CurrentRound { get; set; }
-        public Action<Combattant, int> TookDamage { get; set; }
+        public Action<ICombattant, int> TookDamage { get; set; }
         public int ApplyDamage(int damage)
         {
             int actualDamage = damage - Armor;
@@ -64,14 +64,14 @@ namespace robot.dad.combat
             Status = CombatStatus.Fled;
         }
 
-        public CombatMove CurrentMove { get; set; }
+        public ICombatMove CurrentMove { get; set; }
         //Choose a target as well!
-        public void PickMove(IEnumerable<Combattant> possibleTargets, Action picked)
+        public void PickMove(IEnumerable<ICombattant> possibleTargets, Action picked)
         {
             MovePicker?.PickMove(this, possibleTargets);
         }
 
-        public Combattant CurrentTarget { get; set; }
+        public ICombattant CurrentTarget { get; set; }
         public bool Dead => CurrentHealth <= 0;
 
         public void ClearMove()
@@ -90,7 +90,7 @@ namespace robot.dad.combat
 
         public bool Npc { get; set; }
         public string Name { get; set; }
-        public Action<Combattant> IJustDied { get; set; }
+        public Action<ICombattant> IJustDied { get; set; }
 
         public override string ToString()
         {

@@ -54,6 +54,7 @@ namespace robot.dad.game.GameSession
         public bool Active { get; set; }
         public int MaxDamage { get; set; }
         public int MinDamage { get; set; }
+        public int Initiative { get; set; }
     }
 
     public class BasicItem : Thing, IITem

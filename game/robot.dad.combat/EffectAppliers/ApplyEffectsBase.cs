@@ -20,9 +20,9 @@ namespace robot.dad.combat.EffectAppliers
         public int LastRound { get; set; }
         public EffectType EffectType { get; set; }
         public int RecentRound { get; set; }
-        public abstract void ApplyEffects(Combattant target);
+        public abstract void ApplyEffects(ICombattant target);
 
-        public virtual void EffectsEnded(Combattant target)
+        public virtual void EffectsEnded(ICombattant target)
         {
             target.CombatEffects.Remove(this);
         }

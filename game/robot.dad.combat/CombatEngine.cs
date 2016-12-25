@@ -17,13 +17,13 @@ namespace robot.dad.combat
         public IEnumerable<Combattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
         public static PassiveStateMachine<States, Events> StateMachine { get; set; }
         public static int Round { get; set; }
-        public Action<Combattant, Combattant> MoveSucceeded { get; set; }
+        public Action<ICombattant, ICombattant> MoveSucceeded { get; set; }
         public Action<Combattant> MoveFailed { get; set; }
-        public Action<Combattant, CombatMove> SomeoneIsDoingSomething { get; set; }
-        public Action<Combattant> SomeoneDied { get; set; }
+        public Action<ICombattant, ICombatMove> SomeoneIsDoingSomething { get; set; }
+        public Action<ICombattant> SomeoneDied { get; set; }
         public bool CurrentMoveWasSuccessful { get; set; }
         public List<Combattant> AliveByInitiative => Participants.Where(c => !c.Dead).OrderByDescending(c => c.Initiative).ToList();
-        public Action<Combattant, int> SomeoneTookDamage { get; set; }
+        public Action<ICombattant, int> SomeoneTookDamage { get; set; }
 
         public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists, Action protagonistsWin, Action antagonistsWin) : this()
         {

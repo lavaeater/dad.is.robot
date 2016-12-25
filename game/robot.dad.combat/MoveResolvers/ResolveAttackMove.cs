@@ -6,7 +6,7 @@ namespace robot.dad.combat.MoveResolvers
 {
     public class ResolveAttackMove : ResolveMoveBase
     {
-        public override bool ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        public override bool ResolveMove(ICombatMove move, ICombattant attacker, ICombattant target)
         {
             //Console.WriteLine();
             int targetValue = attacker.AttackSkill + move.Modifier - target.DefenseSkill;

@@ -10,5 +10,6 @@ namespace robot.dad.game.GameSession
         bool Active { get; set; }
         int MaxDamage { get; set; }
         int MinDamage { get; set; }
+        int Initiative { get; set; }
     }
 }

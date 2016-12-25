@@ -17,7 +17,7 @@ namespace robot.dad.game.Entities
 
         public CombattantCard CurrentCard { get; set; }
 
-        public override void PickMove(Combattant attacker, IEnumerable<Combattant> possibleTargets)
+        public override void PickMove(ICombattant attacker, IEnumerable<ICombattant> possibleTargets)
         {
             //1. Find card
             CurrentCard = Scene.GetEntities<CombattantCard>().Single(cc => cc.Combattant == attacker);
@@ -29,7 +29,7 @@ namespace robot.dad.game.Entities
 
         }
 
-        public void AMoveWasPicked(CombatMove pickedMove)
+        public void AMoveWasPicked(ICombatMove pickedMove)
         {
             CurrentCard.Combattant.CurrentMove = pickedMove;
             CurrentCard.StopPicking();
