@@ -1,4 +1,4 @@
-using robot.dad.combat.Interfaces;
+using robot.dad.common;
 
 namespace robot.dad.combat.MoveResolvers
 {

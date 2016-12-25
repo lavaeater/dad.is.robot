@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Otter;
 using robot.dad.combat;
+using robot.dad.common;
 using robot.dad.game.Sprites;
 
 namespace robot.dad.game.Entities

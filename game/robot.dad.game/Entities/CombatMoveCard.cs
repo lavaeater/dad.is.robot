@@ -1,6 +1,6 @@
 using System;
 using Otter;
-using robot.dad.combat;
+using robot.dad.common;
 
 namespace robot.dad.game.Entities
 {

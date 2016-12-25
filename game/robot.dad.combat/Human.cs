@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using robot.dad.combat.MoveResolvers;
+using robot.dad.common;
 
 namespace robot.dad.combat
 {

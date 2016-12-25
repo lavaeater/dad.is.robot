@@ -1,4 +1,5 @@
 using System;
+using robot.dad.common;
 
 namespace robot.dad.combat.EffectAppliers
 {

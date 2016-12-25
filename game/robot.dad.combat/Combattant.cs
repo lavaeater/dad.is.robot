@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using robot.dad.combat.Interfaces;
+using robot.dad.common;
 
 namespace robot.dad.combat
 {

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using robot.dad.combat.EffectAppliers;
+using robot.dad.common;
 
 namespace robot.dad.combat.MoveResolvers
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Appccelerate.StateMachine;
+using robot.dad.common;
 
 namespace robot.dad.combat
 {

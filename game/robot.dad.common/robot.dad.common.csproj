@@ -45,9 +45,17 @@
     <Compile Include="BasicWeapon.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CharacterComponent.cs" />
+    <Compile Include="CombatMoveType.cs" />
+    <Compile Include="CombatStatus.cs" />
+    <Compile Include="EffectType.cs" />
+    <Compile Include="IApplyEffects.cs" />
     <Compile Include="ICharacter.cs" />
     <Compile Include="ICharacterComponent.cs" />
+    <Compile Include="ICombatMove.cs" />
+    <Compile Include="ICombattant.cs" />
     <Compile Include="IITem.cs" />
+    <Compile Include="IPickMove.cs" />
+    <Compile Include="IResolveMove.cs" />
     <Compile Include="IShip.cs" />
     <Compile Include="IShipComponent.cs" />
     <Compile Include="Ship.cs" />
