@@ -18,7 +18,7 @@ namespace robot.dad.combat.EffectAppliers
             }
         }
 
-        public IPickMoves OriginalPicker { get; set; }
+        public IPickMove OriginalPicker { get; set; }
 
         public override void EffectsEnded(ICombattant target)
         {

@@ -73,6 +73,7 @@
     <Compile Include="ICombattant.cs" />
     <Compile Include="Interfaces\IApplyEffects.cs" />
     <Compile Include="Interfaces\IResolveMove.cs" />
+    <Compile Include="IPickMove.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MovePickers.cs" />
     <Compile Include="EffectAppliers\NormalDamageEffectApplier.cs" />

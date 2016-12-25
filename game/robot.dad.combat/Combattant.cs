@@ -7,7 +7,7 @@ namespace robot.dad.combat
 {
     public class Combattant : ICombattant
     {
-        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, int initiative, string team, List<ICombatMove> combatMoves, IPickMoves movePicker)
+        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, int initiative, string team, List<ICombatMove> combatMoves, IPickMove movePicker)
         {
             Name = name;
             Health = health;
@@ -34,7 +34,7 @@ namespace robot.dad.combat
 
         public string Team { get; set; }
         public List<ICombatMove> CombatMoves { get; set; }
-        public IPickMoves MovePicker { get; set; }
+        public IPickMove MovePicker { get; set; }
         public List<IApplyEffects> CombatEffects { get; set; } = new List<IApplyEffects>();
         public int CurrentRound { get; set; }
         public Action<ICombattant, int> TookDamage { get; set; }

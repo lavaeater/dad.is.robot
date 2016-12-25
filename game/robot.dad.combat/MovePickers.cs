@@ -6,12 +6,12 @@ namespace robot.dad.combat
 {
     public static class MovePickers
     {
-        public static IPickMoves GetRandomPicker()
+        public static IPickMove GetRandomPicker()
         {
             return new RandomPicker(CombatEngine.Picked);
         }
 
-        public static IPickMoves GetRandomReversePicker()
+        public static IPickMove GetRandomReversePicker()
         {
             return new RandomReversePicker(CombatEngine.Picked);
         }

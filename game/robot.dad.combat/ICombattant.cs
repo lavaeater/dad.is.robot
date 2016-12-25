@@ -20,7 +20,7 @@ namespace robot.dad.combat
         int Health { get; set; }
         Action<ICombattant> IJustDied { get; set; }
         int Initiative { get; set; }
-        IPickMoves MovePicker { get; set; }
+        IPickMove MovePicker { get; set; }
         string Name { get; set; }
         bool Npc { get; set; }
         CombatStatus Status { get; set; }

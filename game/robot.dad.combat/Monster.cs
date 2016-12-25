@@ -5,13 +5,13 @@ namespace robot.dad.combat
 {
     public class Monster : Combattant
     {
-        public Monster(string name, int health, int attackSkill, int defenseSkill, int armor, int initiative, string team, List<ICombatMove> combatMoves, IPickMoves movePicker) 
+        public Monster(string name, int health, int attackSkill, int defenseSkill, int armor, int initiative, string team, List<ICombatMove> combatMoves, IPickMove movePicker) 
             : base(name, health, attackSkill, defenseSkill, armor, initiative, team, combatMoves, movePicker)
         {
         }
     }
 
-    public abstract class MovePickerBase : IPickMoves
+    public abstract class MovePickerBase : IPickMove
     {
         public Action DonePicking { get; set; }
 
@@ -21,10 +21,5 @@ namespace robot.dad.combat
         }
 
         public abstract void PickMove(ICombattant attacker, IEnumerable<ICombattant> possibleTargets);
-    }
-
-    public interface IPickMoves
-    {
-        void PickMove(ICombattant attacker, IEnumerable<ICombattant> possibleTargets);
     }
 }
