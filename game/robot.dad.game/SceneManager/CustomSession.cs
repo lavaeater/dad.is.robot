@@ -1,6 +1,7 @@
 ﻿using Otter;
+using robot.dad.common;
 
-namespace robot.dad.game.GameSession
+namespace robot.dad.game.SceneManager
 {
     public class CustomSession : Session
     {

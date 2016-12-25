@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace robot.dad.game.GameSession
+namespace robot.dad.common
 {
     public class Character : ICharacter
     {

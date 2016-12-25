@@ -1,4 +1,4 @@
-namespace robot.dad.game.GameSession
+namespace robot.dad.common
 {
     public class ShipComponent : IShipComponent
     {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Otter;
-using robot.dad.game.GameSession;
+﻿using robot.dad.game.SceneManager;
 
 namespace robot.dad.game
 {

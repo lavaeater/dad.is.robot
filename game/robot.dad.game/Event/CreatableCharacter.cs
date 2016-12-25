@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using rds;
-using robot.dad.game.GameSession;
+using robot.dad.common;
 
 namespace robot.dad.game.Event
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using rds;
-using robot.dad.game.GameSession;
+using robot.dad.common;
 
 namespace robot.dad.game.Event
 {
@@ -32,49 +32,5 @@ namespace robot.dad.game.Event
             return table.Result.OfType<IITem>();
         }
 
-    }
-
-    public sealed class ScavengerLootTable : ThingTable
-    {
-        public ScavengerLootTable(int numberOfScavengers)
-        {
-            Count = numberOfScavengers;
-            AddEntry(new WeaponsTable(1), 300);
-            AddEntry(new ArmorTable(1), 200);
-            AddEntry(new BasicItem("Elektroniska komponenter", "Delar av datorer och annan utrustning från den gamla tiden"), 25);
-            AddEntry(new BasicItem("Mat", "Mat, helt enkelt"), 100);
-            Count = 3*numberOfScavengers;
-        }
-    }
-
-    public sealed class ArmorTable : ThingTable
-    {
-        public ArmorTable(int count)
-        {
-            AddEntry(new BasicArmor(1), 100);
-            AddEntry(new BasicArmor(2), 50);
-            AddEntry(new BasicArmor(3), 25);
-            AddEntry(new BasicArmor(4), 12);
-            AddEntry(new BasicArmor(5), 6);
-            Count = count;
-        }
-    }
-
-    public sealed class WeaponsTable : ThingTable
-    {
-        public WeaponsTable(int count)
-        {
-            AddEntry(new BasicWeapon(1, "Hemmagjord bössa"), 300);
-            AddEntry(new BasicWeapon(2, "Femskjutare"), 150);
-            AddEntry(new BasicWeapon(2, "Avsågat hagelgevär"), 75);
-            AddEntry(new BasicWeapon(3, "Självborrat gevär"), 30);
-            AddEntry(new BasicWeapon(4, "Dunderobrakpistol"), 15);
-            AddEntry(new BasicWeapon(5, "Rostigt automatgevär"), 7);
-            AddEntry(new BasicWeapon(6, "Laser"), 3);
-            AddEntry(new BasicWeapon(7, "Maser"), 2);
-            AddEntry(new BasicWeapon(8, "Plasma"), 1);
-            AddEntry(new BasicWeapon(9, "BFG"), 1);
-            Count = count;
-        }
     }
 }
