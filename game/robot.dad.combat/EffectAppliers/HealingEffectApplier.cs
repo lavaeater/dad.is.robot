@@ -14,7 +14,7 @@ namespace robot.dad.combat.EffectAppliers
         {
             int damageRoll = DiceRoller.RollDice(Min, Max);
             target.CurrentHealth += damageRoll;
-            if (target.CurrentHealth > target.Health) target.CurrentHealth = target.Health;
+            if (target.CurrentHealth > target.CurrentMaxHealth) target.CurrentHealth = target.CurrentMaxHealth;
             ////Console.WriteLine($", lyckas och helar {damageRoll} hälsa!");
             ////Console.WriteLine($"{target.Name} har {target.CurrentHealth} kvar i hälsa.");
         }

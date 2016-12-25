@@ -5,26 +5,30 @@ namespace robot.dad.common
 {
     public interface ICombattant
     {
-        int Armor { get; set; }
-        int AttackSkill { get; set; }
-        List<IApplyEffects> CombatEffects { get; set; }
-        List<ICombatMove> CombatMoves { get; set; }
+        string Name { get; }
+        int CurrentAttack { get; }
+        int CurrentDefense { get;}
+        int CurrentArmor { get; }
         int CurrentHealth { get; set; }
-        ICombatMove CurrentMove { get; set; }
-        int CurrentRound { get; set; }
-        ICombattant CurrentTarget { get; set; }
+        int CurrentMaxHealth { get; }
+        int CurrentInitiative { get;}
+
+        int CurrentRound { get; }
         bool Dead { get; }
-        int DefenseSkill { get; set; }
         bool HasPicked { get; }
-        int Health { get; set; }
-        Action<ICombattant> IJustDied { get; set; }
-        int Initiative { get; set; }
+        string Team { get;  }
+
+        CombatStatus Status { get;  }
+
+        List<IApplyEffects> CurrentCombatEffects { get; }
+        List<ICombatMove> CombatMoves { get; }
+
+        ICombatMove CurrentMove { get; set; }
+        ICombattant CurrentTarget { get; set; }
         IPickMove MovePicker { get; set; }
-        string Name { get; set; }
-        bool Npc { get; set; }
-        CombatStatus Status { get; set; }
-        string Team { get; set; }
+        Action<ICombattant> JustDied { get; set; }
         Action<ICombattant, int> TookDamage { get; set; }
+        Action<ICombattant> RanAway { get; set; }
 
         void AddCombatMove(ICombatMove move);
         int ApplyDamage(int damage);

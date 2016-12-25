@@ -10,16 +10,12 @@ namespace robot.dad.game.Event
     public class EventEngine
     {
         private readonly Noise _eventNoise;
-        private readonly float _scale;
         private readonly Random _rand;
-        private int _maxVal;
 
         public EventEngine()
         {
             _eventNoise = new Noise(42);
-            _scale = 0.01f;
             _rand = new Random(32);
-            _maxVal = 0;
         }
 
         public TileEvent GetEventForTile(CubicHexCoord coord, TerrainInfo terrainType)

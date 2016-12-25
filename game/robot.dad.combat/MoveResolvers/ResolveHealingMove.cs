@@ -10,7 +10,7 @@ namespace robot.dad.combat.MoveResolvers
         {
             //Console.WriteLine();
             bool result = false;
-            int targetValue = attacker.AttackSkill + move.Modifier;
+            int targetValue = attacker.CurrentAttack + move.Modifier;
             int diceRoll = DiceRoller.RollHundredSided();
             //Console.Write($"{attacker.Name} måste slå under {targetValue} för att {move.Verbified} {target.Name} - ");
             if (diceRoll <= targetValue)

@@ -6,8 +6,8 @@ namespace robot.dad.combat
 {
     public class Monster : Combattant
     {
-        public Monster(string name, int health, int attackSkill, int defenseSkill, int armor, int initiative, string team, List<ICombatMove> combatMoves, IPickMove movePicker) 
-            : base(name, health, attackSkill, defenseSkill, armor, initiative, team, combatMoves, movePicker)
+        public Monster(string name, int currentMaxHealth, int currentAttack, int currentDefense, int currentArmor, int currentInitiative, string team, List<ICombatMove> combatMoves, IPickMove movePicker) 
+            : base(name, currentMaxHealth, currentAttack, currentDefense, currentArmor, currentInitiative, team, combatMoves, movePicker)
         {
         }
     }

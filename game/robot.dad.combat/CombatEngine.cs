@@ -23,7 +23,7 @@ namespace robot.dad.combat
         public Action<ICombattant, ICombatMove> SomeoneIsDoingSomething { get; set; }
         public Action<ICombattant> SomeoneDied { get; set; }
         public bool CurrentMoveWasSuccessful { get; set; }
-        public List<Combattant> AliveByInitiative => Participants.Where(c => !c.Dead).OrderByDescending(c => c.Initiative).ToList();
+        public List<Combattant> AliveByInitiative => Participants.Where(c => !c.Dead).OrderByDescending(c => c.CurrentInitiative).ToList();
         public Action<ICombattant, int> SomeoneTookDamage { get; set; }
 
         public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists, Action protagonistsWin, Action antagonistsWin) : this()
@@ -96,13 +96,13 @@ namespace robot.dad.combat
         private void ApplyCombatEffects()
         {
             //What kind of indication to the game engine can be done here? Effects should be rendered by the card automatically, but damage being inflicted?
-            foreach (var target in AliveByInitiative.Where(t => t.CombatEffects.Any()))
+            foreach (var target in AliveByInitiative.Where(t => t.CurrentCombatEffects.Any()))
             {
-                foreach (var effect in target.CombatEffects)
+                foreach (var effect in target.CurrentCombatEffects)
                 {
                     effect.ApplyEffects(target);
                 }
-                var doneEffects = target.CombatEffects.Where(
+                var doneEffects = target.CurrentCombatEffects.Where(
                     e =>
                         (e.LastRound < Round))
                     .ToList();
@@ -137,7 +137,7 @@ namespace robot.dad.combat
             {
                 foreach (var combattant in Participants)
                 {
-                    combattant.IJustDied = SomeoneDied;
+                    combattant.JustDied = SomeoneDied;
                 }
             }
 

@@ -9,7 +9,7 @@ namespace robot.dad.combat.MoveResolvers
         public override bool ResolveMove(ICombatMove move, ICombattant attacker, ICombattant target)
         {
             //Console.WriteLine();
-            int targetValue = attacker.AttackSkill + move.Modifier - target.DefenseSkill;
+            int targetValue = attacker.CurrentAttack + move.Modifier - target.CurrentDefense;
             if (target.CurrentMove?.MoveType == CombatMoveType.Defend ||
                 target.CurrentMove?.MoveType == CombatMoveType.Runaway)
             {

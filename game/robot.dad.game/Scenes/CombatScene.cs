@@ -97,7 +97,6 @@ namespace robot.dad.game.Scenes
 
         public void LoseAction()
         {
-            string leif = "Leif";
         }
 
         public CombattantCard AddCombattantCard(Combattant combattant, float x, float y, float width, float height)

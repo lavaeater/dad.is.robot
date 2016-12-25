@@ -24,7 +24,7 @@ namespace robot.dad.combat.EffectAppliers
 
         public virtual void EffectsEnded(ICombattant target)
         {
-            target.CombatEffects.Remove(this);
+            target.CurrentCombatEffects.Remove(this);
         }
     }
 }

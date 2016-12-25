@@ -66,13 +66,13 @@ namespace robot.dad.game.Entities
                 }
             }
             Draw.Text(Combattant.Name, 30, X + 5, Y + 5);
-            Draw.Text($"{Combattant.CurrentHealth} / {Combattant.Health}", 30, X + 5, Y + 35);
+            Draw.Text($"{Combattant.CurrentHealth} / {Combattant.CurrentMaxHealth}", 30, X + 5, Y + 35);
             RenderEffects();
         }
 
         private void RenderEffects()
         {
-            foreach (var effect in Combattant.CombatEffects)
+            foreach (var effect in Combattant.CurrentCombatEffects)
             {
                 Draw.Text($"{effect.EffectName}", 30, X + 5, Y + 70);
             }
