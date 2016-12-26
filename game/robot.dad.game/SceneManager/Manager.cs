@@ -51,8 +51,11 @@ namespace robot.dad.game.SceneManager
             Global.PlayerOne.Controller.Button(Controls.Down).AddKey(Key.Down);
             Global.PlayerOne.Controller.Button(Controls.Left).AddKey(Key.Left);
             Global.PlayerOne.Controller.Button(Controls.Right).AddKey(Key.Right);
+            var character = new Character("Analusia", "", 10, 100, 70, 60, 10, new Dictionary<IITem, int>());
 
-            Global.PlayerOne.AddCharacter(new Character("Analusia", "", 10, 100, 70, 60, 10, new Dictionary<IITem, int>()));
+            //INventory needs to be a simple list, and counts etc will be handled elsewhere...
+            character.Inventory.Add(new CharacterWeapon("Bössan", "En klassisk plundrarbössa", 5, true, 2, 40, 20, "skjuter"), 1);
+            Global.PlayerOne.AddCharacter(character);
         }
 
         public void StartGame()
@@ -73,7 +76,11 @@ namespace robot.dad.game.SceneManager
             if (table.Result.Any()) //Always true with current setup
                 GameInstance.SwitchScene(new CombatScene(GetLoot,
                     new ICombattant[] {new CharacterCombattant(Global.PlayerOne.PlayerCharacter),},
-                    table.Result.OfType<ICharacter>().Select(c => new CharacterCombattant(c))));
+                    table.Result.OfType<ICharacter>().Select(c =>
+                    {
+                        c.Inventory.Add(new CharacterWeapon("Skjutare", "En pangare", 5, true, 2, 35, 10, "skjuter"), 1);
+                        return new CharacterCombattant(c);
+                    } )));
             else
                 GotoMainScene(); //This should instead go to ruin or whatever comes after the combat...
         }

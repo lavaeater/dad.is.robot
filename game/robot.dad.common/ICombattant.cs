@@ -34,6 +34,8 @@ namespace robot.dad.common
         int ApplyDamage(int damage);
         void ClearMove();
         void Die();
+        //TODO: Remove picked action, the method returns immediately
+        //Rethink picking at a later time...
         void PickMove(IEnumerable<ICombattant> possibleTargets, Action picked);
         bool ResolveMove();
         void Runaway();

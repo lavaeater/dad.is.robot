@@ -79,8 +79,6 @@ namespace robot.dad.common
         {
             HasPicked = true;
             MovePicker?.PickMove(this, possibleTargets);
-            //
-            //picked?.Invoke();
         }
 
         public bool ResolveMove()
