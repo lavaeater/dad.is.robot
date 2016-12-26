@@ -25,7 +25,10 @@ namespace robot.dad.common
 
         public List<ICombatMove> CombatMoves
         {
-            get { return Character.ActiveWeapons.Select(aw => aw.CombatMove).ToList(); }
+            get
+            {
+                return Character.ActiveWeapons.Select(aw => aw.CombatMove).ToList();
+            }
         }
 
         public ICombatMove CurrentMove { get; set; }
