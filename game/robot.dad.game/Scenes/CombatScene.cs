@@ -41,11 +41,18 @@ namespace robot.dad.game.Scenes
                 protagonist.MovePicker = new GraphicalPicker(CombatEngine.Picked, this);
             }
 
-            if(antagonists == null)
+            if (antagonists == null)
                 Antagonists.AddRange(CombatDemo.GetAntagonists(2));
             else
-                Antagonists.AddRange(antagonists);
-
+            {
+                var randomPicker = MovePickers.GetRandomPicker();
+                var combattants = antagonists as IList<ICombattant> ?? antagonists.ToList();
+                foreach (var antagonist in combattants)
+                {
+                    antagonist.MovePicker = randomPicker;
+                }
+                Antagonists.AddRange(combattants);
+            }
             _combatEngine = new CombatEngine(Protagonists, Antagonists, winAction, LoseAction);
 
             _combatEngine.MoveFailed = MoveFailed;

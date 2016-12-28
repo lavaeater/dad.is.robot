@@ -75,12 +75,11 @@ namespace robot.dad.game.SceneManager
             var table = new RuinEventTable();
             if (table.Result.Any()) //Always true with current setup
                 GameInstance.SwitchScene(new CombatScene(GetLoot,
-                    new ICombattant[] {new CharacterCombattant(Global.PlayerOne.PlayerCharacter),},
-                    table.Result.OfType<ICharacter>().Select(c =>
+                    new ICombattant[] {new CharacterCombattant(Global.PlayerOne.PlayerCharacter)
                     {
-                        c.Inventory.Add(new CharacterWeapon("Skjutare", "En pangare", 5, true, 2, 35, 10, "skjuter"), 1);
-                        return new CharacterCombattant(c);
-                    } )));
+                        Team = "Player"
+                    },},
+                    table.Result.OfType<ICharacter>().Select(c => new CharacterCombattant(c) { Team = "NPC"})));
             else
                 GotoMainScene(); //This should instead go to ruin or whatever comes after the combat...
         }

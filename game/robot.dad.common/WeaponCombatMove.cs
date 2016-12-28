@@ -11,7 +11,7 @@ namespace robot.dad.common
             Weapon = weapon;
         }
 
-        public IApplyEffects EffectApplier { get; set; }
+        public IApplyEffects EffectApplier => new WeaponEffectApplier("Mörderiserar", MinDamage, MaxDamage, 0);
         public int MaxDamage => Weapon.MaxDamage;
         public int MinDamage => Weapon.MaxDamage;
         public int Modifier { get; set; } //Hmm, modifier - is calculated on combattant level. Not needed here
@@ -23,6 +23,37 @@ namespace robot.dad.common
         public bool Resolve(ICombattant attacker, ICombattant target)
         {
             return MoveResolver.ResolveMove(this, attacker, target);
+        }
+    }
+
+    public class WeaponEffectApplier : IApplyEffects
+    {
+        public WeaponEffectApplier(string effectName, int min, int max, int lastRound)
+        {
+            EffectName = effectName;
+            Min = min;
+            Max = max;
+        }
+        public string EffectName { get; set; }
+        public int Min { get; set; }
+        public int Max { get; set; }
+        public int LastRound { get; set; }
+        public EffectType EffectType => EffectType.Immediate;
+
+        public void ApplyEffects(ICombattant target)
+        {
+            target.ApplyDamage(DiceRoller.RollDice(Min, Max));
+        }
+
+        public void EffectsEnded(ICombattant target)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void UpdateMinAndMax(int min, int max)
+        {
+            Min = min;
+            Max = max;
         }
     }
 }

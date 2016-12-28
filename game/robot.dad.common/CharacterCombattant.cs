@@ -4,6 +4,16 @@ using System.Linq;
 
 namespace robot.dad.common
 {
+    public class CreatableCharacterCombattant : CharacterCombattant
+    {
+        public CreatableCharacterCombattant(ICharacter character, List<ICombatMove> combatMoves) : base(character)
+        {
+            CombatMoves = combatMoves;
+        }
+
+        public override List<ICombatMove> CombatMoves { get; }
+    }
+
     public class CharacterCombattant : ICombattant
     {
         public ICharacter Character { get; set; }
@@ -23,7 +33,7 @@ namespace robot.dad.common
 
         public List<IApplyEffects> CurrentCombatEffects { get; } = new List<IApplyEffects>();
 
-        public List<ICombatMove> CombatMoves
+        public virtual List<ICombatMove> CombatMoves
         {
             get
             {
