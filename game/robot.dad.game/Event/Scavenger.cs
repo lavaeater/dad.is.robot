@@ -10,6 +10,7 @@ namespace robot.dad.game.Event
 
         public Scavenger(int level)
         {
+            Name = CombatDemo.GetScavengerName();
             Level = level;
             Attack = 40 + level*10;
             Defense = 10 + level*10;
@@ -18,7 +19,7 @@ namespace robot.dad.game.Event
             Armor = 5 + level*5;
             var weapons = new List<IWeapon>
             {
-                new CharacterWeapon("Skjutare", "En pangare", 5, true, 2, 35, 10, "skjuter")
+                new CharacterWeapon(CombatDemo.GetScavengerName(), "En pangare", 5, true, 2, 35, 10, "skjuter")
             };
             ActiveWeapons = weapons;
         }

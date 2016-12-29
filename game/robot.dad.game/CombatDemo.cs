@@ -74,10 +74,16 @@ namespace robot.dad.game
                 DiceRoller.RollDice(5, 15), DiceRoller.RollDice(20, 40), "skjuter", Resolvers.AttackResolver);
         }
 
-        private static string GetScavengerMoveName()
+        public static string GetScavengerMoveName()
         {
             int index = DiceRoller.RollDice(0, ScavengerMoveNames.Count - 1);
             return ScavengerMoveNames[index];
+        }
+
+        public static string GetScavengerName()
+        {
+            int index = DiceRoller.RollDice(0, ScavengerNames.Count - 1);
+            return ScavengerNames[index];
         }
 
         public static List<string> ScavengerMoveNames => new List<string>
