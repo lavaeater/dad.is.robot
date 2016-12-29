@@ -51,10 +51,10 @@ namespace robot.dad.game.SceneManager
             Global.PlayerOne.Controller.Button(Controls.Down).AddKey(Key.Down);
             Global.PlayerOne.Controller.Button(Controls.Left).AddKey(Key.Left);
             Global.PlayerOne.Controller.Button(Controls.Right).AddKey(Key.Right);
-            var character = new Character("Analusia", "", 10, 100, 70, 60, 10, new Dictionary<IITem, int>());
+            var character = new Character("Analusia", "", 10, 100, 100, 60, 10, new Dictionary<IITem, int>());
 
             //INventory needs to be a simple list, and counts etc will be handled elsewhere...
-            character.Inventory.Add(new CharacterWeapon("Bössan", "En klassisk plundrarbössa", 5, true, 2, 40, 20, "skjuter"), 1);
+            character.Inventory.Add(new CharacterWeapon("Bössan", "En klassisk plundrarbössa", 5, true, 2, 80, 30, "skjuter"), 1);
             Global.PlayerOne.AddCharacter(character);
         }
 
@@ -68,7 +68,7 @@ namespace robot.dad.game.SceneManager
         {
             GameInstance.SwitchScene(MainScene);
         }
-        
+
         public void StartCombatSceneFromEvent(TileEvent tileEvent)
         {
             //Use tileevent-thingy
@@ -79,14 +79,33 @@ namespace robot.dad.game.SceneManager
                     {
                         Team = "Player"
                     },},
-                    table.Result.OfType<ICharacter>().Select(c => new CharacterCombattant(c) { Team = "NPC"})));
+                    table.Result.OfType<ICharacter>().Select(c => new CharacterCombattant(c) { Team = "NPC" })));
             else
                 GotoMainScene(); //This should instead go to ruin or whatever comes after the combat...
         }
 
-        private void GetLoot()
+        public void GetLoot()
         {
-            //GameInstance.SwitchScene(new InventoryScene());
+            var playerInventory =
+                Global.PlayerOne.PlayerCharacter.Inventory.Select(
+                    kvp => new InventoryItem(kvp.Key.ItemKey, kvp.Value, kvp.Key))
+                    .ToDictionary(item => item.ItemKey);
+
+            var loot = Lootables.GetLootFromScavengers(3)
+                .Select(tem => new InventoryItem(tem.ItemKey, 1, tem));
+            Dictionary<string, InventoryItem> loots = new Dictionary<string, InventoryItem>();
+            foreach (var inventoryItem in loot)
+            {
+                if (!loots.ContainsKey(inventoryItem.ItemKey))
+                {
+                    loots.Add(inventoryItem.ItemKey, inventoryItem);
+                }
+                else
+                {
+                    loots[inventoryItem.ItemKey].Count++;
+                }
+            }
+            GameInstance.SwitchScene(new InventoryScene(GotoMainScene, playerInventory, loots));
         }
 
         private void CreateMainScene()

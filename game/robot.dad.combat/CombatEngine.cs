@@ -184,7 +184,10 @@ namespace robot.dad.combat
         private bool CheckIfCombatIsOver()
         {
             //Fight is over if all participants on either team is dead!
-            return Protagonists.TrueForAll(c => c.Dead || c.Status == CombatStatus.Fled) || Antagonists.TrueForAll(c => c.Dead || c.Status == CombatStatus.Fled);
+            var protoDead = Protagonists.TrueForAll(c => c.Dead || c.Status == CombatStatus.Fled);
+            var antoDead = Antagonists.TrueForAll(c => c.Dead || c.Status == CombatStatus.Fled);
+
+            return protoDead || antoDead;
         }
     }
 }

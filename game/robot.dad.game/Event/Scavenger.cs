@@ -4,6 +4,9 @@ using robot.dad.common;
 
 namespace robot.dad.game.Event
 {
+    /// <summary>
+    /// SHould be two different things, creatable...character...not necessary?
+    /// </summary>
     public class Scavenger : CreatableCharacter
     {
         public int Level { get; set; }
@@ -19,7 +22,7 @@ namespace robot.dad.game.Event
             Armor = 5 + level*5;
             var weapons = new List<IWeapon>
             {
-                new CharacterWeapon(CombatDemo.GetScavengerName(), "En pangare", 5, true, 2, 35, 10, "skjuter")
+                new CharacterWeapon(CombatDemo.GetScavengerMoveName(), "En pangare", 5, true, 2, 35, 10, "skjuter")
             };
             ActiveWeapons = weapons;
         }
