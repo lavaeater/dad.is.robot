@@ -2,7 +2,7 @@ using rds;
 
 namespace robot.dad.common
 {
-    public class BasicItem : Thing, IITem
+    public class BasicItem : Thing, IItem
     {
         public string ItemKey { get; set; }
         public string Name { get; set; }

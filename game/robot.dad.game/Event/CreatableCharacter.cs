@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using rds;
 using robot.dad.common;
@@ -31,7 +32,7 @@ namespace robot.dad.game.Event
         public int CurrentArmor => Armor;
         public int Initiative { get; set; }
         public int CurrentInitiative => Initiative;
-        public Dictionary<IITem, int> Inventory { get; set; } = new Dictionary<IITem, int>();
+        public IList<IItem> Inventory { get; set; } = new List<IItem>();
         public IEnumerable<ICharacterComponent> PlayerComponents => new List<ICharacterComponent>();
         public IEnumerable<ICharacterComponent> ActiveComponents => new List<ICharacterComponent>();
         public IEnumerable<IWeapon> Weapons { get; set; }

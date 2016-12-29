@@ -6,7 +6,7 @@ namespace robot.dad.common
     {
         int CurrentMaxItems { get; }
         int CurrentMaxSpeed { get; }
-        List<IITem> ShipInventory { get; set; }
+        List<IItem> ShipInventory { get; set; }
         IEnumerable<IShipComponent> ShipComponents { get; }
         IEnumerable<IShipComponent> ActiveComponents { get; }
         string Name { get; set; }

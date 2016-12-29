@@ -28,10 +28,10 @@ namespace robot.dad.game.Scenes
 
         public void GetLoot()
         {
-            var playerInventory =
-                Global.PlayerOne.PlayerCharacter.Inventory.Select(
-                    kvp => new InventoryItem(kvp.Key.ItemKey, kvp.Value, kvp.Key))
-                    .ToDictionary(item => item.ItemKey);
+            //var playerInventory =
+            //    Global.PlayerOne.PlayerCharacter.Inventory.Select(
+            //        kvp => new InventoryItem(kvp.Key.ItemKey, kvp.Value, kvp.Key))
+            //        .ToDictionary(item => item.ItemKey);
 
             var loot = Lootables.GetLootFromScavengers(3)
                 .Select(tem => new InventoryItem(tem.ItemKey, 1, tem));
@@ -47,7 +47,7 @@ namespace robot.dad.game.Scenes
                     loots[inventoryItem.ItemKey].Count++;
                 }
             } 
-            Game.SwitchScene(new InventoryScene(ReturnToMain, playerInventory, loots));
+            Game.SwitchScene(new InventoryScene(ReturnToMain, new Dictionary<string, InventoryItem>(), loots));
         }
 
         public void ReturnToMain()

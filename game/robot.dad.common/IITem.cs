@@ -1,9 +1,9 @@
 namespace robot.dad.common
 {
-    public interface IITem
+    public interface IItem
     {
-        string ItemKey { get; set; }
-        string Name { get; set; }
-        string Description { get; set; }
+        string ItemKey { get; }
+        string Name { get; }
+        string Description { get; }
     }
 }

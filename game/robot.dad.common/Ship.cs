@@ -22,6 +22,6 @@ namespace robot.dad.common
             get { return MaxSpeed + ActiveComponents.Sum(sc => sc.MaxSpeed); }
         }
 
-        public List<IITem> ShipInventory { get; set; }
+        public List<IItem> ShipInventory { get; set; }
     }
 }

@@ -26,10 +26,10 @@ namespace robot.dad.game.Event
             return table.Result;
         }
 
-        public static IEnumerable<IITem> GetLootFromScavengers(int numberOfScavengers)
+        public static IEnumerable<IItem> GetLootFromScavengers(int numberOfScavengers)
         {
             var table = new ScavengerLootTable(numberOfScavengers);
-            return table.Result.OfType<IITem>();
+            return table.Result.OfType<IItem>();
         }
 
     }

@@ -1,6 +1,6 @@
 namespace robot.dad.common
 {
-    public interface ICharacterComponent : IITem
+    public interface ICharacterComponent : IItem
     {
         int Strength { get; set; }
         int MaxHealth { get; set; }

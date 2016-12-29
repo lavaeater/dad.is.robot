@@ -18,7 +18,7 @@ namespace robot.dad.common
         int CurrentArmor { get; }
         int Initiative { get; }
         int CurrentInitiative { get; }
-        Dictionary<IITem, int> Inventory { get; set; }
+        IList<IItem> Inventory { get; set; }
         IEnumerable<ICharacterComponent> PlayerComponents { get; }
         IEnumerable<ICharacterComponent> ActiveComponents { get; }
         IEnumerable<IWeapon> Weapons { get; }

@@ -1,6 +1,6 @@
 namespace robot.dad.common
 {
-    public interface IShipComponent : IITem
+    public interface IShipComponent : IItem
     {
         int MaxItems { get; set; }
         int MaxSpeed { get; set; }

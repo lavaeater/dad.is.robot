@@ -51,10 +51,10 @@ namespace robot.dad.game.SceneManager
             Global.PlayerOne.Controller.Button(Controls.Down).AddKey(Key.Down);
             Global.PlayerOne.Controller.Button(Controls.Left).AddKey(Key.Left);
             Global.PlayerOne.Controller.Button(Controls.Right).AddKey(Key.Right);
-            var character = new Character("Analusia", "", 10, 100, 100, 60, 10, new Dictionary<IITem, int>());
+            var character = new Character("Analusia", "", 10, 100, 100, 60, 10, new List<IItem>());
 
             //INventory needs to be a simple list, and counts etc will be handled elsewhere...
-            character.Inventory.Add(new CharacterWeapon("Bössan", "En klassisk plundrarbössa", 5, true, 2, 80, 30, "skjuter"), 1);
+            character.Inventory.Add(new CharacterWeapon("Bössan", "En klassisk plundrarbössa", 5, true, 2, 80, 30, "skjuter"));
             Global.PlayerOne.AddCharacter(character);
         }
 
@@ -88,7 +88,7 @@ namespace robot.dad.game.SceneManager
         {
             var playerInventory =
                 Global.PlayerOne.PlayerCharacter.Inventory.Select(
-                    kvp => new InventoryItem(kvp.Key.ItemKey, kvp.Value, kvp.Key))
+                    kvp => new InventoryItem(kvp.ItemKey, 1, kvp))
                     .ToDictionary(item => item.ItemKey);
 
             var loot = Lootables.GetLootFromScavengers(3)

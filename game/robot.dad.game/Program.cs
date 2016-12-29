@@ -12,22 +12,42 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
-            //StartInventory();
-            StartManager();
+            StartInventory();
+            //StartManager();
             //StartLoot();
         }
 
         private static void StartInventory()
         {
-            var game = new Game("Inventory", 1800, 900, 60, true);
-
-            var inventory = new Dictionary<string, InventoryItem>()
+            var inventoryList = new ItemInventoryList("MyStuff", new IItem[] { new Money(12, 100), new BasicWeapon(12, "LEif"), }, item =>
             {
-                { "ExoSkeleton", new InventoryItem("ExoSkeleton", 2, new BasicItem("ExoSkeleton", "Exoskelett", "Styrkeskelett")) },
-                {"RayGun", new InventoryItem("RayGun", 1, new BasicItem("RayGun", "Strålpistol", "En pistol som skjuter strålar")) }
-            };
+                Console.WriteLine($"{item.Name} was selected");
+            },
+            item =>
+            {
+                Console.WriteLine($"{item.Name} was unselected");
+            });
 
-            //var scene = new InventoryScene(inventory);
+            for (int i = 0; i < 10; i++)
+            {
+                if(i %2 == 0)
+                    inventoryList.IndexUp();
+                else if(i % 3 == 0)
+                    inventoryList.IndexDown();
+
+            }
+
+            Console.ReadKey();
+
+            //var game = new Game("Inventory", 1800, 900, 60, true);
+
+            //var inventory = new Dictionary<string, InventoryItem>()
+            //{
+            //    { "ExoSkeleton", new InventoryItem("ExoSkeleton", 2, new BasicItem("ExoSkeleton", "Exoskelett", "Styrkeskelett")) },
+            //    {"RayGun", new InventoryItem("RayGun", 1, new BasicItem("RayGun", "Strålpistol", "En pistol som skjuter strålar")) }
+            //};
+
+            //var scene = new NewInventoryScene();
 
             //game.Start(scene);
         }

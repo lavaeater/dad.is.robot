@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Otter;
@@ -111,6 +112,7 @@ namespace robot.dad.game.Scenes
                 Add(PrimaryEntities.AsEnumerable<Entity>());
                 Add(SecondaryEntities.AsEnumerable<Entity>());
                 NeedUpdate = false;
+
                 if (PrimarySelected)
                 {
                     PrimaryEntities.ActivateList();
@@ -230,7 +232,7 @@ namespace robot.dad.game.Scenes
     {
         public string ItemKey { get; set; }
         public int Count { get; set; }
-        public IITem Item { get; set; }
+        public IItem Item { get; set; }
 
         public InventoryItem Copy()
         {
@@ -244,7 +246,7 @@ namespace robot.dad.game.Scenes
         {
 
         }
-        public InventoryItem(string itemKey, int count, IITem item)
+        public InventoryItem(string itemKey, int count, IItem item)
         {
             ItemKey = itemKey;
             Count = count;
@@ -355,5 +357,144 @@ namespace robot.dad.game.Scenes
     {
         void Select();
         void Unselect();
+    }
+
+    public class NewInventoryScene : Scene
+    {
+        public ItemInventoryList ActiveList { get; set; }
+        public List<ItemInventoryList> InventoryLists { get; set; }
+     }
+
+    public class ItemInventoryList : IList<IItem>
+    {
+        public string ListKey { get; set; }
+        public Action<IItem> CurrentItemUpdated { get; set; }
+        public Action<IItem> ItemUnselected { get; set; }
+        public List<IItem> Inventory { get; set; } = new List<IItem>(); 
+        private int _selectedIndex = 0;
+
+        public ItemInventoryList(string listKey, IEnumerable<IItem> items = null, Action<IItem> currentItemUpdated = null, Action<IItem> itemUnselected = null)
+        {
+            ListKey = listKey;
+            CurrentItemUpdated = currentItemUpdated;
+            ItemUnselected = itemUnselected;
+            if (items != null)
+            {
+                foreach (var item in items)
+                {
+                    Add(item);
+                }
+            }
+            UpdateSelectedItem();
+        }
+
+        public void IndexUp()
+        {
+            _selectedIndex++;
+            UpdateSelectedItem();
+        }
+
+        public void IndexDown()
+        {
+            _selectedIndex--;
+            UpdateSelectedItem();
+        }
+
+        private void UpdateSelectedItem()
+        {
+            if (_selectedIndex < 0)
+                _selectedIndex = Inventory.Count - 1;
+            if (_selectedIndex >= Inventory.Count)
+                _selectedIndex = 0;
+            var previousItem = CurrentItem;
+            if(previousItem != null) 
+                ItemUnselected?.Invoke(previousItem);
+
+            CurrentItem = this[_selectedIndex];
+            CurrentItemUpdated?.Invoke(CurrentItem);
+        }
+        
+        public void Add(IItem item)
+        {
+            var money = item as Money;
+            if (money != null)
+            {
+                //We need to add it or find it and add the values together, this is good.
+                var existingMoney = Inventory.SingleOrDefault(m => m is Money) as Money;
+                if (existingMoney != null)
+                    existingMoney.Value += money.Value;
+                else
+                    Inventory.Add(money);
+            }
+            else
+            {
+                Inventory.Add(item);
+            }
+        }
+
+        public void Clear()
+        {
+            Inventory.Clear();
+        }
+
+        public bool Contains(IItem item)
+        {
+            return Inventory.Contains(item);
+        }
+
+        public void CopyTo(IItem[] array, int arrayIndex)
+        {
+            Inventory.CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(IItem item)
+        {
+            var removed = Inventory.Remove(item);
+            if(removed)
+                UpdateSelectedItem();
+            return removed;
+        }
+
+        public IItem PopCurrentItem()
+        {
+            var item = CurrentItem;
+            Remove(item);
+            return item;
+        }
+        
+        public int Count => Inventory.Count;
+
+        public bool IsReadOnly => false;
+        public int IndexOf(IItem item)
+        {
+            return Inventory.IndexOf(item);
+        }
+
+        public void Insert(int index, IItem item)
+        {
+            Inventory.Insert(index, item);
+        }
+
+        public void RemoveAt(int index)
+        {
+            Inventory.RemoveAt(index);
+        }
+
+        public IItem this[int index]
+        {
+            get { return Inventory[index]; }
+            set { Inventory[index] = value; }
+        }
+
+        public IItem CurrentItem { get; set; }
+        public IEnumerator<IItem> GetEnumerator()
+        {
+            return Inventory.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

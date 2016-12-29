@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace robot.dad.common
@@ -9,7 +10,7 @@ namespace robot.dad.common
         {
             
         }
-        public Character(string name, string description, int strength, int maxHealth, int attack, int defense, int armor, Dictionary<IITem, int> inventory)
+        public Character(string name, string description, int strength, int maxHealth, int attack, int defense, int armor, IList<IItem> inventory)
         {
             Name = name;
             Description = description;
@@ -65,10 +66,10 @@ namespace robot.dad.common
             get { return Initiative + ActiveComponents.Sum(pc => pc.Initiative); }
         }
 
-        public Dictionary<IITem, int> Inventory { get; set; }
-        public IEnumerable<ICharacterComponent> PlayerComponents => Inventory.Keys.OfType<ICharacterComponent>();
+        public IList<IItem> Inventory { get; set; }
+        public IEnumerable<ICharacterComponent> PlayerComponents => Inventory.OfType<ICharacterComponent>();
         public IEnumerable<ICharacterComponent> ActiveComponents => PlayerComponents.Where(pc => pc.Active);
-        public IEnumerable<IWeapon> Weapons => Inventory.Keys.OfType<IWeapon>();
+        public IEnumerable<IWeapon> Weapons => Inventory.OfType<IWeapon>();
         public IEnumerable<IWeapon> ActiveWeapons => Weapons.Where(w => w.Active);
     }
 }
