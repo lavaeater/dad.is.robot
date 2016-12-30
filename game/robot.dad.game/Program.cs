@@ -19,13 +19,22 @@ namespace robot.dad.game
 
         private static void StartInventory()
         {
-            var inventoryList = new ItemInventoryList("MyStuff", new IItem[] { new Money(12, 100), new BasicWeapon(12, "LEif"), }, item =>
+            var inventoryList = new ItemInventoryList("MyStuff", new IItem[] { new Money(12, 100), new BasicWeapon(12, "LEif"), },
+            item =>
             {
                 Console.WriteLine($"{item.Name} was selected");
             },
             item =>
             {
                 Console.WriteLine($"{item.Name} was unselected");
+            },
+            item =>
+            {
+                Console.WriteLine($"{item.Name} was added to the Inventory");
+            },
+            item =>
+            {
+                Console.WriteLine($"{item.Name} was removed from the Inventory");
             });
 
             for (int i = 0; i < 10; i++)
@@ -34,10 +43,7 @@ namespace robot.dad.game
                     inventoryList.IndexUp();
                 else if(i % 3 == 0)
                     inventoryList.IndexDown();
-
             }
-
-            Console.ReadKey();
 
             //var game = new Game("Inventory", 1800, 900, 60, true);
 

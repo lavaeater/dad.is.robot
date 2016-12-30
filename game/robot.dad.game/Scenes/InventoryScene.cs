@@ -370,14 +370,18 @@ namespace robot.dad.game.Scenes
         public string ListKey { get; set; }
         public Action<IItem> CurrentItemUpdated { get; set; }
         public Action<IItem> ItemUnselected { get; set; }
+        public Action<IItem> ItemAdded { get; set; }
+        public Action<IItem> ItemRemoved { get; set; }
         public List<IItem> Inventory { get; set; } = new List<IItem>(); 
         private int _selectedIndex = 0;
 
-        public ItemInventoryList(string listKey, IEnumerable<IItem> items = null, Action<IItem> currentItemUpdated = null, Action<IItem> itemUnselected = null)
+        public ItemInventoryList(string listKey, IEnumerable<IItem> items = null, Action<IItem> currentItemUpdated = null, Action<IItem> itemUnselected = null, Action<IItem> itemAdded = null, Action<IItem> itemRemoved = null)
         {
             ListKey = listKey;
             CurrentItemUpdated = currentItemUpdated;
             ItemUnselected = itemUnselected;
+            ItemAdded = itemAdded;
+            ItemRemoved = itemRemoved;
             if (items != null)
             {
                 foreach (var item in items)
@@ -430,6 +434,7 @@ namespace robot.dad.game.Scenes
             {
                 Inventory.Add(item);
             }
+            ItemAdded?.Invoke(item);
         }
 
         public void Clear()
@@ -452,6 +457,7 @@ namespace robot.dad.game.Scenes
             var removed = Inventory.Remove(item);
             if(removed)
                 UpdateSelectedItem();
+            ItemRemoved?.Invoke(item);
             return removed;
         }
 
