@@ -19,6 +19,7 @@ namespace robot.dad.game
 
         private static void StartInventory()
         {
+
             var inventoryList = new ItemInventoryList("MyStuff", new IItem[] { new Money(12, 100), new BasicWeapon(12, "LEif"), },
             item =>
             {
@@ -79,5 +80,80 @@ namespace robot.dad.game
         {
             Manager.Instance.StartGame();
         }
+    }
+
+    public class InventoryManager
+    {
+        public InventoryManager(ItemInventoryList primaryList, ItemInventoryList secondaryList = null)
+        {
+            PrimaryList = primaryList;
+            SecondaryList = secondaryList;
+            Lists.Add(PrimaryList);
+            if(SecondaryListExists)
+                Lists.Add(SecondaryList);
+            Lists.Add(TrashCan);
+            UpdateCurrentList();
+        }
+
+        public bool SecondaryListExists => SecondaryList != null;
+        public int CurrentListIndex { get; set; }= 0;
+
+        public List<ItemInventoryList> Lists { get; set; } = new List<ItemInventoryList>();
+        public ItemInventoryList PrimaryList { get; set; } //Always the users list
+        public ItemInventoryList SecondaryList { get; set; } //Loot or other player or store list
+        public ItemInventoryList TrashCan { get; set; } = new ItemInventoryList("Trashcan"); //There is always a trashcan
+
+        public ItemInventoryList CurrentList { get; set; }
+
+        public void PreviousList()
+        {
+            CurrentListIndex--;
+            UpdateCurrentList();
+        }
+
+        private void UpdateCurrentList()
+        {
+            if (CurrentListIndex < 0)
+                CurrentListIndex = Lists.Count - 1;
+            if (CurrentListIndex >= Lists.Count)
+                CurrentListIndex = 0;
+
+            CurrentList = Lists[CurrentListIndex];
+        }
+
+        public void TrashCurrentItem()
+        {
+            if (CurrentList != TrashCan)
+            {
+                //Remove item from list
+                var item = CurrentList.PopCurrentItem(); //Take it from current list
+                TrashCan.Add(item);
+            }
+        }
+
+        public void TakeCurrentItem()
+        {
+            if (CurrentList != PrimaryList) //Cannot TAKE stuff from owns list
+            {
+                var item = CurrentList.PopCurrentItem();
+                PrimaryList.Add(item);
+            }
+        }
+
+        public void ReturnCurrentItem()
+        {
+            if (CurrentList == PrimaryList && SecondaryListExists)
+            {
+                var item = PrimaryList.PopCurrentItem();
+                SecondaryList.Add(item);
+            }
+        }
+
+        public void NextList()
+        {
+            CurrentListIndex++;
+            UpdateCurrentList();
+        }
+
     }
 }
