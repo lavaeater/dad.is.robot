@@ -1,6 +1,6 @@
 using System;
 using Otter;
-using robot.dad.combat;
+using robot.dad.common;
 
 namespace robot.dad.game.Entities
 {
@@ -8,11 +8,11 @@ namespace robot.dad.game.Entities
     {
         public float Width;
         public float Height;
-        public CombatMove Move { get; set; }
-        public Action<CombatMove> Picked { get; set; }
+        public ICombatMove Move { get; set; }
+        public Action<ICombatMove> Picked { get; set; }
         public Rectangle EntityArea;
 
-        public CombatMoveCard(CombatMove move, float x, float y) : base(x, y)
+        public CombatMoveCard(ICombatMove move, float x, float y) : base(x, y)
         {
             Move = move;
             Width = 200;

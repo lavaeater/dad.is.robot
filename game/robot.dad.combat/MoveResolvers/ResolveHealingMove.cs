@@ -1,15 +1,16 @@
 using System;
 using robot.dad.combat.EffectAppliers;
+using robot.dad.common;
 
 namespace robot.dad.combat.MoveResolvers
 {
     public class ResolveHealingMove : ResolveMoveBase
     {
-        public override bool ResolveMove(CombatMove move, Combattant attacker, Combattant target)
+        public override bool ResolveMove(ICombatMove move, ICombattant attacker, ICombattant target)
         {
             //Console.WriteLine();
             bool result = false;
-            int targetValue = attacker.AttackSkill + move.Modifier;
+            int targetValue = attacker.CurrentAttack + move.Modifier;
             int diceRoll = DiceRoller.RollHundredSided();
             //Console.Write($"{attacker.Name} måste slå under {targetValue} för att {move.Verbified} {target.Name} - ");
             if (diceRoll <= targetValue)

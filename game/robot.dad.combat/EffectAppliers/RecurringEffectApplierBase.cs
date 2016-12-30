@@ -1,3 +1,5 @@
+using robot.dad.common;
+
 namespace robot.dad.combat.EffectAppliers
 {
     public abstract class RecurringEffectApplierBase : ApplyEffectsBase

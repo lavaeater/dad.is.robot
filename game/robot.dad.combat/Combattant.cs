@@ -1,21 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using robot.dad.combat.Interfaces;
+using robot.dad.common;
 
 namespace robot.dad.combat
 {
-    public class Combattant
+    public class Combattant : ICombattant
     {
-        public Combattant(string name, int health, int attackSkill, int defenseSkill, int armor, int initiative, string team, List<CombatMove> combatMoves, IPickMoves movePicker)
+        public Combattant(string name, int currentMaxHealth, int currentAttack, int currentDefense, int currentArmor, int currentInitiative, string team, List<ICombatMove> combatMoves, IPickMove movePicker)
         {
             Name = name;
-            Health = health;
-            CurrentHealth = Health;
-            AttackSkill = attackSkill;
-            DefenseSkill = defenseSkill;
-            Armor = armor;
-            Initiative = initiative;
+            CurrentMaxHealth = currentMaxHealth;
+            CurrentHealth = CurrentMaxHealth;
+            CurrentAttack = currentAttack;
+            CurrentDefense = currentDefense;
+            CurrentArmor = currentArmor;
+            CurrentInitiative = currentInitiative;
             Team = team;
             CombatMoves = combatMoves;
             MovePicker = movePicker;
@@ -24,23 +24,25 @@ namespace robot.dad.combat
 
         public bool ResolveMove()
         {
-            return CurrentMove.Apply(this, CurrentTarget);
+            return CurrentMove.Resolve(this, CurrentTarget);
         }
 
-        public void AddCombatMove(CombatMove move)
+        public Action<ICombattant> RanAway { get; set; }
+
+        public void AddCombatMove(ICombatMove move)
         {
             CombatMoves.Add(move);
         }
 
         public string Team { get; set; }
-        public List<CombatMove> CombatMoves { get; set; }
-        public IPickMoves MovePicker { get; set; }
-        public List<IApplyEffects> CombatEffects { get; set; } = new List<IApplyEffects>();
+        public List<ICombatMove> CombatMoves { get; set; }
+        public IPickMove MovePicker { get; set; }
+        public List<IApplyEffects> CurrentCombatEffects { get; set; } = new List<IApplyEffects>();
         public int CurrentRound { get; set; }
-        public Action<Combattant, int> TookDamage { get; set; }
+        public Action<ICombattant, int> TookDamage { get; set; }
         public int ApplyDamage(int damage)
         {
-            int actualDamage = damage - Armor;
+            int actualDamage = damage - CurrentArmor;
             actualDamage = actualDamage < 0 ? 0 : actualDamage;
             CurrentHealth -= actualDamage;
             TookDamage?.Invoke(this, actualDamage);
@@ -55,23 +57,24 @@ namespace robot.dad.combat
 
         public void Die()
         {
-            IJustDied?.Invoke(this);
             Status = CombatStatus.Dead;
+            JustDied?.Invoke(this);
         }
 
         public void Runaway()
         {
             Status = CombatStatus.Fled;
+            RanAway?.Invoke(this);
         }
 
-        public CombatMove CurrentMove { get; set; }
+        public ICombatMove CurrentMove { get; set; }
         //Choose a target as well!
-        public void PickMove(IEnumerable<Combattant> possibleTargets, Action picked)
+        public void PickMove(IEnumerable<ICombattant> possibleTargets, Action picked)
         {
             MovePicker?.PickMove(this, possibleTargets);
         }
 
-        public Combattant CurrentTarget { get; set; }
+        public ICombattant CurrentTarget { get; set; }
         public bool Dead => CurrentHealth <= 0;
 
         public void ClearMove()
@@ -81,22 +84,22 @@ namespace robot.dad.combat
         }
         
         public bool HasPicked => CurrentMove != null && CurrentTarget != null;
-        public int Health { get; set; }
+        public int CurrentMaxHealth { get; set; }
         public int CurrentHealth { get; set; }
-        public int DefenseSkill { get; set; }
-        public int Armor { get; set; }
-        public int Initiative { get; set; }
-        public int AttackSkill { get; set; }
+        public int CurrentDefense { get; set; }
+        public int CurrentArmor { get; set; }
+        public int CurrentInitiative { get; set; }
+        public int CurrentAttack { get; set; }
 
         public bool Npc { get; set; }
         public string Name { get; set; }
-        public Action<Combattant> IJustDied { get; set; }
+        public Action<ICombattant> JustDied { get; set; }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"{Name}");
-            sb.AppendLine($"Hälsa: {CurrentHealth} / {Health}");
+            sb.AppendLine($"Hälsa: {CurrentHealth} / {CurrentMaxHealth}");
             sb.AppendLine($"Status: {Status}");
             return sb.ToString();
         }

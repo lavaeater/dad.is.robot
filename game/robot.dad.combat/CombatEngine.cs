@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Appccelerate.StateMachine;
+using robot.dad.common;
 
 namespace robot.dad.combat
 {
@@ -9,23 +10,23 @@ namespace robot.dad.combat
     {
         public Action ProtagonistsWin { get; set; }
         public Action AntagonistsWin { get; set; }
-        public IEnumerable<Combattant> Participants => Protagonists.Union(Antagonists);
-        public List<Combattant> Protagonists { get; set; } = new List<Combattant>();
-        public List<Combattant> Antagonists { get; set; } = new List<Combattant>();
-        public Combattant CurrentCombattant { get; set; }
-        public List<Combattant> ParticipantsThatFled { get; set; } = new List<Combattant>();
-        public IEnumerable<Combattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
+        public IEnumerable<ICombattant> Participants => Protagonists.Union(Antagonists);
+        public List<ICombattant> Protagonists { get; set; } = new List<ICombattant>();
+        public List<ICombattant> Antagonists { get; set; } = new List<ICombattant>();
+        public ICombattant CurrentCombattant { get; set; }
+        public List<ICombattant> ParticipantsThatFled { get; set; } = new List<ICombattant>();
+        public IEnumerable<ICombattant> ParticipantsThatCanFight => Participants.Where(p => p.Status == CombatStatus.Active);
         public static PassiveStateMachine<States, Events> StateMachine { get; set; }
         public static int Round { get; set; }
-        public Action<Combattant, Combattant> MoveSucceeded { get; set; }
-        public Action<Combattant> MoveFailed { get; set; }
-        public Action<Combattant, CombatMove> SomeoneIsDoingSomething { get; set; }
-        public Action<Combattant> SomeoneDied { get; set; }
+        public Action<ICombattant, ICombattant> MoveSucceeded { get; set; }
+        public Action<ICombattant> MoveFailed { get; set; }
+        public Action<ICombattant, ICombatMove> SomeoneIsDoingSomething { get; set; }
+        public Action<ICombattant> SomeoneDied { get; set; }
         public bool CurrentMoveWasSuccessful { get; set; }
-        public List<Combattant> AliveByInitiative => Participants.Where(c => !c.Dead).OrderByDescending(c => c.Initiative).ToList();
-        public Action<Combattant, int> SomeoneTookDamage { get; set; }
+        public List<ICombattant> AliveByInitiative => Participants.Where(c => !c.Dead).OrderByDescending(c => c.CurrentInitiative).ToList();
+        public Action<ICombattant, int> SomeoneTookDamage { get; set; }
 
-        public CombatEngine(List<Combattant> protagonists, List<Combattant> antagonists, Action protagonistsWin, Action antagonistsWin) : this()
+        public CombatEngine(List<ICombattant> protagonists, List<ICombattant> antagonists, Action protagonistsWin, Action antagonistsWin) : this()
         {
             ProtagonistsWin = protagonistsWin;
             AntagonistsWin = antagonistsWin;
@@ -95,13 +96,13 @@ namespace robot.dad.combat
         private void ApplyCombatEffects()
         {
             //What kind of indication to the game engine can be done here? Effects should be rendered by the card automatically, but damage being inflicted?
-            foreach (var target in AliveByInitiative.Where(t => t.CombatEffects.Any()))
+            foreach (var target in AliveByInitiative.Where(t => t.CurrentCombatEffects.Any()))
             {
-                foreach (var effect in target.CombatEffects)
+                foreach (var effect in target.CurrentCombatEffects)
                 {
                     effect.ApplyEffects(target);
                 }
-                var doneEffects = target.CombatEffects.Where(
+                var doneEffects = target.CurrentCombatEffects.Where(
                     e =>
                         (e.LastRound < Round))
                     .ToList();
@@ -136,7 +137,7 @@ namespace robot.dad.combat
             {
                 foreach (var combattant in Participants)
                 {
-                    combattant.IJustDied = SomeoneDied;
+                    combattant.JustDied = SomeoneDied;
                 }
             }
 
@@ -183,7 +184,10 @@ namespace robot.dad.combat
         private bool CheckIfCombatIsOver()
         {
             //Fight is over if all participants on either team is dead!
-            return Protagonists.TrueForAll(c => c.Dead || c.Status == CombatStatus.Fled) || Antagonists.TrueForAll(c => c.Dead || c.Status == CombatStatus.Fled);
+            var protoDead = Protagonists.TrueForAll(c => c.Dead || c.Status == CombatStatus.Fled);
+            var antoDead = Antagonists.TrueForAll(c => c.Dead || c.Status == CombatStatus.Fled);
+
+            return protoDead || antoDead;
         }
     }
 }

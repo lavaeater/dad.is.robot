@@ -2,6 +2,7 @@ using System.Linq;
 using ca.axoninteractive.Geometry.Hex;
 using Otter;
 using robot.dad.game.Entities;
+using robot.dad.game.SceneManager;
 using robot.dad.game.Scenes;
 
 namespace robot.dad.game.Components
@@ -25,12 +26,11 @@ namespace robot.dad.game.Components
             //Through the scene!
             if (!Done)
             {
-                var mainScene = (_tileEvent.Scene as MainScene);
-                var curPos = mainScene.BackGround.CurrentPosition;
+                var curPos = Manager.Instance.MainScene.BackGround.CurrentPosition;
                 if (_areaAround.Contains(curPos))
                 {
                     Done = true;
-                    mainScene.StartChase();
+                    Manager.Instance.StartChaseScene(_tileEvent);
                 }
             }
         }

@@ -1,23 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using robot.dad.common;
 
 namespace robot.dad.combat
 {
     public static class MovePickers
     {
-        public static IPickMoves GetRandomPicker()
+        public static IPickMove GetRandomPicker()
         {
             return new RandomPicker(CombatEngine.Picked);
         }
 
-        public static IPickMoves GetRandomReversePicker()
+        public static IPickMove GetRandomReversePicker()
         {
             return new RandomReversePicker(CombatEngine.Picked);
         }
 
-        public static void RandomPicker(Combattant picker, IEnumerable<Combattant> possibleTargets,
-            List<CombatMove> possibleMoves, Action picked)
+        public static void RandomPicker(ICombattant picker, IEnumerable<ICombattant> possibleTargets,
+            List<ICombatMove> possibleMoves, Action picked)
         {
             picker.CurrentMove = possibleMoves[DiceRoller.RollDice(0, possibleMoves.Count - 1)];
             if (picker.CurrentMove.MoveType == CombatMoveType.Healing)
@@ -33,8 +34,8 @@ namespace robot.dad.combat
             picked();
         }
 
-        public static void RandomReversePicker(Combattant picker, IEnumerable<Combattant> possibleTargets,
-    List<CombatMove> possibleMoves, Action picked)
+        public static void RandomReversePicker(ICombattant picker, IEnumerable<ICombattant> possibleTargets,
+    List<ICombatMove> possibleMoves, Action picked)
         {
             picker.CurrentMove = possibleMoves[DiceRoller.RollDice(0, possibleMoves.Count - 1)];
             if (picker.CurrentMove.MoveType == CombatMoveType.Healing)
@@ -50,7 +51,7 @@ namespace robot.dad.combat
             picked();
         }
 
-        public static void ManualPicker(Combattant picker, IEnumerable<Combattant> possibleTargets, List<CombatMove> possibleMoves, Action picked)
+        public static void ManualPicker(ICombattant picker, IEnumerable<ICombattant> possibleTargets, List<ICombatMove> possibleMoves, Action picked)
         {
             Console.Clear();
             //1. List targets and make player choose one!
@@ -96,7 +97,7 @@ namespace robot.dad.combat
         {
         }
 
-        public override void PickMove(Combattant attacker, IEnumerable<Combattant> possibleTargets)
+        public override void PickMove(ICombattant attacker, IEnumerable<ICombattant> possibleTargets)
         {
             attacker.CurrentMove = attacker.CombatMoves[DiceRoller.RollDice(0, attacker.CombatMoves.Count - 1)];
             if (attacker.CurrentMove.MoveType == CombatMoveType.Healing)
@@ -119,7 +120,7 @@ namespace robot.dad.combat
         {
         }
 
-        public override void PickMove(Combattant attacker, IEnumerable<Combattant> possibleTargets)
+        public override void PickMove(ICombattant attacker, IEnumerable<ICombattant> possibleTargets)
         {
             attacker.CurrentMove = attacker.CombatMoves[DiceRoller.RollDice(0, attacker.CombatMoves.Count - 1)];
             if (attacker.CurrentMove.MoveType == CombatMoveType.Healing)

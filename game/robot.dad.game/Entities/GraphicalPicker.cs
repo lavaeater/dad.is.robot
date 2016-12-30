@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using robot.dad.combat;
+using robot.dad.common;
 using robot.dad.game.Scenes;
 
 namespace robot.dad.game.Entities
@@ -17,7 +18,7 @@ namespace robot.dad.game.Entities
 
         public CombattantCard CurrentCard { get; set; }
 
-        public override void PickMove(Combattant attacker, IEnumerable<Combattant> possibleTargets)
+        public override void PickMove(ICombattant attacker, IEnumerable<ICombattant> possibleTargets)
         {
             //1. Find card
             CurrentCard = Scene.GetEntities<CombattantCard>().Single(cc => cc.Combattant == attacker);
@@ -29,7 +30,7 @@ namespace robot.dad.game.Entities
 
         }
 
-        public void AMoveWasPicked(CombatMove pickedMove)
+        public void AMoveWasPicked(ICombatMove pickedMove)
         {
             CurrentCard.Combattant.CurrentMove = pickedMove;
             CurrentCard.StopPicking();
@@ -40,7 +41,7 @@ namespace robot.dad.game.Entities
             }
         }
 
-        public void ATargetWasPicked(Combattant target)
+        public void ATargetWasPicked(ICombattant target)
         {
             foreach (var card in Scene.CombattantCards.Except(new[] { CurrentCard }))
             {

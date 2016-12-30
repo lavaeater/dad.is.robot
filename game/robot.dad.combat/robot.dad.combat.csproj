@@ -57,20 +57,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CombatStatus.cs" />
     <Compile Include="EffectAppliers\ApplyEffectsBase.cs" />
     <Compile Include="CombatEngine.cs" />
     <Compile Include="CombatMove.cs" />
-    <Compile Include="CombatMoveType.cs" />
     <Compile Include="Combattant.cs" />
-    <Compile Include="DiceRoller.cs" />
-    <Compile Include="EffectAppliers\EffectType.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="EffectAppliers\HealingEffectApplier.cs" />
     <Compile Include="EffectAppliers\HypnosisEffectApplier.cs" />
     <Compile Include="Human.cs" />
-    <Compile Include="Interfaces\IApplyEffects.cs" />
-    <Compile Include="Interfaces\IResolveMove.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MovePickers.cs" />
     <Compile Include="EffectAppliers\NormalDamageEffectApplier.cs" />
@@ -88,7 +82,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\robot.dad.common\robot.dad.common.csproj">
+      <Project>{87b1482d-62bc-4524-bd81-8de6f9f44fae}</Project>
+      <Name>robot.dad.common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

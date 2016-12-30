@@ -22,10 +22,12 @@ namespace robot.dad.game.Scenes
         public Queue<string> CrawlData = new Queue<string>();
         private MessageQueueDisplayer MQD;
         public Music IntroMusic = new Music("Music\\bensound-deepblue.ogg");
+        public Music IntroSpeech = new Music("Music\\intro.ogg");
 
         public override void Begin()
         {
             IntroMusic.Play();
+            IntroSpeech.Play();
         }
 
         public IntroScene(Action sceneDone)
@@ -40,7 +42,7 @@ namespace robot.dad.game.Scenes
 
             var lines = paragraphs.Select(p => p.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries));
 
-            MQD = new MessageQueueDisplayer(CrawlData, this, -1400, 0.4f); 
+            MQD = new MessageQueueDisplayer(CrawlData, this, -1400, 0.35f); 
 
             /*
              * How do we figure this out? 
@@ -72,6 +74,7 @@ namespace robot.dad.game.Scenes
         public override void End()
         {
             IntroMusic.Stop();
+            IntroSpeech.Stop();
         }
     }
 }

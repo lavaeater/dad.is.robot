@@ -1,4 +1,5 @@
 using System;
+using robot.dad.common;
 
 namespace robot.dad.combat.EffectAppliers
 {
@@ -8,7 +9,7 @@ namespace robot.dad.combat.EffectAppliers
         {
         }
 
-        public override void ApplyEffects(Combattant target)
+        public override void ApplyEffects(ICombattant target)
         {
             target.ApplyDamage(DiceRoller.RollDice(Min, Max));
         }

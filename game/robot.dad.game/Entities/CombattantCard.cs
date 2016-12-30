@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Otter;
 using robot.dad.combat;
+using robot.dad.common;
 using robot.dad.game.Sprites;
 
 namespace robot.dad.game.Entities
@@ -13,7 +14,7 @@ namespace robot.dad.game.Entities
         private Image FrameHover => SpritePipe.FrameHover;
         private Image HeadTorso => SpritePipe.TorsoAndHead;
 
-        public CombattantCard(Combattant combattant, float x, float y, float width, float height)
+        public CombattantCard(ICombattant combattant, float x, float y, float width, float height)
         {
             Combattant = combattant;
             X = x;
@@ -43,7 +44,7 @@ namespace robot.dad.game.Entities
 
         public List<CombatMoveCard> Moves { get; set; }
 
-        public Combattant Combattant { get; set; }
+        public ICombattant Combattant { get; set; }
         public float Height { get; set; }
 
         public float Width { get; set; }
@@ -65,19 +66,19 @@ namespace robot.dad.game.Entities
                 }
             }
             Draw.Text(Combattant.Name, 30, X + 5, Y + 5);
-            Draw.Text($"{Combattant.CurrentHealth} / {Combattant.Health}", 30, X + 5, Y + 35);
+            Draw.Text($"{Combattant.CurrentHealth} / {Combattant.CurrentMaxHealth}", 30, X + 5, Y + 35);
             RenderEffects();
         }
 
         private void RenderEffects()
         {
-            foreach (var effect in Combattant.CombatEffects)
+            foreach (var effect in Combattant.CurrentCombatEffects)
             {
                 Draw.Text($"{effect.EffectName}", 30, X + 5, Y + 70);
             }
         }
 
-        public void SetInPickMoveMode(Action<CombatMove> picked)
+        public void SetInPickMoveMode(Action<ICombatMove> picked)
         {
             SetCardMode(CardMode.PickingMove);;    
             foreach (var move in Moves)
@@ -95,7 +96,7 @@ namespace robot.dad.game.Entities
             }
         }
 
-        public void MakePickable(Action<Combattant> picked)
+        public void MakePickable(Action<ICombattant> picked)
         {
             SetCardMode(CardMode.Pickable);
             Picked = picked;
@@ -133,7 +134,7 @@ namespace robot.dad.game.Entities
             Graphics.Add(HeadTorso);
         }
 
-        public Action<Combattant> Picked { get; set; }
+        public Action<ICombattant> Picked { get; set; }
 
         public void StopBeingPickable()
         {

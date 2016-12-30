@@ -1,21 +1,21 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using robot.dad.combat;
 using robot.dad.combat.MoveResolvers;
+using robot.dad.common;
 
 namespace robot.dad.game
 {
     public class CombatDemo
     {
-        public static List<Combattant> GetProtagonists()
+        public static List<ICombattant> GetProtagonists()
         {
-            return new List<Combattant>
+            return new List<ICombattant>
             {
                 new Human("Tommie", "nygren", MovePickers.GetRandomPicker()),
                 //new Human("Lisa", "nygren", MovePickers.RandomPicker),
                 //new Human("Freja", "nygren", MovePickers.RandomPicker),
-                new Human("Anja", "nygren", MovePickers.GetRandomPicker(), new List<CombatMove>()
+                new Human("Anja", "nygren", MovePickers.GetRandomPicker(), new List<ICombatMove>()
                 {
                     new CombatMove("Läka sår", CombatMoveType.Healing, 10, 5, 15, "helar", Resolvers.HealingResolver)
                 })
@@ -26,15 +26,15 @@ namespace robot.dad.game
             new Human("Tommie", "nygren", MovePickers.GetRandomPicker()),
             //new Human("Lisa", "nygren", MovePickers.RandomPicker),
             //new Human("Freja", "nygren", MovePickers.RandomPicker),
-            new Human("Anja", "nygren", MovePickers.GetRandomPicker(), new List<CombatMove>()
+            new Human("Anja", "nygren", MovePickers.GetRandomPicker(), new List<ICombatMove>()
             {
                 new CombatMove("Läka sår", CombatMoveType.Healing, 10, 5, 15, "helar", Resolvers.HealingResolver)
             })
         };
 
-        public static readonly List<Combattant> Antagonists = new List<Combattant>
+        public static readonly List<ICombattant> Antagonists = new List<ICombattant>
         {
-            new Monster("Snarfor", 30, 90, 10, 5, 10, "gargelbarg", new List<CombatMove>()
+            new Monster("Snarfor", 30, 90, 10, 5, 10, "gargelbarg", new List<ICombatMove>()
             {
                 new CombatMove("Vattenförmåga", CombatMoveType.Attack, 0, 5, 10, "sprutar vatten på", Resolvers.AttackResolver)
             }, MovePickers.GetRandomPicker()),
@@ -42,7 +42,7 @@ namespace robot.dad.game
             //{
             //    new CombatMove("GargelBett", CombatMoveType.Attack, 15, 12, 25, "gargelbiter", Resolvers.AttackResolver)
             //}, MovePickers.GetRandomPicker()),
-            new Monster("Fyrkantsmonster", 100, 80, 30, 10, 10, "gargelbarg", new List<CombatMove>()
+            new Monster("Fyrkantsmonster", 100, 80, 30, 10, 10, "gargelbarg", new List<ICombatMove>()
             {
                 new CombatMove("Hypno", CombatMoveType.Special, 0, 2, 6, "hypnotiserar", Resolvers.HypnosisResolver)
             }, MovePickers.GetRandomPicker())
@@ -58,7 +58,7 @@ namespace robot.dad.game
             }
         }
 
-        private static IEnumerable<CombatMove> GetScavengerMoves(int numberOfMoves)
+        private static IEnumerable<ICombatMove> GetScavengerMoves(int numberOfMoves)
         {
             int i = 0;
             while (i < numberOfMoves)
@@ -74,10 +74,16 @@ namespace robot.dad.game
                 DiceRoller.RollDice(5, 15), DiceRoller.RollDice(20, 40), "skjuter", Resolvers.AttackResolver);
         }
 
-        private static string GetScavengerMoveName()
+        public static string GetScavengerMoveName()
         {
             int index = DiceRoller.RollDice(0, ScavengerMoveNames.Count - 1);
             return ScavengerMoveNames[index];
+        }
+
+        public static string GetScavengerName()
+        {
+            int index = DiceRoller.RollDice(0, ScavengerNames.Count - 1);
+            return ScavengerNames[index];
         }
 
         public static List<string> ScavengerMoveNames => new List<string>
@@ -98,7 +104,7 @@ namespace robot.dad.game
             return monster;
         }
 
-        private static IEnumerable<CombatMove> GetMonsterMoves(int numberOfMoves)
+        private static IEnumerable<ICombatMove> GetMonsterMoves(int numberOfMoves)
         {
             int i = 0;
             while (i < numberOfMoves)

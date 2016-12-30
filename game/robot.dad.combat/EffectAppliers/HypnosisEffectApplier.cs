@@ -1,3 +1,5 @@
+using robot.dad.common;
+
 namespace robot.dad.combat.EffectAppliers
 {
     public class HypnosisEffectApplier: RecurringEffectApplierBase
@@ -8,7 +10,7 @@ namespace robot.dad.combat.EffectAppliers
             EffectName = "Hypnotiserad";
         }
 
-        public override void ApplyEffects(Combattant target)
+        public override void ApplyEffects(ICombattant target)
         {
             if (!_hasBeenApplied)
             {
@@ -18,9 +20,9 @@ namespace robot.dad.combat.EffectAppliers
             }
         }
 
-        public IPickMoves OriginalPicker { get; set; }
+        public IPickMove OriginalPicker { get; set; }
 
-        public override void EffectsEnded(Combattant target)
+        public override void EffectsEnded(ICombattant target)
         {
             target.MovePicker = OriginalPicker;
             base.EffectsEnded(target);
