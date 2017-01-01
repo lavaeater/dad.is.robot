@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Otter;
+using rds;
 using robot.dad.common;
 
 namespace robot.dad.game.Scenes
@@ -21,129 +22,50 @@ namespace robot.dad.game.Scenes
     public class InventoryScene : Scene
     {
         public Action Done { get; set; }
-        public Dictionary<string, InventoryItem> PrimaryItems { get; set; }
-        public Dictionary<string, InventoryItem> SecondaryItems { get; set; }
-        public bool SecondaryItemsVisible => SecondaryItems != null;
-        public bool PrimarySelected { get; set; } = true;
-        public int SelectedItemIndex { get; set; } = 0;
 
-        public InventoryScene(Action done, Dictionary<string, InventoryItem> primaryItems, Dictionary<string, InventoryItem> secondaryItems = null)
+        public InventoryScene(Action done, List<IItem> primaryItems, List<IItem> secondaryItems = null)
         {
             Done = done;
-            PrimaryItems = primaryItems;
-            PrimaryEntities = new SelectableList<ItemEntity>();
-            SecondaryItems = secondaryItems ?? new Dictionary<string, InventoryItem>();
-            SecondaryEntities = new SelectableList<ItemEntity>();
-            NeedUpdate = true;
-            //Start with primary items only? Or both?
+            ItemManager = new InventoryManager(this, primaryItems, secondaryItems);
+
         }
 
-        public void ItemClicked(string itemKey, bool primary)
-        {
-            //Hmm, clicking an item is easy, but different chocies?
-        }
-
-        public void MoveItemClicked(string itemKey, bool primary)
-        {
-            if (primary)
-            {
-                MoveItemFromTo(itemKey, PrimaryItems, SecondaryItems);
-            }
-            else
-            {
-                MoveItemFromTo(itemKey, SecondaryItems, PrimaryItems);
-            }
-            NeedUpdate = true;
-        }
+        public InventoryManager ItemManager { get; set; }
 
         public bool NeedUpdate { get; set; }
 
-        public void MoveItemFromTo(string itemKey, Dictionary<string, InventoryItem> fromList,
-            Dictionary<string, InventoryItem> toList)
-        {
-            if (!fromList.ContainsKey(itemKey)) return;
-
-            var item = fromList[itemKey];
-            if (item.Count == 1)
-            {
-                fromList.Remove(itemKey);
-            }
-            else
-            {
-                item.Count--;
-            }
-
-            if (!toList.ContainsKey(itemKey))
-            {
-                toList.Add(itemKey, item.Copy());
-            }
-            else
-            {
-                toList[itemKey].Count++;
-            }
-        }
-
-        private SelectableList<ItemEntity> PrimaryEntities { get; set; }
-        private SelectableList<ItemEntity> SecondaryEntities { get; set; }
-
         public override void Update()
         {
-            if (NeedUpdate)
-            {
-                RemoveAll();
-                PrimaryEntities.Clear();
-                SecondaryEntities.Clear();
-                int y = 50;
-                int x = 100;
-                foreach (var inventoryItem in PrimaryItems)
-                {
-                    var entity = new ItemEntity(inventoryItem.Value, true, ItemClicked, MoveItemClicked, x, y);
-                    PrimaryEntities.Add(entity);
-                    y += 20;
-                }
-                x = 800;
-                y = 50;
-                foreach (var inventoryItem in SecondaryItems)
-                {
-                    var entity = new ItemEntity(inventoryItem.Value, false, ItemClicked, MoveItemClicked, x, y);
-                    SecondaryEntities.Add(entity);
-                    y += 20;
-                }
-                Add(PrimaryEntities.AsEnumerable<Entity>());
-                Add(SecondaryEntities.AsEnumerable<Entity>());
-                NeedUpdate = false;
-
-                if (PrimarySelected)
-                {
-                    PrimaryEntities.ActivateList();
-                    SecondaryEntities.DeactivateList();
-                }
-                else
-                {
-                    PrimaryEntities.ActivateList();
-                    SecondaryEntities.DeactivateList();
-                }
-            }
-
             if (Input.KeyPressed(Key.Down))
             {
-                MoveIndexUp();
+                ItemManager.IndexUp();
             }
             if (Input.KeyPressed(Key.Up))
             {
-                MoveIndexDown();
+                ItemManager.IndexDown();
             }
-            if (Input.KeyPressed(Key.Left) || Input.KeyPressed(Key.Right))
+            if (Input.KeyPressed(Key.Left))
             {
-                SwitchItemList();
+                ItemManager.PreviousList();
+            }
+            if (Input.KeyPressed(Key.Right))
+            {
+                ItemManager.NextList();
             }
             if (Input.KeyPressed(Key.Return))
             {
-                MoveItem();
+                ItemManager.TakeCurrentItem();
+                //NeedUpdate = true;
             }
-            if (Input.KeyPressed(Key.A))
+            if (Input.KeyPressed(Key.T))
             {
-                TakeAllItems();
+                ItemManager.TrashCurrentItem();
+                //NeedUpdate = true;
+            }
+            if (Input.KeyPressed(Key.R))
+            {
+                ItemManager.ReturnCurrentItem();
+                //NeedUpdate = true;
             }
 
             if (Input.KeyPressed(Key.K))
@@ -155,201 +77,36 @@ namespace robot.dad.game.Scenes
 
         private void TakeAllItems()
         {
-            foreach (var item in SecondaryItems)
-            {
-                if (PrimaryItems.ContainsKey(item.Key))
-                {
-                    PrimaryItems[item.Key].Count += item.Value.Count;
-                }
-                else
-                {
-                    PrimaryItems.Add(item.Key, item.Value);
-                }
-            }
-            SecondaryItems.Clear();
             NeedUpdate = true;
         }
-
-        private void MoveItem()
-        {
-            if (PrimarySelected)
-            {
-                MoveItemClicked(PrimaryEntities.SelectedItem.InventoryItem.ItemKey, true);
-                if(PrimaryItems.IsEmpty())
-                    SwitchItemList();
-            }
-            else
-            {
-                MoveItemClicked(SecondaryEntities.SelectedItem.InventoryItem.ItemKey, false);
-                if(SecondaryItems.IsEmpty())
-                    SwitchItemList();
-            }
-        }
-
-        private void MoveIndexDown()
-        {
-            if (PrimarySelected)
-            {
-                PrimaryEntities.MoveIndexDown();
-            }
-            else
-            {
-                SecondaryEntities.MoveIndexDown();
-            }
-
-        }
-
-        private void SwitchItemList()
-        {
-            if (PrimarySelected && SecondaryEntities.CanActivate)
-            {
-                PrimaryEntities.DeactivateList();
-                SecondaryEntities.ActivateList();
-                PrimarySelected = false;
-            }
-            else if(!PrimarySelected && PrimaryEntities.CanActivate) 
-            {
-                SecondaryEntities.DeactivateList();
-                PrimaryEntities.ActivateList();
-                PrimarySelected = true;
-            }
-        }
-
-        private void MoveIndexUp()
-        {
-            if (PrimarySelected)
-            {
-                PrimaryEntities.MoveIndexUp();
-            }
-            else
-            {
-                SecondaryEntities.MoveIndexUp();
-            }
-        }
     }
 
-    public class InventoryItem
+    public class ItemEntity : Entity
     {
-        public string ItemKey { get; set; }
-        public int Count { get; set; }
         public IItem Item { get; set; }
+        public string InventoryText => $"{Item.Name}";
 
-        public InventoryItem Copy()
+        public ItemEntity(IItem item, float x, float y) : base(x, y)
         {
-            var item = MemberwiseClone() as InventoryItem;
-            item.Count = 1;
-            return item;
-        }
-
-
-        public InventoryItem()
-        {
-
-        }
-        public InventoryItem(string itemKey, int count, IItem item)
-        {
-            ItemKey = itemKey;
-            Count = count;
             Item = item;
-        }
-    }
-
-    public class ItemEntity : Entity, ISelectableEntity
-    {
-        public InventoryItem InventoryItem { get; set; }
-        public bool Primary { get; set; }
-        public string InventoryText => $"{InventoryItem.Item.Name}, {InventoryItem.Count}";
-
-        public ItemEntity(InventoryItem inventoryItem, bool primary, Action<string, bool> clicked, Action<string, bool> removeClicked, float x, float y) : base(x, y)
-        {
-            InventoryItem = inventoryItem;
-            Primary = primary;
             RichText itemText = new RichText(InventoryText, new RichTextConfig()
             {
                 CharColor = Color.White,
-                FontSize = 16
+                FontSize = 32
             });
             AddGraphics(itemText);
         }
 
-
         public void Unselect()
         {
             Graphics.Clear();
-            Graphics.Add(new RichText(InventoryText, new RichTextConfig() { CharColor = Color.White, FontSize = 16 }));
+            Graphics.Add(new RichText(InventoryText, new RichTextConfig() { CharColor = Color.White, FontSize = 32 }));
         }
 
         public void Select()
         {
             Graphics.Clear();
-            Graphics.Add(new RichText(InventoryText, new RichTextConfig() {CharColor = Color.Green, FontSize = 20}));
-        }
-    }
-
-    public class ClickableComponent : Component
-    {
-    }
-
-    public class SelectableList<T> : List<T> where T: ISelectableEntity
-    {
-        public int SelectedIndex { get; set; }
-        public T SelectedItem { get; set; }
-        public bool CanActivate => this.IsNotEmpty();
-
-        public void RemoveSelectedItem()
-        {
-            Remove(SelectedItem);
-            SetSelectedItem();
-        }
-
-        public void DeactivateList()
-        {
-            SelectedItem?.Unselect();
-        }
-
-        public void ActivateList()
-        {
-            SetSelectedItem();
-        }
-
-        private void SetSelectedItem()
-        {
-            FixIndex();
-            if(this.IsNotEmpty())
-                SelectedItem = this[SelectedIndex];
-
-            SelectedItem?.Select();
-
-            if (PreviousIndex != -1 && this.IsNotEmpty() && PreviousIndex != SelectedIndex)
-                this[PreviousIndex]?.Unselect();
-        }
-
-        private void FixIndex()
-        {
-            if (SelectedIndex >= Count)
-                SelectedIndex = 0;
-
-            if (SelectedIndex < 0)
-                SelectedIndex = Count - 1;
-
-            if (PreviousIndex >= Count)
-                PreviousIndex = 0;
-        }
-
-        public void MoveIndexUp()
-        {
-            PreviousIndex = SelectedIndex;
-            SelectedIndex++;
-            SetSelectedItem();
-        }
-
-        public int PreviousIndex { get; set; } = -1;
-
-        public void MoveIndexDown()
-        {
-            PreviousIndex = SelectedIndex;
-            SelectedIndex--;
-            SetSelectedItem();
+            Graphics.Add(new RichText(InventoryText, new RichTextConfig() { CharColor = Color.Green, FontSize = 32 }));
         }
     }
 
@@ -359,17 +116,11 @@ namespace robot.dad.game.Scenes
         void Unselect();
     }
 
-    public class NewInventoryScene : Scene
-    {
-        public ItemInventoryList ActiveList { get; set; }
-        public List<ItemInventoryList> InventoryLists { get; set; }
-     }
-
     public class ItemInventoryList : IList<IItem>
     {
         public string ListKey { get; set; }
         public Action<IItem, ItemAction> ItemUpdated { get; set; }
-        public List<IItem> Inventory { get; set; } = new List<IItem>(); 
+        public List<IItem> Inventory { get; set; } = new List<IItem>();
         private int _selectedIndex = 0;
 
         public ItemInventoryList(string listKey, IEnumerable<IItem> items = null, Action<IItem, ItemAction> itemUpdated = null)
@@ -405,13 +156,15 @@ namespace robot.dad.game.Scenes
             if (_selectedIndex >= Inventory.Count)
                 _selectedIndex = 0;
             var previousItem = CurrentItem;
-            if(previousItem != null) 
+            if (previousItem != null)
                 ItemUpdated?.Invoke(previousItem, ItemAction.Unselected);
-
-            CurrentItem = this[_selectedIndex];
-            ItemUpdated?.Invoke(CurrentItem, ItemAction.Selected);
+            if (Inventory.IsNotEmpty())
+            {
+                CurrentItem = this[_selectedIndex];
+                ItemUpdated?.Invoke(CurrentItem, ItemAction.Selected);
+            }
         }
-        
+
         public void Add(IItem item)
         {
             var money = item as Money;
@@ -449,7 +202,7 @@ namespace robot.dad.game.Scenes
         public bool Remove(IItem item)
         {
             var removed = Inventory.Remove(item);
-            if(removed)
+            if (removed)
                 UpdateSelectedItem();
             ItemUpdated?.Invoke(item, ItemAction.Removed);
             return removed;
@@ -461,7 +214,7 @@ namespace robot.dad.game.Scenes
             Remove(item);
             return item;
         }
-        
+
         public int Count => Inventory.Count;
 
         public bool IsReadOnly => false;
@@ -495,6 +248,236 @@ namespace robot.dad.game.Scenes
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+    }
+
+    public enum ItemAction
+    {
+        Added,
+        Removed,
+        Selected,
+        Unselected
+    }
+
+    public class InventoryManager
+    {
+        private int _columnWidth;
+
+        public InventoryManager(Scene scene, List<IItem> primaryList, List<IItem> secondaryList = null, Action<IItem, ItemAction> itemUpdated = null, int columnWidth = 500)
+        {
+            _columnWidth = columnWidth;
+            PrimaryList = new ItemEntityList("Primary", 20, scene, primaryList);
+            if (secondaryList != null)
+            {
+                SecondaryList = new ItemEntityList("Secondary", columnWidth + 20, scene, secondaryList);
+            }
+            Lists.Add(PrimaryList);
+            if (SecondaryListExists)
+                Lists.Add(SecondaryList);
+            TrashCan = new ItemEntityList("Trashcan", columnWidth * 2 + 20, scene);
+            Lists.Add(TrashCan);
+            if (itemUpdated != null)
+            {
+                ItemUpdated = itemUpdated;
+                foreach (var list in Lists)
+                {
+                    list.ItemUpdated = ItemUpdated;
+                }
+            }
+            UpdateCurrentList();
+        }
+
+        public bool SecondaryListExists => SecondaryList != null;
+        public int CurrentListIndex { get; set; } = 0;
+
+        public List<ItemEntityList> Lists { get; set; } = new List<ItemEntityList>();
+        public ItemEntityList PrimaryList { get; set; } //Always the users list
+        public ItemEntityList SecondaryList { get; set; } //Loot or other player or store list
+        public ItemEntityList TrashCan { get; set; } //There is always a trashcan
+
+        public ItemEntityList CurrentList { get; set; }
+
+        public Action<IItem, ItemAction> ItemUpdated { get; set; }
+        public IEnumerable<ItemEntity> AllEntities => Lists.SelectMany(list => list.Inventory);
+
+        public void PreviousList()
+        {
+            CurrentListIndex--;
+            UpdateCurrentList();
+        }
+
+        private void UpdateCurrentList()
+        {
+            if (CurrentListIndex < 0)
+                CurrentListIndex = Lists.Count - 1;
+            if (CurrentListIndex >= Lists.Count)
+                CurrentListIndex = 0;
+
+            CurrentList = Lists[CurrentListIndex];
+        }
+
+        public void TrashCurrentItem()
+        {
+            if (CurrentList != TrashCan)
+            {
+                //Remove item from list
+                var item = CurrentList.PopCurrentItem(); //Take it from current list
+                TrashCan.Add(item);
+            }
+        }
+
+        public void TakeCurrentItem()
+        {
+            if (CurrentList != PrimaryList) //Cannot TAKE stuff from owns list
+            {
+                var item = CurrentList.PopCurrentItem();
+                PrimaryList.Add(item);
+            }
+        }
+
+        public void ReturnCurrentItem()
+        {
+            if (CurrentList == PrimaryList && SecondaryListExists)
+            {
+                var item = PrimaryList.PopCurrentItem();
+                SecondaryList.Add(item);
+            }
+        }
+
+        public void NextList()
+        {
+            CurrentListIndex++;
+            UpdateCurrentList();
+        }
+
+        public void IndexUp()
+        {
+            CurrentList.IndexUp();
+        }
+
+        public void IndexDown()
+        {
+            CurrentList.IndexDown();
+        }
+    }
+
+    public class ItemEntityList
+    {
+        public string ListKey { get; set; }
+        public Scene Scene { get; set; }
+        public Action<IItem, ItemAction> ItemUpdated { get; set; }
+        public List<ItemEntity> Inventory { get; set; } = new List<ItemEntity>();
+        private int _selectedIndex = 0;
+        private readonly float _baseX;
+        public IItem CurrentItem { get; set; }
+        public ItemEntity CurrentEntity { get; set; }
+        public ItemEntityList(string listKey, float baseX, Scene scene, IEnumerable<IItem> items = null, Action<IItem, ItemAction> itemUpdated = null)
+        {
+            ListKey = listKey;
+            Scene = scene;
+            _baseX = baseX;
+            ItemUpdated = itemUpdated;
+            if (items != null)
+            {
+                foreach (var item in items)
+                {
+                    Add(item);
+                }
+            }
+            UpdateCurrentItem();
+        }
+
+        public void IndexUp()
+        {
+            _selectedIndex++;
+            UpdateCurrentItem();
+        }
+
+        public void IndexDown()
+        {
+            _selectedIndex--;
+            UpdateCurrentItem();
+        }
+
+        private void UpdateCurrentItem()
+        {
+            if (_selectedIndex < 0)
+                _selectedIndex = Inventory.Count - 1;
+            if (_selectedIndex >= Inventory.Count)
+                _selectedIndex = 0;
+            var previousItem = CurrentItem;
+            if (previousItem != null)
+            {
+                CurrentEntity.Unselect(); //This is also not null right now
+                ItemUpdated?.Invoke(previousItem, ItemAction.Unselected);
+            }
+            if (Inventory.IsNotEmpty())
+            {
+                CurrentItem = this[_selectedIndex].Item;
+                CurrentEntity = this[_selectedIndex];
+                CurrentEntity.Select();
+                ItemUpdated?.Invoke(CurrentItem, ItemAction.Selected);
+            }
+        }
+
+        public void Add(IItem item)
+        {
+            var money = item as Money;
+            if (money != null)
+            {
+                //We need to add it or find it and add the values together, this is good.
+                var existingMoney = Inventory.SingleOrDefault(m => m.Item is Money)?.Item as Money;
+                if (existingMoney != null)
+                    existingMoney.Value += money.Value;
+                else
+                    AddNewEntity(item);
+            }
+            else
+            {
+                AddNewEntity(item);
+            }
+            ItemUpdated?.Invoke(item, ItemAction.Added);
+        }
+
+        private void AddNewEntity(IItem item)
+        {
+            var entity = new ItemEntity(item, _baseX, Inventory.Count * 40 + 40);
+            Inventory.Add(entity);
+            Scene.Add(entity);
+        }
+
+        public void Clear()
+        {
+            Inventory.Clear();
+        }
+
+        public bool Remove(ItemEntity entity)
+        {
+            var removed = Inventory.Remove(entity);
+            if (removed)
+            {
+                Scene.Remove(entity);
+                UpdateCurrentItem();
+            }
+            ItemUpdated?.Invoke(entity.Item, ItemAction.Removed);
+            return removed;
+        }
+
+        public IItem PopCurrentItem()
+        {
+            var entity = CurrentEntity;
+            Remove(entity);
+            return entity.Item;
+        }
+
+        public int Count => Inventory.Count;
+
+        public bool IsReadOnly => false;
+
+        public ItemEntity this[int index]
+        {
+            get { return Inventory[index]; }
+            set { Inventory[index] = value; }
         }
     }
 }

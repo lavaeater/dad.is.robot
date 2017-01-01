@@ -86,26 +86,26 @@ namespace robot.dad.game.SceneManager
 
         public void GetLoot()
         {
-            var playerInventory =
-                Global.PlayerOne.PlayerCharacter.Inventory.Select(
-                    kvp => new InventoryItem(kvp.ItemKey, 1, kvp))
-                    .ToDictionary(item => item.ItemKey);
+            //var playerInventory =
+            //    Global.PlayerOne.PlayerCharacter.Inventory.Select(
+            //        kvp => new InventoryItem(kvp.ItemKey, 1, kvp))
+            //        .ToDictionary(item => item.ItemKey);
 
-            var loot = Lootables.GetLootFromScavengers(3)
-                .Select(tem => new InventoryItem(tem.ItemKey, 1, tem));
-            Dictionary<string, InventoryItem> loots = new Dictionary<string, InventoryItem>();
-            foreach (var inventoryItem in loot)
-            {
-                if (!loots.ContainsKey(inventoryItem.ItemKey))
-                {
-                    loots.Add(inventoryItem.ItemKey, inventoryItem);
-                }
-                else
-                {
-                    loots[inventoryItem.ItemKey].Count++;
-                }
-            }
-            GameInstance.SwitchScene(new InventoryScene(GotoMainScene, playerInventory, loots));
+            //var loot = Lootables.GetLootFromScavengers(3)
+            //    .Select(tem => new InventoryItem(tem.ItemKey, 1, tem));
+            //Dictionary<string, InventoryItem> loots = new Dictionary<string, InventoryItem>();
+            //foreach (var inventoryItem in loot)
+            //{
+            //    if (!loots.ContainsKey(inventoryItem.ItemKey))
+            //    {
+            //        loots.Add(inventoryItem.ItemKey, inventoryItem);
+            //    }
+            //    else
+            //    {
+            //        loots[inventoryItem.ItemKey].Count++;
+            //    }
+            //}
+            //GameInstance.SwitchScene(new InventoryScene(GotoMainScene, playerInventory, loots));
         }
 
         private void CreateMainScene()
