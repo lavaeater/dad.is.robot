@@ -20,32 +20,19 @@ namespace robot.dad.game
         private static void StartInventory()
         {
 
-            var inventoryList = new ItemInventoryList("MyStuff", new IItem[] { new Money(12, 100), new BasicWeapon(12, "LEif"), },
-            item =>
-            {
-                Console.WriteLine($"{item.Name} was selected");
-            },
-            item =>
-            {
-                Console.WriteLine($"{item.Name} was unselected");
-            },
-            item =>
-            {
-                Console.WriteLine($"{item.Name} was added to the Inventory");
-            },
-            item =>
-            {
-                Console.WriteLine($"{item.Name} was removed from the Inventory");
-            });
+            var inventoryList = new ItemInventoryList("MyStuff",
+                new IItem[] {new Money(12, 100), new BasicWeapon(12, "LEif"),});
+           
+            var inventoryManager = new InventoryManager(inventoryList, null, ItemUpdated);
 
-            for (int i = 0; i < 10; i++)
+            while (true)
             {
-                if(i %2 == 0)
-                    inventoryList.IndexUp();
-                else if(i % 3 == 0)
-                    inventoryList.IndexDown();
+                var keyInfo = Console.ReadKey();
+                if (keyInfo.Key == ConsoleKey.P)
+                {
+                    PrintLists(inventoryManager);
+                }
             }
-
             //var game = new Game("Inventory", 1800, 900, 60, true);
 
             //var inventory = new Dictionary<string, InventoryItem>()
@@ -57,6 +44,24 @@ namespace robot.dad.game
             //var scene = new NewInventoryScene();
 
             //game.Start(scene);
+        }
+
+        public static void PrintLists(InventoryManager manager)
+        {
+            Console.Clear();
+            foreach (var list in manager.Lists)
+            {
+                Console.WriteLine($"{list.ListKey}");
+                foreach (var item in list.Inventory)
+                {
+                    Console.WriteLine($"{item.Name}");
+                }
+            }
+        }
+
+        private static void ItemUpdated(IItem item, ItemAction itemAction)
+        {
+            Console.WriteLine($"{item.Name} was {itemAction}");
         }
 
         private static void StartLoot()
@@ -82,9 +87,17 @@ namespace robot.dad.game
         }
     }
 
+    public enum ItemAction
+    {
+        Added,
+        Removed,
+        Selected,
+        Unselected
+    }
+
     public class InventoryManager
     {
-        public InventoryManager(ItemInventoryList primaryList, ItemInventoryList secondaryList = null)
+        public InventoryManager(ItemInventoryList primaryList, ItemInventoryList secondaryList = null, Action<IItem, ItemAction> itemUpdated = null)
         {
             PrimaryList = primaryList;
             SecondaryList = secondaryList;
@@ -92,6 +105,14 @@ namespace robot.dad.game
             if(SecondaryListExists)
                 Lists.Add(SecondaryList);
             Lists.Add(TrashCan);
+            if (itemUpdated != null)
+            {
+                ItemUpdated = itemUpdated;
+                foreach (var list in Lists)
+                {
+                    list.ItemUpdated = ItemUpdated;
+                }
+            }
             UpdateCurrentList();
         }
 
@@ -104,6 +125,8 @@ namespace robot.dad.game
         public ItemInventoryList TrashCan { get; set; } = new ItemInventoryList("Trashcan"); //There is always a trashcan
 
         public ItemInventoryList CurrentList { get; set; }
+
+        public Action<IItem, ItemAction> ItemUpdated { get; set; }
 
         public void PreviousList()
         {
@@ -155,5 +178,14 @@ namespace robot.dad.game
             UpdateCurrentList();
         }
 
+        public void IndexUp()
+        {
+            CurrentList.IndexUp();
+        }
+
+        public void IndexDown()
+        {
+            CurrentList.IndexDown();
+        }
     }
 }

@@ -368,20 +368,14 @@ namespace robot.dad.game.Scenes
     public class ItemInventoryList : IList<IItem>
     {
         public string ListKey { get; set; }
-        public Action<IItem> CurrentItemUpdated { get; set; }
-        public Action<IItem> ItemUnselected { get; set; }
-        public Action<IItem> ItemAdded { get; set; }
-        public Action<IItem> ItemRemoved { get; set; }
+        public Action<IItem, ItemAction> ItemUpdated { get; set; }
         public List<IItem> Inventory { get; set; } = new List<IItem>(); 
         private int _selectedIndex = 0;
 
-        public ItemInventoryList(string listKey, IEnumerable<IItem> items = null, Action<IItem> currentItemUpdated = null, Action<IItem> itemUnselected = null, Action<IItem> itemAdded = null, Action<IItem> itemRemoved = null)
+        public ItemInventoryList(string listKey, IEnumerable<IItem> items = null, Action<IItem, ItemAction> itemUpdated = null)
         {
             ListKey = listKey;
-            CurrentItemUpdated = currentItemUpdated;
-            ItemUnselected = itemUnselected;
-            ItemAdded = itemAdded;
-            ItemRemoved = itemRemoved;
+            ItemUpdated = itemUpdated;
             if (items != null)
             {
                 foreach (var item in items)
@@ -412,10 +406,10 @@ namespace robot.dad.game.Scenes
                 _selectedIndex = 0;
             var previousItem = CurrentItem;
             if(previousItem != null) 
-                ItemUnselected?.Invoke(previousItem);
+                ItemUpdated?.Invoke(previousItem, ItemAction.Unselected);
 
             CurrentItem = this[_selectedIndex];
-            CurrentItemUpdated?.Invoke(CurrentItem);
+            ItemUpdated?.Invoke(CurrentItem, ItemAction.Selected);
         }
         
         public void Add(IItem item)
@@ -434,7 +428,7 @@ namespace robot.dad.game.Scenes
             {
                 Inventory.Add(item);
             }
-            ItemAdded?.Invoke(item);
+            ItemUpdated?.Invoke(item, ItemAction.Added);
         }
 
         public void Clear()
@@ -457,7 +451,7 @@ namespace robot.dad.game.Scenes
             var removed = Inventory.Remove(item);
             if(removed)
                 UpdateSelectedItem();
-            ItemRemoved?.Invoke(item);
+            ItemUpdated?.Invoke(item, ItemAction.Removed);
             return removed;
         }
 
