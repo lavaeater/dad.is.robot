@@ -23,7 +23,7 @@ namespace robot.dad.game.Scenes
     {
         public Action Done { get; set; }
 
-        public InventoryScene(Action done, List<IItem> primaryItems, List<IItem> secondaryItems = null)
+        public InventoryScene(Action done, IEnumerable<IItem> primaryItems, IEnumerable<IItem> secondaryItems = null)
         {
             Done = done;
             ItemManager = new InventoryManager(this, primaryItems, secondaryItems);
@@ -167,15 +167,15 @@ namespace robot.dad.game.Scenes
 
         public void Add(IItem item)
         {
-            var money = item as Money;
-            if (money != null)
+            var valueItem = item as ThingValue<int>;
+            if (valueItem != null)
             {
                 //We need to add it or find it and add the values together, this is good.
-                var existingMoney = Inventory.SingleOrDefault(m => m is Money) as Money;
-                if (existingMoney != null)
-                    existingMoney.Value += money.Value;
+                var existingValue = Inventory.SingleOrDefault(m => m is ThingValue<int>) as ThingValue<int>;
+                if (existingValue != null)
+                    existingValue.Value += valueItem.Value;
                 else
-                    Inventory.Add(money);
+                    Inventory.Add(item);
             }
             else
             {
@@ -263,7 +263,7 @@ namespace robot.dad.game.Scenes
     {
         private int _columnWidth;
 
-        public InventoryManager(Scene scene, List<IItem> primaryList, List<IItem> secondaryList = null, Action<IItem, ItemAction> itemUpdated = null, int columnWidth = 500)
+        public InventoryManager(Scene scene, IEnumerable<IItem> primaryList, IEnumerable<IItem> secondaryList = null, Action<IItem, ItemAction> itemUpdated = null, int columnWidth = 500)
         {
             _columnWidth = columnWidth;
             PrimaryList = new ItemEntityList("Primary", 20, scene, primaryList);
@@ -422,11 +422,11 @@ namespace robot.dad.game.Scenes
 
         public void Add(IItem item)
         {
-            var money = item as Money;
+            var money = item as CountableItem;
             if (money != null)
             {
                 //We need to add it or find it and add the values together, this is good.
-                var existingMoney = Inventory.SingleOrDefault(m => m.Item is Money)?.Item as Money;
+                var existingMoney = Inventory.SingleOrDefault(m => m.Item is CountableItem)?.Item as CountableItem;
                 if (existingMoney != null)
                     existingMoney.Value += money.Value;
                 else

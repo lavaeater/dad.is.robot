@@ -13,15 +13,15 @@ namespace robot.dad.game
     {
         static void Main(string[] args)
         {
-            StartInventory();
-            //StartManager();
+            //StartInventory();
+            StartManager();
             //StartLoot();
         }
 
         private static void StartInventory()
         {
             var game = new Game("InventoryTest", 1800, 900);
-            var inventoryList = new List<IItem> {new Money(12, 100), new BasicWeapon(12, "LEif"),};
+            var inventoryList = new List<IItem> {new CountableItem("Money", "Mynt",12, 100), new BasicWeapon(12, "LEif"),};
 
             var table = new ScavengerLootTable(3);
             var secondaryList = new List<IItem>(table.Result.OfType<IItem>());

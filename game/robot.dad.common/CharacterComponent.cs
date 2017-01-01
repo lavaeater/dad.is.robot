@@ -16,18 +16,22 @@ namespace robot.dad.common
         public int Initiative { get; set; }
     }
 
-    public class Money : ThingValue<int>, IItem
+    public class CountableItem : ThingValue<int>, IItem
     {
-        public Money(int value, double probability) : base(value, probability)
+        public CountableItem(string itemKey, string name, int value, double probability) : base(value, probability)
         {
+            ItemKey = itemKey;
+            Name = name;
         }
 
-        public Money(int value, double probability, bool unique, bool always, bool enabled) : base(value, probability, unique, always, enabled)
+        public CountableItem(string itemKey, string name, int value, double probability, bool unique, bool always, bool enabled) : base(value, probability, unique, always, enabled)
         {
+            ItemKey = itemKey;
+            Name = name;
         }
 
-        public string ItemKey => "Coin";
-        public string Name => "Mynt";
+        public string ItemKey { get; set; }
+        public string Name {get; set; }
         public string Description { get; set; }
     }
 }
