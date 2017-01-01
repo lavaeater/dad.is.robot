@@ -70,6 +70,8 @@ namespace robot.dad.game.Scenes
 
             if (Input.KeyPressed(Key.K))
             {
+                Global.PlayerOne.PlayerCharacter.Inventory =
+                    ItemManager.PrimaryList.Inventory.Select(ie => ie.Item).ToList();
                 Done?.Invoke();
             }
 
