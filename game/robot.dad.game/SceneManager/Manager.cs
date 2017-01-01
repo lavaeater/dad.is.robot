@@ -105,5 +105,10 @@ namespace robot.dad.game.SceneManager
         {
             GameInstance.SwitchScene(new ChaseScene(GotoMainScene, () => StartCombatSceneFromEvent(tileEvent)));
         }
+
+        public void GotoInventory()
+        {
+            GameInstance.SwitchScene(new InventoryScene(GotoMainScene, Global.PlayerOne.PlayerCharacter.Inventory));
+        }
     }
 }

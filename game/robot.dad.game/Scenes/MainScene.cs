@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using Otter;
 using robot.dad.game.Entities;
-using robot.dad.game.Event;
+using robot.dad.game.SceneManager;
 
 namespace robot.dad.game.Scenes
 {
@@ -29,6 +27,14 @@ namespace robot.dad.game.Scenes
         public void ReturnToMain()
         {
             Game.SwitchScene(this);
+        }
+
+        public override void Update()
+        {
+            if (Input.KeyReleased(Key.I))
+            {
+                Manager.Instance.GotoInventory();
+            }
         }
     }
 }
