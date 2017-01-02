@@ -1,5 +1,6 @@
 ﻿using System;
 using Otter;
+using robot.dad.common;
 using robot.dad.game.Sprites;
 
 namespace robot.dad.game.Components
@@ -37,7 +38,10 @@ namespace robot.dad.game.Components
             _speedY = 0;
             _smallThrust = (int)_maxThrust / 2;
             _mediumThrust = (int)_maxThrust - (int)_maxThrust / 5;
+            Wind = new WindFlute();
         }
+
+        public WindFlute Wind { get; set; }
 
         public override void Update()
         {
@@ -101,16 +105,16 @@ namespace robot.dad.game.Components
             {
                 _currentSpeed = Util.Approach(_currentSpeed, 0, _drag);
             }
-            _speedX = (int)Util.PolarX(_angle, _currentSpeed);
-            _speedY = (int)Util.PolarY(_angle, _currentSpeed);
+
+            Wind.Update();
+
+            _speedX = (int)Util.PolarX(_angle, _currentSpeed) + Wind.WindForceX;
+            _speedY = (int)Util.PolarY(_angle, _currentSpeed) + Wind.WindForceY;
 
 
             MoveXY(_speedX, _speedY, Collider);
 
-            if (OnMove != null)
-            {
-                OnMove();
-            }
+            OnMove?.Invoke();
         }
 
         private readonly Graphic SmallThrust = SpritePipe.ThrustOne;
@@ -137,6 +141,57 @@ namespace robot.dad.game.Components
                 MaxThrust.Visible = false;
 
                 Entity.AddGraphics(SmallThrust, MediumThrust, MaxThrust);
+            }
+        }
+    }
+
+    public class WindFlute
+    {
+        public float WindAngle = 180f;
+        public float WindSpeed = 1.00f;
+        public int WindState = 1; // -1 = decreasing wind, 1 = increasing wind, 0 = constant
+
+        public int WindForceX => (int)Util.PolarX(WindAngle, WindSpeed);
+        public int WindForceY => (int) Util.PolarY(WindAngle, WindSpeed);
+        public int Updates = 0;
+
+        public void Update()
+        {
+            Updates++;
+            if (Updates > 500) //only do this every 1000 updates...
+            {
+                /*
+             * Called from the thruster movement components' update method
+             * 
+             * will determine if the direction and force of the wind is changing, up or down, 
+             * left and right.
+             */
+                int windForceRoll = DiceRoller.RollDice(0, 1000);
+                if (windForceRoll > 800)
+                {
+                    if (WindState == 0)
+                        WindState = 1;
+                    else
+                        WindState = -WindState;
+                }
+                else if (windForceRoll < 100)
+                {
+                    WindState = 0;
+                }
+
+                Updates = 0;
+            }
+            if (Updates%50==0)
+            {
+                WindSpeed += WindState * 20f;
+                if (WindSpeed < 0)
+                {
+                    WindSpeed = 0;
+                }
+                if (WindSpeed > 250)
+                {
+                    WindSpeed = 250;
+                }
             }
         }
     }
