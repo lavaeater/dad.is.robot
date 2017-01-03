@@ -173,7 +173,7 @@ namespace robot.dad.game.Scenes
             if (valueItem != null)
             {
                 //We need to add it or find it and add the values together, this is good.
-                var existingValue = Inventory.SingleOrDefault(m => m is ThingValue<int>) as ThingValue<int>;
+                var existingValue = Inventory.SingleOrDefault(m => m is ThingValue<int> && m.ItemKey == item.ItemKey) as ThingValue<int>;
                 if (existingValue != null)
                     existingValue.Value += valueItem.Value;
                 else

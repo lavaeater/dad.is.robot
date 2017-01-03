@@ -202,11 +202,11 @@ namespace robot.dad.game.Components
                 {
                     WindSpeed = 0;
                 }
-                if (WindSpeed > 250)
+                if (WindSpeed > 150)
                 {
-                    WindSpeed = 250;
+                    WindSpeed = 150;
                 }
-                WindAngle += WindAngleState * 10f;
+                WindAngle += WindAngleState * 20f;
                 if (WindAngle > 360)
                 {
                     WindAngle = 0;

@@ -40,15 +40,16 @@ namespace robot.dad.game.SceneManager
             GameInstance = game;
         }
 
-        private void OnGameEnd()
+        public void OnGameEnd()
         {
             //Save game logic!
 
+            //Need to ignore some properties that are just 
             //string character = JsonConvert.SerializeObject(Global.PlayerOne.PlayerCharacter);
             //File.WriteAllText("savegame.json", character);
         }
 
-        private void CreateSession()
+        public void CreateSession()
         {
             Global.PlayerOne = CustomSession.AddSession(GameInstance, "playerone");
 

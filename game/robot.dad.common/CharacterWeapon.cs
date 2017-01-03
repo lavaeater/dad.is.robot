@@ -34,6 +34,7 @@ namespace robot.dad.common
         public int MaxDamage { get; set; }
         public int MinDamage { get; set; }
 
+        
         public virtual ICombatMove CombatMove => new WeaponCombatMove(this);
 
         public string Verbified { get; set; }
