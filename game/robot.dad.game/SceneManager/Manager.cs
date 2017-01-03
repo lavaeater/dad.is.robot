@@ -5,6 +5,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Otter;
 using robot.dad.common;
+using robot.dad.common.Quest;
 using robot.dad.game.Entities;
 using robot.dad.game.Event;
 using robot.dad.game.Scenes;

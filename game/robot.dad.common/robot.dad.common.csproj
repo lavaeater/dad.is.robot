@@ -49,6 +49,11 @@
     <Compile Include="CharacterWeapon.cs" />
     <Compile Include="CombatMoveType.cs" />
     <Compile Include="CombatStatus.cs" />
+    <Compile Include="Quest\IQuestItem.cs" />
+    <Compile Include="Quest\MainQuestStart.cs" />
+    <Compile Include="Quest\QuestEngine.cs" />
+    <Compile Include="Quest\QuestItemState.cs" />
+    <Compile Include="Quest\QuestType.cs" />
     <Compile Include="WeaponCombatMove.cs" />
     <Compile Include="DiceRoller.cs" />
     <Compile Include="EffectType.cs" />
@@ -75,6 +80,7 @@
       <Name>rds</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using robot.dad.common.Quest;
 
 namespace robot.dad.common
 {
@@ -65,6 +66,8 @@ namespace robot.dad.common
         {
             get { return Initiative + ActiveComponents.Sum(pc => pc.Initiative); }
         }
+
+        public IList<IQuestItem> Quests { get; set; }
 
         public IList<IItem> Inventory { get; set; }
         public IEnumerable<ICharacterComponent> PlayerComponents => Inventory.OfType<ICharacterComponent>();
