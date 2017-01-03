@@ -107,7 +107,22 @@ namespace robot.dad.game.SceneManager
         public void GetLoot()
         {
             var loot = Lootables.GetLootFromScavengers(3);
-            GameInstance.SwitchScene(new InventoryScene(GotoMainScene, Global.PlayerOne.PlayerCharacter.Inventory, loot));
+            if (loot.Any(l => l is IQuestItem))
+            {
+                var cutScene = new IntroScene(() => GoToLootScene(loot.OfType<IItem>()), loot.OfType<IQuestItem>().First().CutSceneText);
+                GameInstance.SwitchScene(cutScene);
+            }
+            else
+            {
+                GoToLootScene(loot.OfType<IItem>());
+            }
+        }
+
+        public void GoToLootScene(IEnumerable<IItem> loot)
+        {
+            GameInstance.SwitchScene(new InventoryScene(GotoMainScene, Global.PlayerOne.PlayerCharacter.Inventory,
+                loot));
+
         }
 
         private void CreateMainScene()
