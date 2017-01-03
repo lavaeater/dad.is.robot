@@ -5,10 +5,33 @@ using robot.dad.game.Sprites;
 
 namespace robot.dad.game.Entities
 {
+    public class ScavengerEvent : TileEvent
+    {
+        public ScavengerEvent(string eventType, CubicHexCoord hex)
+        {
+            Hex = hex;
+            EventType = eventType;
+            AddComponents(new AggressorComponent(this, 2));
+            Visible = false;
+        }
+
+        public override void Identify()
+        {
+            /*
+             * Could trigger the Pirates-like dialogue where they 
+             * player tries to get away before the fight. Right now, you just get attacked!
+             */
+        }
+    }
     public class TileEvent : Entity
     {
         public CubicHexCoord Hex { get; set; }
         public string EventType;
+
+        public TileEvent()
+        {
+
+        }
 
         public TileEvent(string eventType, CubicHexCoord hex)
         {
@@ -32,7 +55,7 @@ namespace robot.dad.game.Entities
             Y = tilePos.y;
         }
 
-        public void Identify()
+        public virtual void Identify()
         {
             if (!Identified)
             {

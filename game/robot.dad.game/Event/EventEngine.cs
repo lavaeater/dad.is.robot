@@ -27,22 +27,16 @@ namespace robot.dad.game.Event
             if (table.Result.OfType<ThingValue<EventType>>().Any())
             {
                 var result = table.Result.OfType<ThingValue<EventType>>().FirstOrDefault()?.Value;
-                if (result == EventType.Ruin)
-                    return new TileEvent("Ruin", coord);
+                switch (result)
+                {
+                    case EventType.Ruin:
+                            return new TileEvent("Ruin", coord);
+                    case EventType.Scavenger:
+                        return new ScavengerEvent("Scavenger", coord);
+                    case EventType.Settlement:
+                        return new TileEvent("Settlement", coord);
+                }
             }
-
-            //int diceRoll = _rand.Next(1, 1001);//
-            ////int diceRoll = (int)_eventNoise.CalcPixel3D(coord.x, coord.y, 0, _scale).ForceRange(100, 1);
-            //if (diceRoll > _maxVal)
-            //    _maxVal = diceRoll;
-            //if (terrainType.TerrainType == TerrainType.TemperateDesert || terrainType.TerrainType == TerrainType.SubTropicalDesert || terrainType.TerrainType == TerrainType.Scorched)
-            //{
-            //    if (990< diceRoll && diceRoll <= 1000)
-            //    {
-            //        return new TileEvent("Ruin", coord); //More thinking required!
-            //    }
-            //}
-
             return null;
         }
     }

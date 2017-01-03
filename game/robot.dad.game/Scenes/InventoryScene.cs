@@ -424,13 +424,13 @@ namespace robot.dad.game.Scenes
 
         public void Add(IItem item)
         {
-            var money = item as CountableItem;
-            if (money != null)
+            var countableItem = item as CountableItem;
+            if (countableItem != null)
             {
                 //We need to add it or find it and add the values together, this is good.
-                var existingMoney = Inventory.SingleOrDefault(m => m.Item is CountableItem)?.Item as CountableItem;
-                if (existingMoney != null)
-                    existingMoney.Value += money.Value;
+                var existingCountableItem = Inventory.SingleOrDefault(m => m.Item is CountableItem && m.Item.ItemKey == countableItem.ItemKey)?.Item as CountableItem;
+                if (existingCountableItem != null)
+                    existingCountableItem.Value += countableItem.Value;
                 else
                     AddNewEntity(item);
             }
