@@ -166,15 +166,13 @@ namespace robot.dad.game.Components
              * will determine if the direction and force of the wind is changing, up or down, 
              * left and right.
              */
-                int windForceRoll = DiceRoller.RollDice(0, 1000);
-                if (windForceRoll > 800)
+                int windForceRoll = DiceRoller.RollDice(0, 100);
+                if (windForceRoll > 80)
                 {
-                    if (WindState == 0)
                         WindState = 1;
-                    else
-                        WindState = -WindState;
                 }
-                else if (windForceRoll < 100)
+                else if(windForceRoll )
+                else if (windForceRoll < 10)
                 {
                     WindState = 0;
                 }
