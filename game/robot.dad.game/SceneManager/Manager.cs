@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using Otter;
 using robot.dad.common;
 using robot.dad.game.Entities;
@@ -34,8 +35,17 @@ namespace robot.dad.game.SceneManager
         private void CreateGame()
         {
             var game = new Game("Dad is a Robot", 1600, 900, 60, false);
+            game.OnEnd = OnGameEnd;
 
             GameInstance = game;
+        }
+
+        private void OnGameEnd()
+        {
+            //Save game logic!
+
+            //string character = JsonConvert.SerializeObject(Global.PlayerOne.PlayerCharacter);
+            //File.WriteAllText("savegame.json", character);
         }
 
         private void CreateSession()
@@ -51,11 +61,20 @@ namespace robot.dad.game.SceneManager
             Global.PlayerOne.Controller.Button(Controls.Down).AddKey(Key.Down);
             Global.PlayerOne.Controller.Button(Controls.Left).AddKey(Key.Left);
             Global.PlayerOne.Controller.Button(Controls.Right).AddKey(Key.Right);
-            var character = new Character("Analusia", "", 10, 100, 100, 60, 10, new List<IItem>());
+            if (File.Exists("savegame.json"))
+            {
+                var saveGameData = File.ReadAllText("savegame.json");
+                var character = JsonConvert.DeserializeObject<Character>(saveGameData);
+                Global.PlayerOne.AddCharacter(character);
+            }
+            else
+            {
+                var character = new Character("Analusia", "", 10, 100, 100, 60, 10, new List<IItem>());
 
-            //INventory needs to be a simple list, and counts etc will be handled elsewhere...
-            character.Inventory.Add(new CharacterWeapon("Bössan", "En klassisk plundrarbössa", 5, true, 2, 80, 30, "skjuter"));
-            Global.PlayerOne.AddCharacter(character);
+                //INventory needs to be a simple list, and counts etc will be handled elsewhere...
+                character.Inventory.Add(new CharacterWeapon("Bössan", "En klassisk plundrarbössa", 5, true, 2, 80, 30, "skjuter"));
+                Global.PlayerOne.AddCharacter(character);
+            }
         }
 
         public void StartGame()
