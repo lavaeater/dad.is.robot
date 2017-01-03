@@ -128,9 +128,9 @@ namespace robot.dad.game.Components
             {
 
                 float originY = SmallThrust.ScaledHeight + Entity.Graphic.ScaledHeight / 2;
-                SmallThrust.SetOrigin(SmallThrust.HalfWidth / 2 +1, originY);
-                MediumThrust.SetOrigin(MediumThrust.HalfWidth / 2 +1, originY);
-                MaxThrust.SetOrigin(MaxThrust.HalfWidth / 2 +1, originY);
+                SmallThrust.SetOrigin(SmallThrust.HalfWidth / 2 + 1, originY);
+                MediumThrust.SetOrigin(MediumThrust.HalfWidth / 2 + 1, originY);
+                MaxThrust.SetOrigin(MaxThrust.HalfWidth / 2 + 1, originY);
 
                 SmallThrust.Angle = 90;
                 MediumThrust.Angle = 90;
@@ -149,16 +149,16 @@ namespace robot.dad.game.Components
     {
         public float WindAngle = 180f;
         public float WindSpeed = 1.00f;
-        public int WindState = 1; // -1 = decreasing wind, 1 = increasing wind, 0 = constant
-
+        public int WindForceState = 1; // -1 = decreasing wind, 1 = increasing wind, 0 = constant
+        public int WindAngleState = 0;
         public int WindForceX => (int)Util.PolarX(WindAngle, WindSpeed);
-        public int WindForceY => (int) Util.PolarY(WindAngle, WindSpeed);
+        public int WindForceY => (int)Util.PolarY(WindAngle, WindSpeed);
         public int Updates = 0;
 
         public void Update()
         {
             Updates++;
-            if (Updates > 500) //only do this every 1000 updates...
+            if (Updates > 500)
             {
                 /*
              * Called from the thruster movement components' update method
@@ -167,21 +167,37 @@ namespace robot.dad.game.Components
              * left and right.
              */
                 int windForceRoll = DiceRoller.RollDice(0, 100);
-                if (windForceRoll > 80)
+                if (windForceRoll > 70)
                 {
-                        WindState = 1;
+                    WindForceState = 1;
                 }
-                else if(windForceRoll )
-                else if (windForceRoll < 10)
+                else if (windForceRoll < 70 && windForceRoll > 20)
                 {
-                    WindState = 0;
+                    WindForceState = 0;
+                }
+                else if (windForceRoll < 20)
+                {
+                    WindForceState = -1;
                 }
 
+                int windAngleRoll = DiceRoller.RollDice(1, 100);
+                if (20 < windAngleRoll && windAngleRoll < 80)
+                {
+                    WindAngleState = 0;
+                }
+                else if (windAngleRoll < 20)
+                {
+                    WindAngleState = -1;
+                }
+                else if (windAngleRoll > 80)
+                {
+                    WindAngleState = 1;
+                }
                 Updates = 0;
             }
-            if (Updates%50==0)
+            if (Updates % 50 == 0)
             {
-                WindSpeed += WindState * 20f;
+                WindSpeed += WindForceState * 20f;
                 if (WindSpeed < 0)
                 {
                     WindSpeed = 0;
@@ -189,6 +205,15 @@ namespace robot.dad.game.Components
                 if (WindSpeed > 250)
                 {
                     WindSpeed = 250;
+                }
+                WindAngle += WindAngleState * 10f;
+                if (WindAngle > 360)
+                {
+                    WindAngle = 0;
+                }
+                if (WindAngle < 0)
+                {
+                    WindAngle = 360;
                 }
             }
         }
