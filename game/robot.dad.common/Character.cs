@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using robot.dad.common.Quest;
 
 namespace robot.dad.common
@@ -21,6 +22,7 @@ namespace robot.dad.common
             Defense = defense;
             Armor = armor;
             Inventory = inventory;
+            Quests = new List<IQuestItem>();
         }
         public override string ToString()
         {
@@ -70,9 +72,13 @@ namespace robot.dad.common
         public IList<IQuestItem> Quests { get; set; }
 
         public IList<IItem> Inventory { get; set; }
+        [JsonIgnore]
         public IEnumerable<ICharacterComponent> PlayerComponents => Inventory.OfType<ICharacterComponent>();
+        [JsonIgnore]
         public IEnumerable<ICharacterComponent> ActiveComponents => PlayerComponents.Where(pc => pc.Active);
+        [JsonIgnore]
         public IEnumerable<IWeapon> Weapons => Inventory.OfType<IWeapon>();
+        [JsonIgnore]
         public IEnumerable<IWeapon> ActiveWeapons => Weapons.Where(w => w.Active);
     }
 }

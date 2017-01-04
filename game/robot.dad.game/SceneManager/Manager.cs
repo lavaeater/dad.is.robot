@@ -46,8 +46,13 @@ namespace robot.dad.game.SceneManager
             //Save game logic!
 
             //Need to ignore some properties that are just 
-            //string character = JsonConvert.SerializeObject(Global.PlayerOne.PlayerCharacter);
-            //File.WriteAllText("savegame.json", character);
+            string character = JsonConvert.SerializeObject(Global.PlayerOne.PlayerCharacter, 
+                new JsonSerializerSettings()
+            {
+                    TypeNameHandling = TypeNameHandling.Objects,
+                    TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                });
+            File.WriteAllText("savegame.json", character);
         }
 
         public void CreateSession()
@@ -66,7 +71,10 @@ namespace robot.dad.game.SceneManager
             if (File.Exists("savegame.json"))
             {
                 var saveGameData = File.ReadAllText("savegame.json");
-                var character = JsonConvert.DeserializeObject<Character>(saveGameData);
+                var character = JsonConvert.DeserializeObject<Character>(saveGameData, new JsonSerializerSettings()
+                {
+                    TypeNameHandling = TypeNameHandling.Objects
+                });
                 Global.PlayerOne.AddCharacter(character);
             }
             else
