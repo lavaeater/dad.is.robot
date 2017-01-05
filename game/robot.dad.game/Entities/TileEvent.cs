@@ -33,32 +33,9 @@ namespace robot.dad.game.Entities
         
     }
 
-    public class TileEventInfo
-    {
-        [JsonConstructor]
-        public TileEventInfo(CubicHexCoord hex, List<TileEvent> events)
-        {
-            Hex = hex;
-            Events.AddRange(events);
-        }
-
-        public TileEventInfo(CubicHexCoord hex)
-        {
-            Hex = hex;
-        }
-        public CubicHexCoord Hex { get; }
-        public List<TileEvent> Events { get; set; } = new List<TileEvent>();
-        [JsonIgnore]
-        public bool IsNotEmpty => Events.IsNotEmpty();
-
-        public override int GetHashCode()
-        {
-            return Hex.GetHashCode();
-        }
-    }
-
     public class TileEvent
     {
+        private TileEntity _entity;
         public CubicHexCoord Hex { get; set; }
         public string EventType;
         [JsonIgnore]
@@ -66,13 +43,13 @@ namespace robot.dad.game.Entities
 
         public TileEvent()
         {
-
+            AddTileEntity();
         }
 
         public TileEvent(string eventType, CubicHexCoord hex)
         {
             Hex = hex;
-            this.EventType = eventType;
+            EventType = eventType;
             AddTileEntity();
 
             if (eventType == "Ruin")

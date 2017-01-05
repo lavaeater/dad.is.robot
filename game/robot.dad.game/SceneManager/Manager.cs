@@ -196,12 +196,18 @@ namespace robot.dad.game.SceneManager
     {
         public Character PlayerCharacter { get; set; }
         public CubicHexCoord Position { get; set; }
-        public List<TileEventInfo> Events { get; set; }
+        public List<TileEvent> Events { get; set; }
+
+        public SaveGame()
+        {
+            
+        }
+
         public SaveGame(Character playerCharacter, HexBackGround map)
         {
             PlayerCharacter = playerCharacter;
             Position = map.CurrentPosition;
-            Events = map.Events.Where(kv => kv.IsNotEmpty).ToList();
+            Events = map.MapEntities.Where(kv => kv.Value.IsNotEmpty()).SelectMany(pair => pair.Value).ToList();
         }
     }
 
