@@ -59,6 +59,12 @@
     <Compile Include="Components\ChaseComponent.cs" />
     <Compile Include="Entities\CardMode.cs" />
     <Compile Include="Components\ShadowComponent.cs" />
+    <Compile Include="Event\EventBase.cs" />
+    <Compile Include="Event\EventType.cs" />
+    <Compile Include="Event\RuinEvent.cs" />
+    <Compile Include="Event\ScavengerEvent.cs" />
+    <Compile Include="Event\SettlementEvent.cs" />
+    <Compile Include="Entities\TileEntity.cs" />
     <Compile Include="Event\ArmorTable.cs" />
     <Compile Include="Event\CreatableCharacter.cs" />
     <Compile Include="Event\FlyingMonster.cs" />
@@ -68,6 +74,7 @@
     <Compile Include="Event\ScavengerLootTable.cs" />
     <Compile Include="Event\ScavengerTable.cs" />
     <Compile Include="Event\RuinEventTable.cs" />
+    <Compile Include="Event\TileEventTable.cs" />
     <Compile Include="Event\WeaponsTable.cs" />
     <Compile Include="SceneManager\CustomSession.cs" />
     <Compile Include="SceneManager\GameEvent.cs" />
@@ -94,7 +101,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sprites\SpritePipe.cs" />
     <Compile Include="Components\ThrusterMovement.cs" />
-    <Compile Include="Entities\TileEvent.cs" />
+    <Compile Include="Event\IEvent.cs" />
     <Compile Include="Event\EventEngine.cs" />
   </ItemGroup>
   <ItemGroup>

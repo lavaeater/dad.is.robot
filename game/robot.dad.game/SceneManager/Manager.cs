@@ -134,7 +134,7 @@ namespace robot.dad.game.SceneManager
             GameInstance.SwitchScene(MainScene);
         }
 
-        public void StartCombatSceneFromEvent(TileEvent tileEvent)
+        public void StartCombatSceneFromEvent()
         {
             //Use tileevent-thingy
             var table = new RuinEventTable();
@@ -180,10 +180,10 @@ namespace robot.dad.game.SceneManager
             scene.AddBackGround(background);
             MainScene = scene;
         }
-
-        public void StartChaseScene(TileEvent tileEvent)
+        
+        public void StartChaseScene()
         {
-            GameInstance.SwitchScene(new ChaseScene(GotoMainScene, () => StartCombatSceneFromEvent(tileEvent)));
+            GameInstance.SwitchScene(new ChaseScene(GotoMainScene, StartCombatSceneFromEvent));
         }
 
         public void GotoInventory()
@@ -196,7 +196,7 @@ namespace robot.dad.game.SceneManager
     {
         public Character PlayerCharacter { get; set; }
         public CubicHexCoord Position { get; set; }
-        public List<TileEvent> Events { get; set; }
+        public List<IEvent> Events { get; set; }
 
         public SaveGame()
         {
@@ -207,7 +207,7 @@ namespace robot.dad.game.SceneManager
         {
             PlayerCharacter = playerCharacter;
             Position = map.CurrentPosition;
-            Events = map.MapEntities.Where(kv => kv.Value.IsNotEmpty()).SelectMany(pair => pair.Value).ToList();
+            Events = map.MapEvents.Where(kv => kv.Value.IsNotEmpty()).SelectMany(pair => pair.Value).ToList();
         }
     }
 

@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using ca.axoninteractive.Geometry.Hex;
 using rds;
-using robot.dad.game.Entities;
 using robot.dad.graphics;
 using Simplex;
 
@@ -18,8 +17,8 @@ namespace robot.dad.game.Event
             _eventNoise = new Noise(42);
             _rand = new Random(32);
         }
-
-        public TileEvent GetEventForTile(CubicHexCoord coord, TerrainInfo terrainType)
+        
+        public IEvent GetEventForTile(CubicHexCoord coord, TerrainInfo terrainInfo)
         {
             var table = new TileEventTable();
             //Add code for managing terrainbased-probabilities
@@ -30,11 +29,11 @@ namespace robot.dad.game.Event
                 switch (result)
                 {
                     case EventType.Ruin:
-                            return new TileEvent("Ruin", coord);
+                        return new RuinEvent(coord);
                     case EventType.Scavenger:
-                        return new ScavengerEvent("Scavenger", coord);
+                        return new ScavengerEvent(coord);
                     case EventType.Settlement:
-                        return new TileEvent("Settlement", coord);
+                        return new SettlementEvent(coord);
                 }
             }
             return null;
