@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
+using ca.axoninteractive.Geometry.Hex;
 using Newtonsoft.Json;
 using Otter;
 using robot.dad.common;
@@ -26,11 +28,63 @@ namespace robot.dad.game.SceneManager
 
         public static Manager Instance => Lazy.Value;
 
+        private JsonSerializerSettings GetSerializerSettings()
+        {
+            var settings = new JsonSerializerSettings()
+            {
+                TypeNameHandling = TypeNameHandling.All,
+                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+            };
+            settings.Converters.Add(new CubicJsonConverter());
+            return settings;
+        }
+
         private Manager()
         {
+            JsonConvert.DefaultSettings = GetSerializerSettings;
+
             CreateGame();
-            CreateSession();
-            CreateMainScene();
+
+            if (SaveGameFileExists)
+            {
+                CreateSession();
+                LoadSaveGame();
+            }
+            else
+            {
+                CreateSession();
+                AddPlayerCharacterToSession();
+                CreateMainScene();
+            }
+        }
+
+        private void AddPlayerCharacterToSession()
+        {
+            var character = new Character("Analusia", "", 10, 100, 100, 60, 10, new List<IItem>());
+
+            //INventory needs to be a simple list, and counts etc will be handled elsewhere...
+            character.Inventory.Add(new CharacterWeapon("Bössan", "En klassisk plundrarbössa", 5, true, 2, 80, 30, "skjuter"));
+            AddPlayerCharacterToSession(character);
+        }
+
+        private void AddPlayerCharacterToSession(Character character)
+        {
+            Global.PlayerOne.AddCharacter(character);
+        }
+
+        private void LoadSaveGame()
+        {
+            var saveGameData = File.ReadAllText("savegame.json");
+            var saveGame = JsonConvert.DeserializeObject<SaveGame>(saveGameData);
+            AddPlayerCharacterToSession(saveGame.PlayerCharacter);
+            var player = new PlayerEntity(0.5f, 800, 450, true);
+            var scene = new MainScene(player); string atlasFile = "Terrain\\terrain.json";
+            var terrainData = File.ReadAllText("Terrain\\TerrainConfig.json");
+            var background = new HexBackGround(atlasFile, terrainData, 3, 12);
+            scene.AddBackGround(background);
+            background.AddEvents(saveGame.Events);
+            scene.MovePlayerToHex(saveGame.Position);
+            MainScene = scene;
         }
 
         private void CreateGame()
@@ -46,14 +100,13 @@ namespace robot.dad.game.SceneManager
             //Save game logic!
 
             //Need to ignore some properties that are just 
-            string character = JsonConvert.SerializeObject(Global.PlayerOne.PlayerCharacter, 
-                new JsonSerializerSettings()
-            {
-                    TypeNameHandling = TypeNameHandling.Objects,
-                    TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
-                });
-            File.WriteAllText("savegame.json", character);
+
+            var saveGame = new SaveGame(Global.PlayerOne.PlayerCharacter, MainScene.BackGround);
+            string saveGameJson = JsonConvert.SerializeObject(saveGame);
+            File.WriteAllText("savegame.json", saveGameJson);
         }
+
+        public bool SaveGameFileExists => File.Exists("savegame.json");
 
         public void CreateSession()
         {
@@ -68,23 +121,6 @@ namespace robot.dad.game.SceneManager
             Global.PlayerOne.Controller.Button(Controls.Down).AddKey(Key.Down);
             Global.PlayerOne.Controller.Button(Controls.Left).AddKey(Key.Left);
             Global.PlayerOne.Controller.Button(Controls.Right).AddKey(Key.Right);
-            if (File.Exists("savegame.json"))
-            {
-                var saveGameData = File.ReadAllText("savegame.json");
-                var character = JsonConvert.DeserializeObject<Character>(saveGameData, new JsonSerializerSettings()
-                {
-                    TypeNameHandling = TypeNameHandling.Objects
-                });
-                Global.PlayerOne.AddCharacter(character);
-            }
-            else
-            {
-                var character = new Character("Analusia", "", 10, 100, 100, 60, 10, new List<IItem>());
-
-                //INventory needs to be a simple list, and counts etc will be handled elsewhere...
-                character.Inventory.Add(new CharacterWeapon("Bössan", "En klassisk plundrarbössa", 5, true, 2, 80, 30, "skjuter"));
-                Global.PlayerOne.AddCharacter(character);
-            }
         }
 
         public void StartGame()
@@ -153,6 +189,68 @@ namespace robot.dad.game.SceneManager
         public void GotoInventory()
         {
             GameInstance.SwitchScene(new InventoryScene(GotoMainScene, Global.PlayerOne.PlayerCharacter.Inventory));
+        }
+    }
+
+    public class SaveGame
+    {
+        public Character PlayerCharacter { get; set; }
+        public CubicHexCoord Position { get; set; }
+        public List<TileEventInfo> Events { get; set; }
+        public SaveGame(Character playerCharacter, HexBackGround map)
+        {
+            PlayerCharacter = playerCharacter;
+            Position = map.CurrentPosition;
+            Events = map.Events.Where(kv => kv.IsNotEmpty).ToList();
+        }
+    }
+
+    public class CubicJsonConverter : JsonConverter
+    {
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var coord = (CubicHexCoord)value;
+            writer.WriteStartObject();
+            writer.WritePropertyName("x");
+            serializer.Serialize(writer, coord.x);
+            writer.WritePropertyName("y");
+            serializer.Serialize(writer, coord.y);
+            writer.WritePropertyName("z");
+            serializer.Serialize(writer, coord.z);
+            writer.WriteEndObject();
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            int x = 0, y = 0, z =0;
+            while (reader.Read())
+            {
+                if (reader.TokenType != JsonToken.PropertyName)
+                    break;
+
+                var propertyName = (string)reader.Value;
+                if (!reader.Read())
+                    continue;
+
+                if (propertyName == "x")
+                {
+                    x = serializer.Deserialize<int>(reader);
+                }
+                if (propertyName == "y")
+                {
+                    y = serializer.Deserialize<int>(reader);
+                }
+                if (propertyName == "z")
+                {
+                    z = serializer.Deserialize<int>(reader);
+                }
+            }
+            return new CubicHexCoord(x, y, z);
+        }
+
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(CubicHexCoord) || objectType == typeof(CubicHexCoord?);
         }
     }
 }

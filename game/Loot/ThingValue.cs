@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace rds
 {
@@ -123,6 +124,7 @@ namespace rds
 		/// Gets or sets the table this Object belongs to.
 		/// Note to inheritors: This property has to be auto-set when an item is added to a table via the AddEntry method.
 		/// </summary>
+		[JsonIgnore]
 		public ThingTable Table { get; set; }
 		#endregion
 

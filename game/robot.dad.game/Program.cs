@@ -14,9 +14,9 @@ namespace robot.dad.game
         static void Main(string[] args)
         {
             //StartInventory();
-            //StartManager();
+            StartManager();
             //StartLoot();
-            StartSaveGame();
+            //StartSaveGame();
         }
 
         private static void StartSaveGame()

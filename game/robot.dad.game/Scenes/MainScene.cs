@@ -1,16 +1,27 @@
+using ca.axoninteractive.Geometry.Hex;
 using Otter;
 using robot.dad.game.Entities;
 using robot.dad.game.SceneManager;
+using robot.dad.graphics;
 
 namespace robot.dad.game.Scenes
 {
     public class MainScene : Scene
     {
+        public void MovePlayerToHex(CubicHexCoord coord)
+        {
+            var pos = Hex.Grid.CubicToPoint(coord);
+            Player.Position = new Vector2(pos.x, pos.y);
+        }
+
         public MainScene(PlayerEntity playerEntity)
         {
+            Player = playerEntity;
             Add(playerEntity);
             CameraFocus = playerEntity;
         }
+
+        public PlayerEntity Player { get; set; }
 
         public void AddBackGround(HexBackGround background)
         {
@@ -19,10 +30,6 @@ namespace robot.dad.game.Scenes
         }
 
         public HexBackGround BackGround { get; set; }
-
-        public void StartChase(TileEvent tileEvent)
-        {
-        }
 
         public void ReturnToMain()
         {

@@ -20,7 +20,7 @@ namespace robot.dad.game.Components
 
         public override void Update()
         {
-            if (!_tileEvent.Visible) return;
+            if (!_tileEvent.ShouldUpdate) return;
 
             //We're visible, time to find the player! How?
             //Through the scene!

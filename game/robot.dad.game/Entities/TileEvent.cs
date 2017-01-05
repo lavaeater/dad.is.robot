@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using ca.axoninteractive.Geometry.Hex;
+using Newtonsoft.Json;
 using Otter;
 using robot.dad.game.Components;
 using robot.dad.game.Sprites;
@@ -11,8 +13,10 @@ namespace robot.dad.game.Entities
         {
             Hex = hex;
             EventType = eventType;
-            AddComponents(new AggressorComponent(this, 2));
-            Visible = false;
+            AddTileEntity();
+            Entity.AddComponents(new AggressorComponent(this, 2));
+            Entity.Visible = false;
+            ShouldUpdate = true;
         }
 
         public override void Identify()
@@ -23,10 +27,42 @@ namespace robot.dad.game.Entities
              */
         }
     }
-    public class TileEvent : Entity
+
+    public class TileEntity : Entity
+    {
+        
+    }
+
+    public class TileEventInfo
+    {
+        [JsonConstructor]
+        public TileEventInfo(CubicHexCoord hex, List<TileEvent> events)
+        {
+            Hex = hex;
+            Events.AddRange(events);
+        }
+
+        public TileEventInfo(CubicHexCoord hex)
+        {
+            Hex = hex;
+        }
+        public CubicHexCoord Hex { get; }
+        public List<TileEvent> Events { get; set; } = new List<TileEvent>();
+        [JsonIgnore]
+        public bool IsNotEmpty => Events.IsNotEmpty();
+
+        public override int GetHashCode()
+        {
+            return Hex.GetHashCode();
+        }
+    }
+
+    public class TileEvent
     {
         public CubicHexCoord Hex { get; set; }
         public string EventType;
+        [JsonIgnore]
+        public TileEntity Entity { get; set; }
 
         public TileEvent()
         {
@@ -37,36 +73,49 @@ namespace robot.dad.game.Entities
         {
             Hex = hex;
             this.EventType = eventType;
+            AddTileEntity();
 
             if (eventType == "Ruin")
             {
-                AddComponents(new AggressorComponent(this, 2));
+                Entity.AddComponents(new AggressorComponent(this, 2));
             }
 
             IdentifiedImage = SpritePipe.Ruin;
 
-            Visible = false;
+            ShouldUpdate = true;
+            UnknownImage = SpritePipe.UnknownTile;
 
-            Graphic = SpritePipe.UnknownTile;
-            Graphic.CenterOrigin();
+            Entity.Graphic = SpritePipe.UnknownTile;
+
+            Entity.Graphic.CenterOrigin();
+        }
+
+        protected void AddTileEntity()
+        {
+            Entity = new TileEntity {Visible = false};
             var tilePos = graphics.Hex.Grid.CubicToPoint(Hex);
 
-            X = tilePos.x;
-            Y = tilePos.y;
+            Entity.X = tilePos.x;
+            Entity.Y = tilePos.y;
         }
+
+        [JsonIgnore]
+        public Image UnknownImage { get; set; }
 
         public virtual void Identify()
         {
             if (!Identified)
             {
                 Identified = true;
-                Graphic = IdentifiedImage;
-                Graphic.CenterOrigin();
+                Entity.Graphic = IdentifiedImage;
+                Entity.Graphic.CenterOrigin();
             }
         }
 
+        [JsonIgnore]
         public Image IdentifiedImage { get; set; }
 
         public bool Identified { get; set; }
+        public bool ShouldUpdate { get; set; }
     }
 }

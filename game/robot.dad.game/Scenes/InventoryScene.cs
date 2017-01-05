@@ -332,6 +332,7 @@ namespace robot.dad.game.Scenes
         {
             if (CurrentList != PrimaryList) //Cannot TAKE stuff from owns list
             {
+
                 var item = CurrentList.PopCurrentItem();
                 PrimaryList.Add(item);
             }

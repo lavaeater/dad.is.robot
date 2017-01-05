@@ -18,6 +18,10 @@ namespace robot.dad.common
 
     public class CountableItem : ThingValue<int>, IItem
     {
+        public CountableItem() : base(0,0)
+        {
+            
+        }
         public CountableItem(string itemKey, string name, int value, double probability) : base(value, probability)
         {
             ItemKey = itemKey;
