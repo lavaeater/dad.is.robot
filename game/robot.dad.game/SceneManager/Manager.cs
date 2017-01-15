@@ -89,7 +89,7 @@ namespace robot.dad.game.SceneManager
 
         private void CreateGame()
         {
-            var game = new Game("Dad is a Robot", 1600, 900, 60, false);
+            var game = new Game("Dad is a Robot", 1600, 900, 60, true);
             game.OnEnd = OnGameEnd;
 
             GameInstance = game;

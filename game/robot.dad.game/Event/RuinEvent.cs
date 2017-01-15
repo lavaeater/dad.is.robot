@@ -18,7 +18,12 @@ namespace robot.dad.game.Event
         protected override void AddTileEntity()
         {
             base.AddTileEntity();
-            Entity.AddComponent(new AggressorComponent(this, 2));
+            Entity.AddComponent(new AggressorComponent(this, 2, Done));
+        }
+
+        public void Done()
+        {
+            EventDone = true;
         }
     }
 }

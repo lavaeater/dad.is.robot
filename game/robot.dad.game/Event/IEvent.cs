@@ -12,6 +12,7 @@ namespace robot.dad.game.Event
         bool ShouldUpdate { get; set; }
         bool EntityVisible { get; set; }
         bool Identified { get; set; }
+        bool EventDone { get; set; }
         void Identify();
         void Hide();
         void Show();

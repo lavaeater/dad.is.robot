@@ -44,6 +44,7 @@ namespace robot.dad.game.Event
         }
 
         public bool Identified { get; set; }
+        public bool EventDone { get; set; }
 
         public virtual void Identify()
         {

@@ -25,7 +25,9 @@ namespace robot.dad.game.Event
 
         private void Reveal()
         {
+            EventDone = true;
             EntityVisible = true;
+            
         }
 
         public override void Show()

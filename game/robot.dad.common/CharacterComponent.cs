@@ -37,5 +37,10 @@ namespace robot.dad.common
         public string ItemKey { get; set; }
         public string Name {get; set; }
         public string Description { get; set; }
+
+        public override string ToString()
+        {
+            return $"ItemKey: {ItemKey}, Name: {Name}";
+        }
     }
 }

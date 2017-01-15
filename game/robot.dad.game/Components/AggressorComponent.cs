@@ -22,7 +22,7 @@ namespace robot.dad.game.Components
 
         public override void Update()
         {
-            if (!TileEvent.ShouldUpdate) return;
+            if (!TileEvent.ShouldUpdate || TileEvent.EventDone) return;
 
             //We're visible, time to find the player! How?
             //Through the scene!
@@ -31,6 +31,7 @@ namespace robot.dad.game.Components
                 var curPos = Manager.Instance.MainScene.BackGround.CurrentPosition;
                 if (AreaAround.Contains(curPos))
                 {
+
                     DoneAction?.Invoke();
                     Done = true;
                     Manager.Instance.StartChaseScene();

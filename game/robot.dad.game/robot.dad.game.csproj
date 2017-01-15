@@ -89,7 +89,13 @@
     <Compile Include="Entities\CombattantCard.cs" />
     <Compile Include="Entities\GraphicalPicker.cs" />
     <Compile Include="Scenes\IntroScene.cs" />
+    <Compile Include="Scenes\InventoryManager.cs" />
     <Compile Include="Scenes\InventoryScene.cs" />
+    <Compile Include="Scenes\ISelectableEntity.cs" />
+    <Compile Include="Scenes\ItemAction.cs" />
+    <Compile Include="Scenes\ItemEntity.cs" />
+    <Compile Include="Scenes\ItemEntityList.cs" />
+    <Compile Include="Scenes\ItemInventoryList.cs" />
     <Compile Include="Scenes\Message.cs" />
     <Compile Include="Scenes\MessageQueueDisplayer.cs" />
     <Compile Include="Global.cs" />
