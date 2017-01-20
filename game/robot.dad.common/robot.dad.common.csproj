@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,6 +53,11 @@
     <Compile Include="CharacterWeapon.cs" />
     <Compile Include="CombatMoveType.cs" />
     <Compile Include="CombatStatus.cs" />
+    <Compile Include="Quest\IQuestItem.cs" />
+    <Compile Include="Quest\MainQuestStart.cs" />
+    <Compile Include="Quest\QuestEngine.cs" />
+    <Compile Include="Quest\QuestItemState.cs" />
+    <Compile Include="Quest\QuestType.cs" />
     <Compile Include="WeaponCombatMove.cs" />
     <Compile Include="DiceRoller.cs" />
     <Compile Include="EffectType.cs" />
@@ -74,6 +83,9 @@
       <Project>{3364a51b-ace9-44a9-9ecd-9ca5eb2248df}</Project>
       <Name>rds</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

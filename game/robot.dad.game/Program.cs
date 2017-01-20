@@ -16,6 +16,12 @@ namespace robot.dad.game
             //StartInventory();
             StartManager();
             //StartLoot();
+            //StartSaveGame();
+        }
+
+        private static void StartSaveGame()
+        {
+            Manager.Instance.OnGameEnd();
         }
 
         private static void StartInventory()

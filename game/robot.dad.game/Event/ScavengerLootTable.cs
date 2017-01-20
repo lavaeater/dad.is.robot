@@ -1,5 +1,6 @@
 using rds;
 using robot.dad.common;
+using robot.dad.common.Quest;
 
 namespace robot.dad.game.Event
 {
@@ -8,11 +9,12 @@ namespace robot.dad.game.Event
         public ScavengerLootTable(int numberOfScavengers)
         {
             Count = numberOfScavengers;
+            AddEntry(new MainQuestStart(),100, true, false, true);
             AddEntry(new WeaponsTable(1), 300);
             AddEntry(new ArmorTable(1), 200);
             AddEntry(new BasicItem("Elektroniska komponenter", "Delar av datorer och annan utrustning från den gamla tiden"), 25);
-            AddEntry(new CountableItem("Food", "Mat",10, 100));
-            AddEntry(new CountableItem("Money", "Mynt",10, 100));
+            AddEntry(new CountableItem("Food", "Mat", 10, 100));
+            AddEntry(new CountableItem("Money", "Mynt", 10, 100));
             Count = 3*numberOfScavengers;
         }
     }

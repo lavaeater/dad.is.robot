@@ -1,5 +1,6 @@
 ﻿using System;
 using Otter;
+using robot.dad.common;
 using robot.dad.game.Sprites;
 
 namespace robot.dad.game.Components
@@ -37,7 +38,10 @@ namespace robot.dad.game.Components
             _speedY = 0;
             _smallThrust = (int)_maxThrust / 2;
             _mediumThrust = (int)_maxThrust - (int)_maxThrust / 5;
+            Wind = new WindFlute();
         }
+
+        public WindFlute Wind { get; set; }
 
         public override void Update()
         {
@@ -101,16 +105,16 @@ namespace robot.dad.game.Components
             {
                 _currentSpeed = Util.Approach(_currentSpeed, 0, _drag);
             }
-            _speedX = (int)Util.PolarX(_angle, _currentSpeed);
-            _speedY = (int)Util.PolarY(_angle, _currentSpeed);
+
+            Wind.Update();
+
+            _speedX = (int)Util.PolarX(_angle, _currentSpeed) + Wind.WindForceX;
+            _speedY = (int)Util.PolarY(_angle, _currentSpeed) + Wind.WindForceY;
 
 
             MoveXY(_speedX, _speedY, Collider);
 
-            if (OnMove != null)
-            {
-                OnMove();
-            }
+            OnMove?.Invoke();
         }
 
         private readonly Graphic SmallThrust = SpritePipe.ThrustOne;
@@ -124,9 +128,9 @@ namespace robot.dad.game.Components
             {
 
                 float originY = SmallThrust.ScaledHeight + Entity.Graphic.ScaledHeight / 2;
-                SmallThrust.SetOrigin(SmallThrust.HalfWidth / 2 +1, originY);
-                MediumThrust.SetOrigin(MediumThrust.HalfWidth / 2 +1, originY);
-                MaxThrust.SetOrigin(MaxThrust.HalfWidth / 2 +1, originY);
+                SmallThrust.SetOrigin(SmallThrust.HalfWidth / 2 + 1, originY);
+                MediumThrust.SetOrigin(MediumThrust.HalfWidth / 2 + 1, originY);
+                MaxThrust.SetOrigin(MaxThrust.HalfWidth / 2 + 1, originY);
 
                 SmallThrust.Angle = 90;
                 MediumThrust.Angle = 90;
@@ -137,6 +141,80 @@ namespace robot.dad.game.Components
                 MaxThrust.Visible = false;
 
                 Entity.AddGraphics(SmallThrust, MediumThrust, MaxThrust);
+            }
+        }
+    }
+
+    public class WindFlute
+    {
+        public float WindAngle = 180f;
+        public float WindSpeed = 1.00f;
+        public int WindForceState = 1; // -1 = decreasing wind, 1 = increasing wind, 0 = constant
+        public int WindAngleState = 0;
+        public int WindForceX => (int)Util.PolarX(WindAngle, WindSpeed);
+        public int WindForceY => (int)Util.PolarY(WindAngle, WindSpeed);
+        public int Updates = 0;
+
+        public void Update()
+        {
+            Updates++;
+            if (Updates > 500)
+            {
+                /*
+             * Called from the thruster movement components' update method
+             * 
+             * will determine if the direction and force of the wind is changing, up or down, 
+             * left and right.
+             */
+                int windForceRoll = DiceRoller.RollDice(0, 100);
+                if (windForceRoll > 70)
+                {
+                    WindForceState = 1;
+                }
+                else if (windForceRoll < 70 && windForceRoll > 20)
+                {
+                    WindForceState = 0;
+                }
+                else if (windForceRoll < 20)
+                {
+                    WindForceState = -1;
+                }
+
+                int windAngleRoll = DiceRoller.RollDice(1, 100);
+                if (20 < windAngleRoll && windAngleRoll < 80)
+                {
+                    WindAngleState = 0;
+                }
+                else if (windAngleRoll < 20)
+                {
+                    WindAngleState = -1;
+                }
+                else if (windAngleRoll > 80)
+                {
+                    WindAngleState = 1;
+                }
+                Updates = 0;
+            }
+            if (Updates % 50 == 0)
+            {
+                WindSpeed += WindForceState * 20f;
+                if (WindSpeed < 0)
+                {
+                    WindSpeed = 0;
+                }
+                if (WindSpeed > 150)
+                {
+                    WindSpeed = 150;
+                }
+                WindAngle += WindAngleState * 20f;
+                if (WindAngle > 360)
+                {
+                    WindAngle = 0;
+                }
+                if (WindAngle < 0)
+                {
+                    WindAngle = 360;
+                }
             }
         }
     }

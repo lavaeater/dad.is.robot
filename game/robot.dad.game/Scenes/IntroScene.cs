@@ -27,11 +27,13 @@ namespace robot.dad.game.Scenes
         public override void Begin()
         {
             IntroMusic.Play();
-            IntroSpeech.Play();
+            if(PlayVoiceOver)
+                IntroSpeech.Play();
         }
 
         public IntroScene(Action sceneDone)
         {
+            PlayVoiceOver = true;
             SceneDone = sceneDone;
             //Hardcoded data for now.
             //Start with crawl only untill we can get some images up in this biatch.
@@ -57,6 +59,34 @@ namespace robot.dad.game.Scenes
                 }
             }
         }
+        public IntroScene(Action sceneDone, string fileData)
+        {
+            PlayVoiceOver = false;
+            SceneDone = sceneDone;
+            //Hardcoded data for now.
+            //Start with crawl only untill we can get some images up in this biatch.
+
+            var paragraphs = fileData.Split(new string[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            var lines = paragraphs.Select(p => p.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries));
+
+            MQD = new MessageQueueDisplayer(CrawlData, this, -1400, 0.35f);
+
+            /*
+             * How do we figure this out? 
+             * We pop a text mes
+             */
+            foreach (var paragraph in lines)
+            {
+                CrawlData.Enqueue("");
+                foreach (var line in paragraph)
+                {
+                    CrawlData.Enqueue(line);
+                }
+            }
+        }
+
+        public bool PlayVoiceOver { get; set; }
 
         public override void Update()
         {
@@ -74,7 +104,8 @@ namespace robot.dad.game.Scenes
         public override void End()
         {
             IntroMusic.Stop();
-            IntroSpeech.Stop();
+            if(PlayVoiceOver)
+                IntroSpeech.Stop();
         }
     }
 }

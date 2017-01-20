@@ -8,6 +8,11 @@ namespace robot.dad.common
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public BasicItem()
+        {
+            
+        }
+
         public BasicItem(string name, string description)
         {
             ItemKey = name;
@@ -19,6 +24,11 @@ namespace robot.dad.common
             ItemKey = itemKey;
             Name = name;
             Description = description;
+        }
+
+        public override string ToString()
+        {
+            return $"ItemKey: {ItemKey}, Name: {Name}";
         }
     }
 }

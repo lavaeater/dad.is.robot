@@ -9,8 +9,8 @@ namespace robot.dad.game.Sprites
 {
     public static class SpritePipe
     {
-        public static Image PlayerSprite => new Image("Sprites\\ship.png");
-        public static Image PlayerShadowSprite => new Image("Sprites\\ship_shadow.png");
+        public static Image PlayerSprite => new Image("Sprites\\airshipfinal.png");
+        public static Image PlayerShadowSprite => new Image("Sprites\\airshipfinal_shadow.png");
         public static Image EnemySprite => new Image("Sprites\\ship.png");
         public static Image ThrustOne => new Image("Sprites\\thrust1.png");
         public static Image ThrustTwo => new Image("Sprites\\thrust2.png");

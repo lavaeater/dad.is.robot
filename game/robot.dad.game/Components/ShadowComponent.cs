@@ -18,13 +18,14 @@ namespace robot.dad.game.Components
         {
             PlayerShadowSprite.CenterOrigin();
             PlayerShadowSprite.Scale = _player.Scale / 2;
-            Graphics.Add(PlayerShadowSprite);
+            PlayerShadowSprite.Alpha = 0.5f;
+            Graphics.InsertOrAdd(0,PlayerShadowSprite);
         }
 
         public override void Update()
         {
-            PlayerShadowSprite.X = _player.PlayerSprite.X + 50;
-            PlayerShadowSprite.Y = _player.PlayerSprite.Y + 50;
+            PlayerShadowSprite.X = _player.PlayerSprite.X + 25;
+            PlayerShadowSprite.Y = _player.PlayerSprite.Y + 25;
         }
     }
 }

@@ -18,6 +18,10 @@ namespace robot.dad.common
 
     public class CountableItem : ThingValue<int>, IItem
     {
+        public CountableItem() : base(0,0)
+        {
+            
+        }
         public CountableItem(string itemKey, string name, int value, double probability) : base(value, probability)
         {
             ItemKey = itemKey;
@@ -33,5 +37,10 @@ namespace robot.dad.common
         public string ItemKey { get; set; }
         public string Name {get; set; }
         public string Description { get; set; }
+
+        public override string ToString()
+        {
+            return $"ItemKey: {ItemKey}, Name: {Name}";
+        }
     }
 }
