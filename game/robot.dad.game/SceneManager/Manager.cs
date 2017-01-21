@@ -154,7 +154,22 @@ namespace robot.dad.game.SceneManager
             var loot = Lootables.GetLootFromScavengers(3);
             if (loot.Any(l => l is IQuestItem))
             {
-                var cutScene = new IntroScene(() => GoToLootScene(loot.OfType<IItem>()), loot.OfType<IQuestItem>().First().CutSceneText);
+                //Loot kan alltid MAX innehålla ETT quest-item, eller hur? Vi antar det.
+                //TODO: Lägg till questen till karaktärens data!
+
+                var quest = loot.OfType<IQuestItem>()
+                    .Single();
+
+                if (quest.CanStart)
+                {
+                    quest.Accept();
+                }
+
+                Global.PlayerOne.PlayerCharacter.Quests.Add(quest);
+
+                var cutScene = new IntroScene(() => 
+                GoToLootScene(loot.OfType<IItem>()), 
+                quest.CutSceneText);
                 GameInstance.SwitchScene(cutScene);
             }
             else
