@@ -7,6 +7,11 @@ namespace robot.dad.common.Quest
             return new MainQuestStart();
         }
 
+        public static IQuestItem GetNextStep(IQuestItem previousStep)
+        {
+            
+        }
+
         /*
          * What is a quest? How do we use loot tables?
          * 
