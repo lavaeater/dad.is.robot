@@ -7,11 +7,6 @@ namespace robot.dad.common.Quest
             return new MainQuestStart();
         }
 
-        public static IQuestItem GetNextStep(IQuestItem previousStep)
-        {
-            
-        }
-
         /*
          * What is a quest? How do we use loot tables?
          * 
@@ -65,5 +60,10 @@ namespace robot.dad.common.Quest
          * The goal is to find the family and heal the wasteland as a family, again. To do this,
          * the girls have to explore the wasteland
          */
+
+        public static IQuestItem GetNextStep(QuestItemBase questItemBase)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -14,9 +14,17 @@ namespace robot.dad.game
         static void Main(string[] args)
         {
             //StartInventory();
-            StartManager();
+            //StartManager();
             //StartLoot();
             //StartSaveGame();
+            StartQuesting();
+        }
+
+        private static void StartQuesting()
+        {
+            var questDemo = new QuestDemo();
+            questDemo.Start();
+
         }
 
         private static void StartSaveGame()
@@ -41,5 +49,15 @@ namespace robot.dad.game
         }
     }
 
-
+    internal class QuestDemo
+    {
+        public void Start()
+        {
+            Console.SetCursorPosition(12,12);
+            Console.Write("Wuurt");
+            Console.SetCursorPosition(18,18);
+            Console.Write("Test");
+            Console.ReadKey();
+        }
+    }
 }
