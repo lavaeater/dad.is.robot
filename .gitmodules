@@ -1,0 +1,3 @@
+[submodule "ConsoleDraw"]
+	path = ConsoleDraw
+	url = https://github.com/Haydend/ConsoleDraw.git
