@@ -78,7 +78,8 @@ namespace robot.dad.game.SceneManager
             var saveGame = JsonConvert.DeserializeObject<SaveGame>(saveGameData);
             AddPlayerCharacterToSession(saveGame.PlayerCharacter);
             var player = new PlayerEntity(0.5f, 800, 450, true);
-            var scene = new MainScene(player); string atlasFile = "Terrain\\terrain.json";
+            var scene = new MainScene(player);
+            string atlasFile = "Terrain\\terrain.json";
             var terrainData = File.ReadAllText("Terrain\\TerrainConfig.json");
             var background = new HexBackGround(atlasFile, terrainData, 3, 12);
             scene.AddBackGround(background);

@@ -1,12 +1,10 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Otter.Extras
 {
     public class Container : UiElement
     {
-        public int Rows { get; set; }
-        public int Cols { get; set; }
         public List<UiElement> Children { get; set; } = new List<UiElement>();
 
         public void MoveItemUp(UiElement item)
@@ -42,14 +40,6 @@ namespace Otter.Extras
                 Children.Insert(index, item);
                 Dirty = true;
             }
-        }
-
-        public Container(int cols, int cellSpacing, int rowSpacing)
-        {
-            Cols = cols;
-            CellSpacing = cellSpacing;
-            RowSpacing = rowSpacing;
-            Dirty = true;
         }
         //Contains other UI Elements... how?
         public IEnumerator<UiElement> GetEnumerator()
@@ -108,34 +98,31 @@ namespace Otter.Extras
             Children.RemoveAt(index);
             Dirty = true;
         }
-       
+
         public override void Update()
         {
+            throw new NotImplementedException();
             //The updated needs to sort out a functioning layout 
             //for all children of this entity. This is complex stuff.
-            if (Dirty)
-            {
-                //Something has changed, redo everything... at least the position calculation
-                int rowHeight = Children.Select(e => e.Height).Max() + RowSpacing;
-                int colWidth = Children.Select(e => e.Width).Max() + CellSpacing;
-                Rows = Children.Count / Cols;
-                int i = 0;
-                for (int r = 0; r < Rows; r++)
-                {
-                    for (int c = 0; c < Cols; c++)
-                    {
-                        float x = X + (c * colWidth) + CellSpacing;
-                        float y = Y + (r * rowHeight) + RowSpacing;
-                        Children[i].X = x;
-                        Children[i].Y = y;
-                        i++;
-                    }
-                }
-            }
+            //if (Dirty)
+            //{
+            //    //Something has changed, redo everything... at least the position calculation
+            //    int rowHeight = Children.Select(e => e.Height).Max() + RowSpacing;
+            //    int colWidth = Children.Select(e => e.Width).Max() + CellSpacing;
+            //    Rows = Children.Count / Cols;
+            //    int i = 0;
+            //    for (int r = 0; r < Rows; r++)
+            //    {
+            //        for (int c = 0; c < Cols; c++)
+            //        {
+            //            float x = X + (c * colWidth) + CellSpacing;
+            //            float y = Y + (r * rowHeight) + RowSpacing;
+            //            Children[i].X = x;
+            //            Children[i].Y = y;
+            //            i++;
+            //        }
+            //    }
+            //}
         }
-
-        public int CellSpacing { get; set; } = 5;
-
-        public int RowSpacing { get; set; } = 5;
     }
 }

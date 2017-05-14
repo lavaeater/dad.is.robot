@@ -2,12 +2,19 @@
 
 namespace Otter.Extras
 {
-    public class ClickableListItem : Clickable
+    public class ClickableCardItem : Clickable
+    {
+        public ClickableCardItem(Action<Clickable> clicked) : base(clicked)
+        {
+        }
+    }
+
+    public class ClickableTextItem : Clickable
     {
         public string Caption { get; }
         public override string Tag => Caption;
 
-        public ClickableListItem(string caption, Action<Clickable> clicked) : base(clicked)
+        public ClickableTextItem(string caption, Action<Clickable> clicked) : base(clicked)
         {
             Caption = caption;
             RichText itemText = new RichText(Caption, new RichTextConfig()

@@ -16,11 +16,11 @@ namespace Otter.Extras
 
         public QuestScene(string title) : base(title)
         {
-            var entityList = new Container(2, 20, 20);
+            var entityList = new ItemGrid(2, 20, 20);
             Add(entityList);
             for (int i = 0; i < 10; i++)
             {
-                var item = new ClickableListItem($"Item {i}", Clicked);
+                var item = new ClickableTextItem($"Item {i}", Clicked);
                 entityList.Add(item);
             }
         }
