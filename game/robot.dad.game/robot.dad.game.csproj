@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>robot.dad.game</RootNamespace>
     <AssemblyName>robot.dad.game</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -209,6 +210,10 @@
     <ProjectReference Include="..\Loot\rds.csproj">
       <Project>{3364A51B-ACE9-44A9-9ECD-9CA5EB2248DF}</Project>
       <Name>rds</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Otter.Extras\Otter.Extras.csproj">
+      <Project>{6957754e-640e-4d16-89e8-c75b2923dc3e}</Project>
+      <Name>Otter.Extras</Name>
     </ProjectReference>
     <ProjectReference Include="..\otter\Otter.csproj">
       <Project>{236485c2-a7ba-4dcd-808a-b3a634764402}</Project>

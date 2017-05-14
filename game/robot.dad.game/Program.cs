@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Otter;
+using Otter.Extras;
 using robot.dad.common;
 using robot.dad.game.Event;
 using robot.dad.game.SceneManager;
@@ -55,7 +56,7 @@ namespace robot.dad.game
         {
             var game = new Game("Questing the fuck out", 800, 600, 60, false);
 
-            game.Start(new QuestScene("Just some quests"));
+            game.Start(new  QuestScene("Just some quests"));
             Console.SetCursorPosition(12, 12);
             Console.Write("Wuurt");
             Console.SetCursorPosition(18, 18);

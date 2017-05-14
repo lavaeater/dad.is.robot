@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace Otter.Extras
 {
@@ -12,141 +6,16 @@ namespace Otter.Extras
     {
         public QuestScene() : base("Quest Scene")
         {
-            
+
         }
 
-        public QuestScene(string title): base(title)
+        public QuestScene(string title) : base(title)
         {
-            
+
         }
-    }
-
-    public class SimpleUiScene : Scene
-    {
-        public string Title { get; }
-
-        public SimpleUiScene(string title) :base()
-        {
-            Title = title;
-        }
-
-        public override void Update()
-        {
-        }
-    }
-
-    public class UiElement : Entity
-    {
-        
     }
 
     //Should be clickable?
-    public class Container : UiElement, IList<UiElement>
-    {
-        public int Rows { get; set; }
-        public int Cols { get; set; }
-
-        public List<UiElement> Children { get; set; } = new List<UiElement>();
-        public Container(int rows, int cols)
-        {
-            Rows = rows;
-            Cols = cols;
-        }
-        //Contains other UI Elements... how?
-        public IEnumerator<UiElement> GetEnumerator()
-        {
-            return Children.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public void Add(UiElement item)
-        {
-            Scene.Add(item);
-            Children.Add(item);
-        }
-
-        public void Clear()
-        {
-            Scene.Remove(Children);
-            Children.Clear();
-        }
-
-        public bool Contains(UiElement item)
-        {
-            return Children.Contains(item);
-        }
-
-        public void CopyTo(UiElement[] array, int arrayIndex)
-        {
-            Children.CopyTo(array, arrayIndex);
-        }
-
-        public bool Remove(UiElement item)
-        {
-            Scene.Remove(item);
-            return Children.Remove(item);
-        }
-
-        public int Count => Children.Count;
-
-        public bool IsReadOnly => false;
-
-        public int IndexOf(UiElement item)
-        {
-            return Children.IndexOf(item);
-        }
-
-        public void Insert(int index, UiElement item)
-        {
-            Children.Insert(index, item);
-        }
-
-        public void RemoveAt(int index)
-        {
-            Children.RemoveAt(index);
-        }
-
-        public UiElement this[int index]
-        {
-            get => Children[index];
-            set => Children[index] = value;
-        }
-
-        public override void Update()
-        {
-            //The updated needs to sort out a functioning layout 
-            //for all children of this entity. This is complex stuff.
-        }
-    }
-
-    public class Clickable : UiElement
-    {
-        protected Action<Clickable> Clicked { get; }
-        protected int Width { get; set; } = 100;
-        protected int Height { get; set; } = 100;
-        private Rectangle _entityArea;
-
-        public Clickable(Action<Clickable> clicked)
-        {
-            Clicked = clicked;
-        }
-
-        public override void Update()
-        {
-            if (Input.MouseButtonReleased(MouseButton.Any))
-            {
-                _entityArea = new Rectangle((int)X, (int)Y, Width, Height ); //The rectangle will be updated every update cycle
-                if (_entityArea.Contains((int) Input.MouseScreenX, (int) Input.MouseScreenY)) ;
-                {
-                    Clicked?.Invoke(this); //We might want something else as a parameter, get back to it later.
-                }
-            }
-        }
-    }
 
     /*
      * Time for a small novel here, then.
