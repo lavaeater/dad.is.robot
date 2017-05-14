@@ -4,14 +4,25 @@ namespace Otter.Extras
 {
     public class QuestScene : SimpleUiScene
     {
-        public QuestScene() : base("Quest Scene")
+        public QuestScene() : this("Quest Scene")
         {
 
         }
 
+        public void Clicked(UiElement item)
+        {
+            var something = item.Tag;
+        }
+
         public QuestScene(string title) : base(title)
         {
-
+            var entityList = new Container(2, 20, 20);
+            Add(entityList);
+            for (int i = 0; i < 10; i++)
+            {
+                var item = new ClickableListItem($"Item {i}", Clicked);
+                entityList.Add(item);
+            }
         }
     }
 

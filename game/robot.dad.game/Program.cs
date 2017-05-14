@@ -15,7 +15,7 @@ namespace robot.dad.game
         static void Main(string[] args)
         {
             //StartInventory();
-            StartManager();
+            //StartManager();
             //StartLoot();
             //StartSaveGame();
             StartQuesting();
@@ -55,13 +55,12 @@ namespace robot.dad.game
         public void Start()
         {
             var game = new Game("Questing the fuck out", 800, 600, 60, false);
+            game.MouseVisible = true;
 
-            game.Start(new  QuestScene("Just some quests"));
-            Console.SetCursorPosition(12, 12);
-            Console.Write("Wuurt");
-            Console.SetCursorPosition(18, 18);
-            Console.Write("Test");
-            Console.ReadKey();
+
+            game.Start(new QuestScene("Just some quests"));
+
+
         }
     }
 }
