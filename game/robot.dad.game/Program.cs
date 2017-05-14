@@ -17,7 +17,7 @@ namespace robot.dad.game
             StartManager();
             //StartLoot();
             //StartSaveGame();
-            //StartQuesting();
+            StartQuesting();
         }
 
         private static void StartQuesting()
@@ -35,12 +35,12 @@ namespace robot.dad.game
         private static void StartInventory()
         {
             var game = new Game("InventoryTest", 1800, 900);
-            var inventoryList = new List<IItem> {new CountableItem("Money", "Mynt",12, 100), new BasicWeapon(12, "LEif"),};
+            var inventoryList = new List<IItem> { new CountableItem("Money", "Mynt", 12, 100), new BasicWeapon(12, "LEif"), };
 
             var table = new ScavengerLootTable(3);
             var secondaryList = new List<IItem>(table.Result.OfType<IItem>());
 
-            game.Start(new InventoryScene(() => Console.WriteLine("Done!"),inventoryList, secondaryList));
+            game.Start(new InventoryScene(() => Console.WriteLine("Done!"), inventoryList, secondaryList));
         }
 
         private static void StartManager()
@@ -53,9 +53,12 @@ namespace robot.dad.game
     {
         public void Start()
         {
-            Console.SetCursorPosition(12,12);
+            var game = new Game("Questing the fuck out", 800, 600, 60, false);
+
+            game.Start(new QuestScene("Just some quests"));
+            Console.SetCursorPosition(12, 12);
             Console.Write("Wuurt");
-            Console.SetCursorPosition(18,18);
+            Console.SetCursorPosition(18, 18);
             Console.Write("Test");
             Console.ReadKey();
         }
