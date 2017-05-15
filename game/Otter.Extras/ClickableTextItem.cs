@@ -4,8 +4,9 @@ namespace Otter.Extras
 {
     public class ClickableCardItem : Clickable
     {
-        public ClickableCardItem(Action<Clickable> clicked) : base(clicked)
+        public ClickableCardItem(Action<Clickable> clicked, Graphic graphic) : base(clicked)
         {
+            AddGraphic(graphic);
         }
     }
 
