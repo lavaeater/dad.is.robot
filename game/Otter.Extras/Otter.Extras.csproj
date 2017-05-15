@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clickable.cs" />
-    <Compile Include="ClickableListItem.cs" />
+    <Compile Include="ClickableTextItem.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ItemGrid.cs" />
     <Compile Include="QuestScene.cs" />
