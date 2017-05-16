@@ -44,10 +44,12 @@
     <Compile Include="Clickable.cs" />
     <Compile Include="ClickableTextItem.cs" />
     <Compile Include="Container.cs" />
+    <Compile Include="DialogResult.cs" />
     <Compile Include="ItemGrid.cs" />
-    <Compile Include="QuestScene.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleDialog.cs" />
     <Compile Include="SimpleUiScene.cs" />
+    <Compile Include="StaticItemGrid.cs" />
     <Compile Include="UiElement.cs" />
   </ItemGroup>
   <ItemGroup>

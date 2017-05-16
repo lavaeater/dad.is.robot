@@ -13,15 +13,17 @@ namespace Otter.Extras
     public class ClickableTextItem : Clickable
     {
         public string Caption { get; }
+        public int TextSize { get; }
         public override string Tag => Caption;
 
-        public ClickableTextItem(string caption, Action<Clickable> clicked) : base(clicked)
+        public ClickableTextItem(string caption, int textSize, Action<Clickable> clicked) : base(clicked)
         {
             Caption = caption;
+            TextSize = textSize;
             RichText itemText = new RichText(Caption, new RichTextConfig()
             {
                 CharColor = Color.White,
-                FontSize = 32,
+                FontSize = TextSize,
                 TextAlign = TextAlign.Center
             });
             Width = itemText.Width;
@@ -36,7 +38,7 @@ namespace Otter.Extras
             RichText itemText = new RichText(Caption, new RichTextConfig()
             {
                 CharColor = Color.Green,
-                FontSize = 32,
+                FontSize = TextSize,
                 TextAlign = TextAlign.Center
             });
             Width = itemText.Width;
@@ -52,7 +54,7 @@ namespace Otter.Extras
             RichText itemText = new RichText(Caption, new RichTextConfig()
             {
                 CharColor = Color.White,
-                FontSize = 32,
+                FontSize = TextSize,
                 TextAlign = TextAlign.Center
             });
             Width = itemText.Width;
