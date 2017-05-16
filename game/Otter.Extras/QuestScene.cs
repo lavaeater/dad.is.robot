@@ -26,6 +26,37 @@ namespace Otter.Extras
         }
     }
 
+    /*
+     * En till roman i sammanhanget... vi har börjat få till en halvfungerande ui-implementation som vi förmodligen
+     * kan bygga vidare på för att göra olika delar av ui:t i spelet.
+     * 
+     * Men var ska vi börja? 
+     * 
+     * Våra förmågor att åstadkomma saker är väldigt avhängiga att vi faktiskt löser problem. Problemlösning är vårt
+     * game. Jag ville göra ett text-baserat ui för att testa questmotorn, här är vi nu vid ett mer grafiskt ui, men målet
+     * var att testa quest-motorn. Så då får vi utgå från den problemsfären.
+     * 
+     * Jag hade några tankar om att ett ui kan kontrollera en state machine. Det är lite najs för då kan vi 
+     * definiera en state machine för Quest-hanteringen... man kan tänka sig att en quest, eller själva questandet är 
+     * en statemachine som kan befinna sig i lite olika states som vi därför kan återuppta närhelst vi vill.
+     * 
+     * Kommer allt sluta som statemachines? 
+     * 
+     * Vad behöver vi kunna göra för att testa quest-motorn? Vi behöver ha ett ui-element som presenterar spelarens position
+     * i koordinater. I det systemet kan vi sen köra hela ui-grejen, målet kanske tom är att betrakta alltihop som ett lager 
+     * så att det kan agera HUD i själva spelet. Detta ger oss möjlighet att presentera dialoger etc.
+     * 
+     * SÅ olika ui-element vi behöver idag:
+     * 
+     * CustomUi-element för att rendera spelarposition (ingen generell implementation utan väldigt specifik)
+     * Popup-dialog eller liknande för att ställa frågor - perfekt för "gå in i staden" och "Undersök?"-frågor
+     * 
+     * Jag tror dialogen är den kraftfullaste.
+     * 
+     * Sen behöver vi ui för inventory vilket naturligt segway:ar in i character scene / editor / manager
+     * 
+     */
+
     //Should be clickable?
 
     /*
