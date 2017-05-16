@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using Otter.Extras;
 
-namespace Otter.Extras
+namespace robot.dad.game.Scenes
 {
     public class QuestScene : SimpleUiScene
     {
