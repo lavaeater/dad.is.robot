@@ -16,13 +16,23 @@ namespace Otter.Extras
 
         public QuestScene(string title) : base(title)
         {
-            var entityList = new ItemGrid(2, 20, 20);
-            Add(entityList);
-            for (int i = 0; i < 10; i++)
+            var dialog = new SimpleDialog(result =>
             {
-                var item = new ClickableTextItem($"Item {i}", Clicked);
-                entityList.Add(item);
-            }
+                if (result == DialogResult.Ok)
+                {
+                    
+                }
+            }, 3,3, "Choose your adventure");
+
+            Add(dialog);
+
+            //var entityList = new ItemGrid(2, 20, 20);
+            //Add(entityList);
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    var item = new ClickableTextItem($"Item {i}", Clicked);
+            //    entityList.Add(item);
+            //}
         }
     }
 

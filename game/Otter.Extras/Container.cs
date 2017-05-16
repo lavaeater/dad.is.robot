@@ -5,8 +5,6 @@ namespace Otter.Extras
 {
     public class Container : UiElement
     {
-        public List<UiElement> Children { get; set; } = new List<UiElement>();
-
         public void MoveItemUp(UiElement item)
         {
             if (Children.Contains(item))
@@ -47,7 +45,7 @@ namespace Otter.Extras
             return Children.GetEnumerator();
         }
 
-        public void Add(UiElement item)
+        public virtual void Add(UiElement item)
         {
             Scene.Add(item);
             Children.Add(item);
