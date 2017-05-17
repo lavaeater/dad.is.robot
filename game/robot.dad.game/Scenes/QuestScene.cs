@@ -1,4 +1,5 @@
-﻿using Otter.Extras;
+﻿using Otter;
+using Otter.Extras;
 
 namespace robot.dad.game.Scenes
 {
@@ -16,23 +17,61 @@ namespace robot.dad.game.Scenes
 
         public QuestScene(string title) : base(title)
         {
-            var dialog = new SimpleDialog(result =>
-            {
-                if (result == DialogResult.Ok)
-                {
-                    
-                }
-            }, 3,3, "Choose your adventure");
+            DynamicText = new TextItem("Again");
+            MainContainer = new DynamicItemGrid(6,6)
+                .AddChildAt(0,0, new TextItem("Just some static text"))
+                .AddChildAt(5,5, DynamicText)
+                .AddChildAt(5,0, new ClickableTextItem("Click me", 16, ShowDialog));
 
-            Add(dialog);
+            Add(MainContainer);
 
             //var entityList = new ItemGrid(2, 20, 20);
             //Add(entityList);
-            //for (int i = 0; i < 10; i++)
+            //for (int i = 0; i < 10; i++)5m5
             //{
             //    var item = new ClickableTextItem($"Item {i}", Clicked);
             //    entityList.Add(item);
             //}
+        }
+
+        public TextItem DynamicText { get; set; }
+
+        public DynamicItemGrid MainContainer { get; set; }
+
+        public void ShowDialog(Clickable clicked)
+        {
+            MainContainer.AddChildAt(1, 1, new SimpleDialog(DialogAction, 100, 100, "A dialog"));
+        }
+
+        public void DialogAction(DialogResult result)
+        {
+            if (result == DialogResult.Ok)
+            {
+                DynamicText.UpdateText("OK Was clicked");
+            }
+            else
+            {
+                DynamicText.UpdateText("Cancel was clicked");
+            }
+        }
+    }
+
+    public class TextItem : UiElement
+    {
+        public TextItem(string text)
+        {
+            UpdateText(text);
+        }
+
+        public void UpdateText(string text)
+        {
+            ClearGraphics();
+            AddGraphic(new RichText(text, new RichTextConfig()
+            {
+                CharColor = Color.White,
+                FontSize = 16,
+                TextAlign = TextAlign.Center
+            }));
         }
     }
 

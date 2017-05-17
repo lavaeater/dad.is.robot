@@ -1,5 +1,82 @@
+using System;
+using System.Collections.Generic;
+
 namespace Otter.Extras
 {
+    public class DynamicItemGrid : Container
+    {
+        public DynamicItemGrid(int cols, int rows)
+        {
+            Cols = cols;
+            Rows = rows;
+        }
+        private bool _fill = true;
+        public int Rows { get; set; }
+        public int Cols { get; set; }
+        public int ItemWidth { get; set; }
+
+        private readonly Dictionary<Tuple<int, int>, UiElement> _elements = new Dictionary<Tuple<int, int>, UiElement>();
+
+        public DynamicItemGrid AddChildAt(int x, int y, UiElement child)
+        {
+            var key = new Tuple<int, int>(x, y);
+            if (!_elements.ContainsKey(key))
+            {
+                _elements.Add(key, child);
+            }
+            else
+            {
+                var previousChild = _elements[key];
+                previousChild.Remove();
+                Children.Remove(previousChild);
+                _elements[key] = child;
+            }
+            Add(child);
+            return this;
+        }
+        
+        public override void Update()
+        {
+            UpdateSize();
+
+            if (Dirty)
+            {
+                for (int r = 0; r < Rows; r++)
+                {
+                    for (int c = 0; c < Cols; c++)
+                    {
+                        float x = X + (c * ItemWidth) + CellSpacing;
+                        float y = Y + (r * ItemHeight) + RowSpacing;
+                        var key = new Tuple<int, int>(c, r);
+                        if (_elements.ContainsKey(key))
+                        {
+                            var element = _elements[key];
+                            element.X = x;
+                            element.Y = y;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void UpdateSize()
+        {
+            if (_fill)
+            {
+                Width = Scene.Width;
+                Height = Scene.Height;
+                ItemWidth = Width / Cols - CellSpacing;
+                ItemHeight = Height / Rows - RowSpacing;
+            }
+        }
+
+        public int RowSpacing { get; set; } = 5;
+
+        public int CellSpacing { get; set; } = 5;
+
+        public int ItemHeight { get; set; }
+    }
+
     public class StaticItemGrid : Container
     {
         public int Rows { get; set; }
@@ -27,7 +104,7 @@ namespace Otter.Extras
                 _childGrid[x] = new UiElement[Rows];
             }
             _childGrid[x][y] = child;
-            Children.Add(child);
+            Add(child);
         }
 
         public override void Update()

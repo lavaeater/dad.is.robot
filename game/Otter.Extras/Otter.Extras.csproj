@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clickable.cs" />
+    <Compile Include="ClickableCardItem.cs" />
     <Compile Include="ClickableTextItem.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="DialogResult.cs" />

@@ -33,14 +33,14 @@ namespace Otter.Extras
 
         public virtual void Add(UiElement item)
         {
-            Scene.Add(item);
+            Scene?.Add(item);
             Children.Add(item);
             Dirty = true;
         }
 
         public void Clear()
         {
-            Scene.Remove(Children);
+            Scene?.Remove(Children);
             Children.Clear();
             Dirty = true;
         }
@@ -52,21 +52,22 @@ namespace Otter.Extras
 
         public bool Remove(UiElement item)
         {
-            Scene.Remove(item);
+            Scene?.Remove(item);
             Dirty = true;
             return Children.Remove(item);
         }
 
         public void Insert(int index, UiElement item)
         {
+            Scene?.Add(item);
             Children.Insert(index, item);
             Dirty = true;
         }
 
         public void RemoveAt(int index)
         {
-            Children.RemoveAt(index);
-            Dirty = true;
+            var child = Children[index];
+            Remove(child);
         }
     }
 }
