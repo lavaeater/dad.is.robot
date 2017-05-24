@@ -1,0 +1,3 @@
+[submodule "game/Nez"]
+	path = game/Nez
+	url = https://github.com/prime31/Nez.git
