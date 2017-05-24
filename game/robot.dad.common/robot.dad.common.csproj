@@ -56,6 +56,7 @@
     <Compile Include="Quest\IQuestItem.cs" />
     <Compile Include="Quest\MainQuestStart.cs" />
     <Compile Include="Quest\QuestEngine.cs" />
+    <Compile Include="Quest\QuestItemBase.cs" />
     <Compile Include="Quest\QuestItemState.cs" />
     <Compile Include="Quest\QuestType.cs" />
     <Compile Include="WeaponCombatMove.cs" />
