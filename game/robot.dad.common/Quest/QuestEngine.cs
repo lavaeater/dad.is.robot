@@ -1,10 +1,16 @@
 namespace robot.dad.common.Quest
 {
+    //Rewrite as lightweight state machine. Look into that guy that made stateful for Kotlin state machine
     public class QuestEngine
     {
         public IQuestItem GenerateQuest()
         {
             return new MainQuestStart();
+        }
+
+        public static IQuestItem GetNextStep(IQuestItem previousStep)
+        {
+            return new QuestItemBase();
         }
 
         /*
