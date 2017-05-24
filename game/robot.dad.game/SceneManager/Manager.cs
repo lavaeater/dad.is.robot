@@ -81,7 +81,7 @@ namespace robot.dad.game.SceneManager
             var scene = new MainScene(player);
             string atlasFile = "Terrain\\terrain.json";
             var terrainData = File.ReadAllText("Terrain\\TerrainConfig.json");
-            var background = new HexBackGround(atlasFile, terrainData, 3, 12);
+            var background = new HexBackGround(atlasFile, terrainData, 3, 5);
             scene.AddBackGround(background);
             background.AddEvents(saveGame.Events);
             scene.MovePlayerToHex(saveGame.Position);
@@ -90,7 +90,7 @@ namespace robot.dad.game.SceneManager
 
         private void CreateGame()
         {
-            var game = new Game("Dad is a Robot", 1600, 900, 60, true);
+            var game = new Game("Dad is a Robot", 1600, 900, 60, false);
             game.OnEnd = OnGameEnd;
 
             GameInstance = game;
@@ -190,7 +190,7 @@ namespace robot.dad.game.SceneManager
         {
             string atlasFile = "Terrain\\terrain.json";
             var terrainData = File.ReadAllText("Terrain\\TerrainConfig.json");
-            var background = new HexBackGround(atlasFile, terrainData, 3, 12);
+            var background = new HexBackGround(atlasFile, terrainData, 3, 5);
             var player = new PlayerEntity(0.5f, 800, 450, true);
             var scene = new MainScene(player);
             scene.AddBackGround(background);

@@ -15,10 +15,10 @@ namespace robot.dad.game
         static void Main(string[] args)
         {
             //StartInventory();
-            //StartManager();
+            StartManager();
             //StartLoot();
             //StartSaveGame();
-            StartQuesting();
+            //StartQuesting();
         }
 
         private static void StartQuesting()
