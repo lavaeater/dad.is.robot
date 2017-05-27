@@ -9,7 +9,7 @@ namespace robot.dad.common.Quest
 
         public static IQuestItem GetNextStep(IQuestItem previousStep)
         {
-            
+            return new QuestItemBase();
         }
 
         /*
