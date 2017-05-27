@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -11,6 +12,7 @@
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -95,78 +97,24 @@
       <Link>zlib1.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\robot.dad.game\Sprites\airship.png">
-      <Link>Content\Images\airship.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\airship2.png">
-      <Link>Content\Images\airship2.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\airship2_shadow.png">
-      <Link>Content\Images\airship2_shadow.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\airshipfinal.png">
-      <Link>Content\Images\airshipfinal.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\airshipfinal_shadow.png">
-      <Link>Content\Images\airshipfinal_shadow.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\airship_shadow.png">
-      <Link>Content\Images\airship_shadow.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\dome.png">
-      <Link>Content\Images\dome.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\grass_01.png">
-      <Link>Content\Images\grass_01.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\ruinsCorner.png">
-      <Link>Content\Images\ruinsCorner.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\ship.png">
-      <Link>Content\Images\ship.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\ship0.png">
-      <Link>Content\Images\ship0.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\ship1.png">
-      <Link>Content\Images\ship1.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\ship2.png">
-      <Link>Content\Images\ship2.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\ship3.png">
-      <Link>Content\Images\ship3.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\ship_shadow.png">
-      <Link>Content\Images\ship_shadow.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\thrust1.png">
-      <Link>Content\Images\thrust1.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\thrust2.png">
-      <Link>Content\Images\thrust2.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\robot.dad.game\Sprites\thrust3.png">
-      <Link>Content\Images\thrust3.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Content\Images\airship.png" />
+    <Content Include="Content\Images\airship2.png" />
+    <Content Include="Content\Images\airship2_shadow.png" />
+    <Content Include="Content\Images\airshipfinal.png" />
+    <Content Include="Content\Images\airshipfinal_shadow.png" />
+    <Content Include="Content\Images\airship_shadow.png" />
+    <Content Include="Content\Images\dome.png" />
+    <Content Include="Content\Images\grass_01.png" />
+    <Content Include="Content\Images\ruinsCorner.png" />
+    <Content Include="Content\Images\ship.png" />
+    <Content Include="Content\Images\ship0.png" />
+    <Content Include="Content\Images\ship1.png" />
+    <Content Include="Content\Images\ship2.png" />
+    <Content Include="Content\Images\ship3.png" />
+    <Content Include="Content\Images\ship_shadow.png" />
+    <Content Include="Content\Images\thrust1.png" />
+    <Content Include="Content\Images\thrust2.png" />
+    <Content Include="Content\Images\thrust3.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nez.FNA\FNA\FNA.csproj">
@@ -185,4 +133,5 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
 </Project>
