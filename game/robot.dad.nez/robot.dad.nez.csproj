@@ -95,6 +95,78 @@
       <Link>zlib1.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\robot.dad.game\Sprites\airship.png">
+      <Link>Content\Images\airship.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\airship2.png">
+      <Link>Content\Images\airship2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\airship2_shadow.png">
+      <Link>Content\Images\airship2_shadow.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\airshipfinal.png">
+      <Link>Content\Images\airshipfinal.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\airshipfinal_shadow.png">
+      <Link>Content\Images\airshipfinal_shadow.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\airship_shadow.png">
+      <Link>Content\Images\airship_shadow.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\dome.png">
+      <Link>Content\Images\dome.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\grass_01.png">
+      <Link>Content\Images\grass_01.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\ruinsCorner.png">
+      <Link>Content\Images\ruinsCorner.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\ship.png">
+      <Link>Content\Images\ship.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\ship0.png">
+      <Link>Content\Images\ship0.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\ship1.png">
+      <Link>Content\Images\ship1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\ship2.png">
+      <Link>Content\Images\ship2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\ship3.png">
+      <Link>Content\Images\ship3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\ship_shadow.png">
+      <Link>Content\Images\ship_shadow.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\thrust1.png">
+      <Link>Content\Images\thrust1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\thrust2.png">
+      <Link>Content\Images\thrust2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\robot.dad.game\Sprites\thrust3.png">
+      <Link>Content\Images\thrust3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nez.FNA\FNA\FNA.csproj">
@@ -110,7 +182,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\Images\" />
+    <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
