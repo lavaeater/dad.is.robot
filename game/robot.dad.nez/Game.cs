@@ -1,6 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Nez;
-using Nez.Sprites;
+﻿using Nez;
+using robot.dad.nez.Scenes;
 
 namespace robot.dad.nez
 {
@@ -10,20 +9,8 @@ namespace robot.dad.nez
         {
             base.Initialize();
             Window.AllowUserResizing = true;
+            Scene.setDefaultDesignResolution(1280, 720, Scene.SceneResolutionPolicy.ShowAllPixelPerfect);
             scene = new TestScene();
-        }
-    }
-
-    internal class TestScene : Scene
-    {
-        public override void initialize()
-        {
-            addRenderer(new DefaultRenderer());
-            var airshipTexture = content.Load<Texture2D>("Images/airshipfinal");
-
-            var ship = createEntity("airship")
-                .addComponent(new Sprite(airshipTexture))
-                .transform.setPosition(Screen.center);
         }
     }
 }
