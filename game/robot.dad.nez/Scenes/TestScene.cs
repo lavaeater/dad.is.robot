@@ -1,43 +1,27 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 using Nez;
 using Nez.Sprites;
 using Nez.UI;
+using robot.dad.quest;
 
 namespace robot.dad.nez.Scenes
 {
     internal class TestScene : Scene
     {
-        public UICanvas UiCanvas;
-        private Table _table;
+        
         public override void initialize()
         {
             addRenderer(new DefaultRenderer());
-
-            UiCanvas = createEntity("ui")
-                .addComponent(new UICanvas());
-            UiCanvas.isFullScreen = true;
-            UiCanvas.renderLayer = 999;
-            SetupUi();
-
-
+            
             var airshipTexture = content.Load<Texture2D>(Content.Images.airshipfinal);
 
             var ship = createEntity("airship")
                 .addComponent(new Sprite(airshipTexture))
                 .transform.setPosition(Screen.center);
         }
-
-        private void SetupUi()
-        {
-            _table = UiCanvas.stage.addElement(new Table());
-            _table.setFillParent(true);
-
-            var dialog = new Dialog("Quest Motherfucker, do you do it", Skin.createDefaultSkin());
-            dialog.addText(
-                "Get this text from the Quest-context, I guess? Yes yes! The context is for generating the UI - makes PERFECT sense!");
-
-
-        }
+        
     }
 
     /// <summary>
@@ -46,30 +30,69 @@ namespace robot.dad.nez.Scenes
     /// </summary>
     internal class QuestUiScene : Scene
     {
-        
+        public UICanvas UiCanvas;
+        private Table _table;
+        private IQuest _quest;
+        private Skin _skin;
+
+        public override void initialize()
+        {
+            _quest = new QuestContext("Hitta din familj", "Hitta din mamma", "Hitta rövaren som sålde halsbandet",
+                "Halsbandet i din ägo kom från en plundrare. Han stal den från en gruvpatrons fru.",
+                new QuestingState(), UpdateUi);
+
+            addRenderer(new DefaultRenderer());
+            UiCanvas = createEntity("ui")
+                .addComponent(new UICanvas());
+            UiCanvas.isFullScreen = true;
+            UiCanvas.renderLayer = 999;
+            _skin = Skin.createDefaultSkin();
+            _table = UiCanvas.stage.addElement(new Table());
+            _table.setFillParent(true);
+            UpdateUi();
+        }
+
+        private void UpdateUi()
+        {
+            _table.clearChildren();
+
+            //Use the _quest object to display the UI.
+            //Layoutidea
+            /*
+             * *****************************
+             * In excel?
+             * 
+             * 
+             */
+
+            var dialog = new Dialog(_quest.Title, _skin);
+            dialog.addText(
+                _quest.CurrentStepTitle);
+            dialog.addText(_quest.CurrentStepDescription);
+
+            foreach (var choice in _quest.Choices)
+            {
+                var b = new Button(_skin);
+                b.add(choice.Title);
+                
+                    b.onClicked += button =>
+                    {
+                        FireQuestEvent(choice.QuestEvent, dialog);
+                    };
+                dialog.addButton(b);
+            }
+        }
+
+        private void FireQuestEvent(IQuestEvent questEvent, Dialog dialog)
+        {
+            if (questEvent != null)
+            {
+                //Fire it
+            }
+            dialog.hide();
+            //DO nothing right now!
+        }
     }
 
-    //The context for the state machine and quest
-    /* Can a quest be abandoned?
-     */
-    interface IQuest
-    {
-        string Title { get; }
-        string Description { get; }
-        string CurrentStepTitle { get; }
-        string CurrentStepDescription { get; }
-        IQuestState CurrentState { get; }
-        //Some mechanism to enumerate possible choices and what data those choices need to contain.
-        //May need changes of state machine implementation
-    }
-
-    interface IQuestState
-    {
-        
-    }
-
-    interface IQuestEvent
-    {
-        
-    }
+    
 }

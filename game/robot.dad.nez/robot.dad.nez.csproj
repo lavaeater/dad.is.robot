@@ -135,6 +135,10 @@
       <Project>{11a5855c-b12c-4f8d-b935-56f3d0b671c3}</Project>
       <Name>Nez.FNA</Name>
     </ProjectReference>
+    <ProjectReference Include="..\robot.dad.quest\robot.dad.quest.csproj">
+      <Project>{35EC5B5B-683E-4751-B2CD-E5753FCECA4A}</Project>
+      <Name>robot.dad.quest</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
