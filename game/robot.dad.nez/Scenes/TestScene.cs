@@ -31,6 +31,21 @@ namespace robot.dad.nez.Scenes
         {
             _table = UiCanvas.stage.addElement(new Table());
             _table.setFillParent(true);
+
+            var dialog = new Dialog("Quest Motherfucker, do you do it", Skin.createDefaultSkin());
+            dialog.addText(
+                "Get this text from the Quest-context, I guess? Yes yes! The context is for generating the UI - makes PERFECT sense!");
+
+
         }
+    }
+
+    /// <summary>
+    /// Used as a test-bed for displayin a ui. Later we might want to do the ui as an overlay
+    /// over the currently displayed scene, for Inventory and such
+    /// </summary>
+    internal class QuestUiScene : Scene
+    {
+        
     }
 }
