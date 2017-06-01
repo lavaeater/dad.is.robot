@@ -55,51 +55,51 @@
     <Compile Include="Scenes\TestScene.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\libjpeg-9.dll">
+    <Content Include="..\ReferenceAssemblies\libjpeg-9.dll">
       <Link>libjpeg-9.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\libogg.dll">
+    <Content Include="..\ReferenceAssemblies\libogg.dll">
       <Link>libogg.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\libpng16-16.dll">
+    <Content Include="..\ReferenceAssemblies\libpng16-16.dll">
       <Link>libpng16-16.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\libtheora.dll">
+    <Content Include="..\ReferenceAssemblies\libtheora.dll">
       <Link>libtheora.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\libtheoraplay.dll">
+    <Content Include="..\ReferenceAssemblies\libtheoraplay.dll">
       <Link>libtheoraplay.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\libvorbis.dll">
+    <Content Include="..\ReferenceAssemblies\libvorbis.dll">
       <Link>libvorbis.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\libvorbisfile.dll">
+    <Content Include="..\ReferenceAssemblies\libvorbisfile.dll">
       <Link>libvorbisfile.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\MojoShader.dll">
+    <Content Include="..\ReferenceAssemblies\MojoShader.dll">
       <Link>MojoShader.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\SDL2.dll">
+    <Content Include="..\ReferenceAssemblies\SDL2.dll">
       <Link>SDL2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\SDL2_image.dll">
+    <Content Include="..\ReferenceAssemblies\SDL2_image.dll">
       <Link>SDL2_image.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\soft_oal.dll">
+    <Content Include="..\ReferenceAssemblies\soft_oal.dll">
       <Link>soft_oal.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Nez.FNA\ReferenceAssemblies\zlib1.dll">
+    <Content Include="..\ReferenceAssemblies\zlib1.dll">
       <Link>zlib1.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
