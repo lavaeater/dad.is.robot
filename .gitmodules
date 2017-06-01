@@ -1,0 +1,3 @@
+[submodule "game/Nez.FNA"]
+	path = game/Nez.FNA
+	url = https://github.com/prime31/Nez.FNA.git
