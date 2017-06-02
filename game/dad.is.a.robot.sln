@@ -52,8 +52,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNA", "Nez.FNA\FNA\FNA.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.quest", "robot.dad.quest\robot.dad.quest.csproj", "{35EC5B5B-683E-4751-B2CD-E5753FCECA4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stateful", "Stateful\src\Stateful\Stateful.csproj", "{731381AE-83AE-47A8-9B13-8ECD84F854F7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -332,24 +330,6 @@ Global
 		{35EC5B5B-683E-4751-B2CD-E5753FCECA4A}.Release|x64.Build.0 = Release|Any CPU
 		{35EC5B5B-683E-4751-B2CD-E5753FCECA4A}.Release|x86.ActiveCfg = Release|Any CPU
 		{35EC5B5B-683E-4751-B2CD-E5753FCECA4A}.Release|x86.Build.0 = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Debug|x64.Build.0 = Debug|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Debug|x86.Build.0 = Debug|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.NuGet|Any CPU.ActiveCfg = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.NuGet|Any CPU.Build.0 = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.NuGet|x64.ActiveCfg = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.NuGet|x64.Build.0 = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.NuGet|x86.ActiveCfg = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.NuGet|x86.Build.0 = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Release|x64.ActiveCfg = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Release|x64.Build.0 = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Release|x86.ActiveCfg = Release|Any CPU
-		{731381AE-83AE-47A8-9B13-8ECD84F854F7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
