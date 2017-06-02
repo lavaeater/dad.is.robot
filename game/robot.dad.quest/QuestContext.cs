@@ -7,21 +7,40 @@ namespace robot.dad.quest
     {
         public string Title { get; }
         public string Description { get; }
-        public string CurrentStepTitle { get; }
-        public string CurrentStepDescription { get; }
         public IQuestState CurrentState { get; }
-        private readonly List<IQuestChoice> _choices = new List<IQuestChoice>();
-        public IEnumerable<IQuestChoice> Choices => _choices;
+        public IQuestStep CurrentStep { get; }
+        public LinkedList<IQuestStep> Steps { get; } = new LinkedList<IQuestStep>();
+        public string CurrentStepTitle => CurrentStep.Title;
+        public string CurrentStepDescription => CurrentStep.Description;
 
-        public QuestContext(string title, string description, string currentStepTitle, string currentStepDescription, IQuestState currentState, Action updated)
+
+        public QuestContext(string title, string description, IQuestState currentState, IEnumerable<IQuestStep> steps, IQuestStep currentStep)
         {
             Title = title;
             Description = description;
-            CurrentStepTitle = currentStepTitle;
-            CurrentStepDescription = currentStepDescription;
+            CurrentStep = currentStep;
             CurrentState = currentState;
-            _choices.Add(new QuestChoice("Överge denna quest.", new EventCancelQuest()));
-            _choices.Add(new QuestChoice("OK", null));//Null som event gör att dialogen bara stängs, inget händer ju... 
+            foreach (var questStep in steps)
+            {
+                Steps.AddLast(questStep);
+            }
         }
+    }
+
+    public interface IQuestStep
+    {
+        string Title { get; }
+        string Description { get; }
+    }
+
+    public class QuestStep : IQuestStep
+    {
+        public QuestStep(string title, string description)
+        {
+            Title = title;
+            Description = description;
+        }
+        public string Title { get; }
+        public string Description { get; }
     }
 }

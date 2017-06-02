@@ -48,7 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestChoice.cs" />
     <Compile Include="QuestContext.cs" />
-    <Compile Include="QuestingState.cs" />
+    <Compile Include="StateQuesting.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

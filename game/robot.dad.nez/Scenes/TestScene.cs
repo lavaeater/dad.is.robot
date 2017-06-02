@@ -39,7 +39,7 @@ namespace robot.dad.nez.Scenes
         {
             _quest = new QuestContext("Hitta din familj", "Hitta din mamma", "Hitta rövaren som sålde halsbandet",
                 "Halsbandet i din ägo kom från en plundrare. Han stal den från en gruvpatrons fru.",
-                new QuestingState(), UpdateUi);
+                new StateQuesting(), UpdateUi);
 
             addRenderer(new DefaultRenderer());
             UiCanvas = createEntity("ui")

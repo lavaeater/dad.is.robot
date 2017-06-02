@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace robot.dad.quest
 {
@@ -9,9 +10,8 @@ namespace robot.dad.quest
         string CurrentStepTitle { get; }
         string CurrentStepDescription { get; }
         IQuestState CurrentState { get; }
+        IQuestStep CurrentStep { get; }
+        LinkedList<IQuestStep> Steps { get; }
 
-        IEnumerable<IQuestChoice> Choices { get; }
-        //Some mechanism to enumerate possible choices and what data those choices need to contain.
-        //May need changes of state machine implementation
     }
 }
