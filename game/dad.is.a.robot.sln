@@ -44,10 +44,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rds", "Loot\rds.csproj", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.common", "robot.dad.common\robot.dad.common.csproj", "{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.dad.monogame", "robot.dad.monogame\robot.dad.monogame.csproj", "{84480581-CD65-411F-9680-70C52DC391C6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nez", "Nez\Nez.Portable\Nez.csproj", "{60B7197D-D0D5-405C-90A2-A56903E9B039}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -188,30 +184,6 @@ Global
 		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Release|x86.ActiveCfg = Release|Any CPU
 		{87B1482D-62BC-4524-BD81-8DE6F9F44FAE}.Release|x86.Build.0 = Release|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.Debug|x86.Build.0 = Debug|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.NuGet|Any CPU.ActiveCfg = Release|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.NuGet|Any CPU.Build.0 = Release|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.NuGet|x86.ActiveCfg = Release|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.NuGet|x86.Build.0 = Release|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.Release|x86.ActiveCfg = Release|Any CPU
-		{84480581-CD65-411F-9680-70C52DC391C6}.Release|x86.Build.0 = Release|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.Debug|x86.Build.0 = Debug|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.NuGet|Any CPU.ActiveCfg = Release|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.NuGet|Any CPU.Build.0 = Release|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.NuGet|x86.ActiveCfg = Release|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.NuGet|x86.Build.0 = Release|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.Release|x86.ActiveCfg = Release|Any CPU
-		{60B7197D-D0D5-405C-90A2-A56903E9B039}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
